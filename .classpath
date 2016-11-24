@@ -62,5 +62,6 @@
 	<classpathentry kind="lib" path="C:/Users/Sean/.gradle/caches/minecraft/deobfedDeps/compileDummy.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Sean/.gradle/caches/minecraft/deobfedDeps/providedDummy.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Sean/.gradle/caches/minecraft/net/minecraftforge/forge/1.10.2-12.18.2.2099/start"/>
+	<classpathentry kind="lib" path="C:/Users/Sean/.gradle/caches/minecraft/deobfedDeps/deobf/szewek/mcflux/mcflux/1.4.0-b5/mcflux-1.4.0-b5.jar" sourcepath="C:/Users/Sean/.gradle/caches/minecraft/deobfedDeps/deobf/szewek/mcflux/mcflux/1.4.0-b5/mcflux-1.4.0-b5-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
