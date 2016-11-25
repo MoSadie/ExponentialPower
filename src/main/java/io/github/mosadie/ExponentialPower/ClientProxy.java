@@ -19,6 +19,7 @@ public class ClientProxy extends CommonProxy{
         ModelLoader.setCustomModelResourceLocation(ItemManager.enderCell, 0, new ModelResourceLocation(ItemManager.enderCell.getRegistryName(), "inventory"));
         Item block = Item.getItemFromBlock(BlockManager.enderGenerator);
         ModelResourceLocation mre = new ModelResourceLocation("exponentialpower:endergenerator");
+        if (block != null && mre != null) ModelLoader.setCustomModelResourceLocation(block,0,mre);
     }
 
     @Override

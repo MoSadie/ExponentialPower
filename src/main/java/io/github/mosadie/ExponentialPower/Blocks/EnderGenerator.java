@@ -26,7 +26,7 @@ public class EnderGenerator extends Block implements ITileEntityProvider {
 		this.setUnlocalizedName("endergenerator");
 		this.setCreativeTab(ItemManager.CreativeTab);
 		this.setHardness(2.5F);
-		this.setResistance(25f);
+		this.setResistance(15f);
 		this.isBlockContainer = true;
     }
 

@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class ExponentialPower {
 	public static final String MODID = "exponentialpower";
 	public static final String MODNAME = "Exponential Power";
-	public static final String VERSION = "0.0.0.1";
+	public static final String VERSION = "1.0.0.0";
 
 	@Instance
 	public static ExponentialPower instance = new ExponentialPower();

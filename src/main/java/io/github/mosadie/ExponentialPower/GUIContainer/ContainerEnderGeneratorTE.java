@@ -41,6 +41,9 @@ public class ContainerEnderGeneratorTE extends Container {
 
             if (fromSlot == 0) {
                 // From TE Inventory to Player Inventory
+            	if (current.stackSize == 1) return null;
+            	current.stackSize -= 1;
+            	if (current.stackSize <= 0) return null;
                 if (!this.mergeItemStack(current, 1, 36, true))
                     return null;
             } else {

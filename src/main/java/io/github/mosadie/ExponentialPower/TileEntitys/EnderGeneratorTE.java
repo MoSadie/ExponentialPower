@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import cofh.api.energy.*;
 
 public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITickable, IInventory {
@@ -68,7 +69,8 @@ public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITi
 		energy = currentOutput;
 		if (Inventory[0] == null) Inventory[0] = new ItemStack(ItemManager.enderCell);
 		if (Inventory[0].getItem() != ItemManager.enderCell) return;
-		currentOutput = (int) Math.pow(2,(Inventory[0].stackSize-1));
+		currentOutput = (int) Math.pow(2,0.5*(Inventory[0].stackSize-1));
+		handleSendingEnergy();
 	}
 
 	@Override
@@ -151,7 +153,7 @@ public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITi
 
 	@Override
 	public int getInventoryStackLimit() {
-		return 32; //2^(32-1) is max int
+		return 64; //2^0.5(64-1) is max int
 	}
 
 	@Override
@@ -202,33 +204,57 @@ public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITi
 	
 	@Override
 	public int getEnergyStored(EnumFacing from) {
-		System.out.println("TACOBELL GetEnergy");
 		return energy;
 	}
 
 	@Override
 	public int getMaxEnergyStored(EnumFacing from) {
-		System.out.println("TACOBELL GetMaxEnergy");
 		return currentOutput;
 	}
 
 	@Override
 	public boolean canConnectEnergy(EnumFacing from) {
-		System.out.println("TACOBELL canConnect");
 		return true;
 	}
 
 	@Override
 	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
-		System.out.println("TACOBELL Extract");
 		if (energy <= maxExtract) {
 			int temp = energy;
-			energy = 0;
+			if (!simulate) energy = 0;
 			return temp;
 		}
 		else {
-			energy -= maxExtract;
-			return energy;
+			int temp = energy - maxExtract;
+			if (!simulate) energy -= maxExtract;
+			return temp;
+		}
+	}
+	
+	
+	private void handleSendingEnergy() {
+		if (!worldObj.isRemote) {
+			if (energy <= 0) {
+				return;
+			}
+			for (EnumFacing dir : EnumFacing.values()) {
+				BlockPos targetBlock = getPos().add(dir.getDirectionVec());
+
+				TileEntity tile = worldObj.getTileEntity(targetBlock);
+				if (tile instanceof IEnergyReceiver) {
+					IEnergyReceiver receiver = (IEnergyReceiver) tile;
+
+					if (receiver.canConnectEnergy(dir.getOpposite())) {
+						int tosend = extractEnergy(dir, this.currentOutput, true);
+						int used = ((IEnergyReceiver) tile).receiveEnergy(dir.getOpposite(), tosend, false);
+						// TODO: need this? It doesn't really *need* state saved
+						if (used > 0) {
+							this.markDirty();
+						}
+						extractEnergy(dir,used, false);
+					}
+				}
+			}
 		}
 	}
 }
