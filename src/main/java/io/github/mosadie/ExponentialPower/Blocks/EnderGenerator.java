@@ -23,7 +23,6 @@ import net.minecraft.world.World;
 public class EnderGenerator extends Block implements ITileEntityProvider {
 	public EnderGenerator() {
 		super(Material.PISTON);
-		System.out.println("EnderGenerator Was Called. TACOS");
 		this.setUnlocalizedName("endergenerator");
 		this.setCreativeTab(ItemManager.CreativeTab);
 		this.setHardness(2.5F);
@@ -54,6 +53,7 @@ public class EnderGenerator extends Block implements ITileEntityProvider {
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
     	EnderGeneratorTE te = (EnderGeneratorTE) world.getTileEntity(pos);
+    	te.Inventory[0].stackSize -= 1;
         InventoryHelper.dropInventoryItems(world, pos, te);
         super.breakBlock(world, pos, state);
     }

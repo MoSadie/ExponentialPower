@@ -9,14 +9,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import szewek.mcflux.U;
-import szewek.mcflux.api.ex.EX;
-import szewek.mcflux.api.ex.IEnergy;
+import cofh.api.energy.*;
 
-public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, IInventory {
+public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITickable, IInventory {
 	
 	
-	public long currentOutput = 0;
+	public int currentOutput = 0;
+	public int energy = 0;
 	public ItemStack[] Inventory;
 	public String customName;
 	
@@ -63,54 +62,13 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 	        this.setCustomName(nbt.getString("CustomName"));
 	    }
 	}
-
-	@Override
-	public boolean canInputEnergy() {
-		return false;
-	}
-
-	@Override
-	public boolean canOutputEnergy() {
-		return true;
-	}
-
-	@Override
-	public long inputEnergy(long amount, boolean sim) {
-		return 0;
-	}
-
-	@Override
-	public long outputEnergy(long amount, boolean sim) {
-		return currentOutput;
-	}
-
-	@Override
-	public long getEnergy() {
-		return currentOutput;
-	}
-
-	@Override
-	public long getEnergyCapacity() {
-		return currentOutput;
-	}
-
+	
 	@Override
 	public void update() {
+		energy = currentOutput;
 		if (Inventory[0] == null) Inventory[0] = new ItemStack(ItemManager.enderCell);
 		if (Inventory[0].getItem() != ItemManager.enderCell) return;
-		currentOutput = (long) Math.pow(2,(Inventory[0].stackSize-1));
-		for (int i = 0; i<6;i++) {
-			EnumFacing f = EnumFacing.VALUES[i];
-			TileEntity te = worldObj.getTileEntity(pos.offset(f, 1));
-			if (te == null)
-				continue;
-			f = f.getOpposite();
-			IEnergy ea = te.getCapability(EX.CAP_ENERGY, f);
-			if (ea == null)
-				continue;
-			U.transferEnergy(this, ea, currentOutput);
-		}
-		
+		currentOutput = (int) Math.pow(2,(Inventory[0].stackSize-1));
 	}
 
 	@Override
@@ -193,7 +151,7 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 
 	@Override
 	public int getInventoryStackLimit() {
-		return 64; //2^(64-1) is max long
+		return 32; //2^(32-1) is max int
 	}
 
 	@Override
@@ -240,5 +198,37 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 
 	public void setCustomName(String customName) {
 		this.customName = customName;
+	}
+	
+	@Override
+	public int getEnergyStored(EnumFacing from) {
+		System.out.println("TACOBELL GetEnergy");
+		return energy;
+	}
+
+	@Override
+	public int getMaxEnergyStored(EnumFacing from) {
+		System.out.println("TACOBELL GetMaxEnergy");
+		return currentOutput;
+	}
+
+	@Override
+	public boolean canConnectEnergy(EnumFacing from) {
+		System.out.println("TACOBELL canConnect");
+		return true;
+	}
+
+	@Override
+	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
+		System.out.println("TACOBELL Extract");
+		if (energy <= maxExtract) {
+			int temp = energy;
+			energy = 0;
+			return temp;
+		}
+		else {
+			energy -= maxExtract;
+			return energy;
+		}
 	}
 }

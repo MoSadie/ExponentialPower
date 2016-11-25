@@ -19,10 +19,6 @@ public class ClientProxy extends CommonProxy{
         ModelLoader.setCustomModelResourceLocation(ItemManager.enderCell, 0, new ModelResourceLocation(ItemManager.enderCell.getRegistryName(), "inventory"));
         Item block = Item.getItemFromBlock(BlockManager.enderGenerator);
         ModelResourceLocation mre = new ModelResourceLocation("exponentialpower:endergenerator");
-        if (block != null && mre != null) ModelLoader.setCustomModelResourceLocation(block,0,mre);
-        else if (block == null && mre == null) System.out.println("Both are Null. BANANAS");
-        else if (block == null) System.out.println("block is Null. BANANAS");
-        else if (mre == null) System.out.println("mre is Null. BANANAS");
     }
 
     @Override

@@ -13,8 +13,6 @@ public class GUIEnderGeneratorTE extends GuiContainer {
 	public GUIEnderGeneratorTE(IInventory playerInv, EnderGeneratorTE te) {
         super(new ContainerEnderGeneratorTE(playerInv, te));
         
-        if (rl == null) System.out.println("BANANATACOS! RL is null!");
-        
         this.te = te;
         this.xSize = 176;
         this.ySize = 166;
@@ -25,6 +23,6 @@ public class GUIEnderGeneratorTE extends GuiContainer {
     	this.mc.getTextureManager().bindTexture(rl);
     	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     	drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-    	this.fontRendererObj.drawString("Current Power: " + te.currentOutput + " MF", guiLeft+5, guiTop+60, 1, false);
+    	this.fontRendererObj.drawString("Current Power: " + te.currentOutput + " RF/t", guiLeft+5, guiTop+60, 1, false);
     }
 }
