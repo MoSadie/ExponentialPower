@@ -13,7 +13,7 @@ public class ItemManager {
 	    }
 	};
 	public static void createItems() {
-		GameRegistry.registerItem(enderCell = new EnderCell(), "endercell");
+		GameRegistry.registerItem(enderCell = new EnderCell().setUnlocalizedName("endercell"), "endercell");
 		
     }
 }
