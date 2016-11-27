@@ -8,11 +8,12 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = ExponentialPower.MODID, name = ExponentialPower.MODNAME, version = ExponentialPower.VERSION)
+@Mod(modid = ExponentialPower.MODID, name = ExponentialPower.MODNAME, version = ExponentialPower.VERSION, updateJSON=ExponentialPower.UPDATEJSON)
 public class ExponentialPower {
 	public static final String MODID = "exponentialpower";
 	public static final String MODNAME = "Exponential Power";
 	public static final String VERSION = "1.0.1.0";
+	public static final String UPDATEJSON = "https://raw.githubusercontent.com/MoSadie/ExponentialPower/master/update.json";
 
 	@Instance
 	public static ExponentialPower instance = new ExponentialPower();

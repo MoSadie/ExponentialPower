@@ -6,7 +6,7 @@ public class EnderCell extends Item {
 	public EnderCell() {
 		super();
 		
-		this.setUnlocalizedName("endercell");
+		
 		this.setCreativeTab(ItemManager.CreativeTab);
 	}
 }

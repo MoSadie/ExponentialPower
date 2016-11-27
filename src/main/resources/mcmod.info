@@ -4,5 +4,6 @@
   "description": "Lets you create a system of EXPONENTIAL POWER! :)",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "authorList": ["MoSadie"]
+  "authorList": ["MoSadie"],
+  "url": "https://minecraft.curseforge.com/projects/exponential-power"
 }]
