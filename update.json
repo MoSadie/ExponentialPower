@@ -1,10 +1,14 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/exponential-power",
+	"1.11.2": {
+		"1.1.1": "See https://github.com/MoSadie/ExponentialPower/releases/tag/v1.1.1"
+	},
 	"1.10.2": {
 		"1.0.1": "See https://github.com/MoSadie/ExponentialPower/releases/tag/v1.0.1",
 		"1.0.0": "See https://github.com/MoSadie/ExponentialPower/releases/tag/v1.0"
 	},
-	"promos": {
+	"promos": 
+		"1.11.2-recommended": "1.1.1"
 		"1.10.2-recommended": "1.0.1"
 	}
 }
