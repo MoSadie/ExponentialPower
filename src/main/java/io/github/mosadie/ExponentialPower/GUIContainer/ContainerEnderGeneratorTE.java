@@ -41,9 +41,9 @@ public class ContainerEnderGeneratorTE extends Container {
 
             if (fromSlot == 0) {
                 // From TE Inventory to Player Inventory
-            	if (current.stackSize == 1) return null;
-            	current.stackSize -= 1;
-            	if (current.stackSize <= 0) return null;
+            	if (current.getCount() == 1) return null;
+            	current.shrink(1);
+            	if (current.getCount() <= 0) return null;
                 if (!this.mergeItemStack(current, 1, 36, true))
                     return null;
             } else {
@@ -52,21 +52,21 @@ public class ContainerEnderGeneratorTE extends Container {
                     return null;
             }
 
-            if (current.stackSize == 0)
+            if (current.getCount() == 0)
                 slot.putStack((ItemStack) null);
             else
                 slot.onSlotChanged();
 
-            if (current.stackSize == previous.stackSize)
+            if (current.getCount() == previous.getCount())
                 return null;
-            slot.onPickupFromSlot(playerIn, current);
+            //slot.onPickupFromSlot(playerIn, current); //TODO: Do I need this?
         }
         return previous;
     }
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer playerIn) {
-		return this.te.isUseableByPlayer(playerIn);
+		return this.te.isUsableByPlayer(playerIn);
 	}
 
 }

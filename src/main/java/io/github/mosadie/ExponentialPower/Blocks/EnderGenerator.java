@@ -36,7 +36,7 @@ public class EnderGenerator extends Block implements ITileEntityProvider {
     }
     
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 	if (!worldIn.isRemote) {
 	        playerIn.openGui(ExponentialPower.instance, GUIHandler.MOD_TILE_ENTITY_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
 	    }
@@ -53,7 +53,7 @@ public class EnderGenerator extends Block implements ITileEntityProvider {
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
     	EnderGeneratorTE te = (EnderGeneratorTE) world.getTileEntity(pos);
-    	te.Inventory[0].stackSize -= 1;
+    	te.Inventory[0].shrink(1);
         InventoryHelper.dropInventoryItems(world, pos, te);
         super.breakBlock(world, pos, state);
     }

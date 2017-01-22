@@ -56,7 +56,7 @@ public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITi
 	    for (int i = 0; i < list.tagCount(); ++i) {
 	        NBTTagCompound stackTag = list.getCompoundTagAt(i);
 	        int slot = stackTag.getByte("Slot") & 255;
-	        this.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(stackTag));
+	        this.setInventorySlotContents(slot, new ItemStack(stackTag));
 	    }
 
 	    if (nbt.hasKey("CustomName", 8)) {
@@ -69,7 +69,7 @@ public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITi
 		energy = currentOutput;
 		if (Inventory[0] == null) Inventory[0] = new ItemStack(ItemManager.enderCell);
 		if (Inventory[0].getItem() != ItemManager.enderCell) return;
-		currentOutput = (int) Math.pow(2,0.5*(Inventory[0].stackSize-1));
+		currentOutput = (int) Math.pow(2,0.5*(Inventory[0].getCount()-1));
 		handleSendingEnergy();
 	}
 
@@ -100,17 +100,17 @@ public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITi
 	    if (this.getStackInSlot(index) != null) {
 	        ItemStack itemstack;
 
-	        if (this.getStackInSlot(index).stackSize <= count) { //Inventory has less or same as amount asked for
+	        if (this.getStackInSlot(index).getCount() <= count) { //Inventory has less or same as amount asked for
 	            itemstack = this.getStackInSlot(index);
-	            itemstack.stackSize -= 1;
+	            itemstack.shrink(1);
 	            this.setInventorySlotContents(index, new ItemStack(ItemManager.enderCell,1));
 	            this.markDirty();
-	            if (itemstack.stackSize > 0) return itemstack;
+	            if (itemstack.getCount() > 0) return itemstack;
 	            else return null;
 	        } else { //More in slot then asked for
 	            itemstack = this.getStackInSlot(index).splitStack(count);
 
-	            if (this.getStackInSlot(index).stackSize <= 0) {
+	            if (this.getStackInSlot(index).getCount() <= 0) {
 	                this.setInventorySlotContents(index, new ItemStack(ItemManager.enderCell,1));
 	            } else {
 	                //Just to show that changes happened
@@ -131,10 +131,10 @@ public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITi
 	    if (index < 0 || index >= this.getSizeInventory())
 	        return;
 
-	    if (stack != null && stack.stackSize > this.getInventoryStackLimit())
-	        stack.stackSize = this.getInventoryStackLimit();
+	    if (stack != null && stack.getCount() > this.getInventoryStackLimit())
+	        stack.setCount(this.getInventoryStackLimit());
 	        
-	    if (stack != null && stack.stackSize == 0)
+	    if (stack != null && stack.getCount() == 0)
 	        stack = null;
 
 	    this.Inventory[index] = stack;
@@ -157,8 +157,8 @@ public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITi
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		 return this.worldObj.getTileEntity(this.getPos()) == this && player.getDistanceSq(this.pos.add(0.5, 0.5, 0.5)) <= 64;
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		return this.world.getTileEntity(this.getPos()) == this && player.getDistanceSq(this.pos.add(0.5, 0.5, 0.5)) <= 64;
 	}
 
 	@Override
@@ -233,14 +233,14 @@ public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITi
 	
 	
 	private void handleSendingEnergy() {
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			if (energy <= 0) {
 				return;
 			}
 			for (EnumFacing dir : EnumFacing.values()) {
 				BlockPos targetBlock = getPos().add(dir.getDirectionVec());
 
-				TileEntity tile = worldObj.getTileEntity(targetBlock);
+				TileEntity tile = world.getTileEntity(targetBlock);
 				if (tile instanceof IEnergyReceiver) {
 					IEnergyReceiver receiver = (IEnergyReceiver) tile;
 
@@ -256,5 +256,11 @@ public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITi
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
