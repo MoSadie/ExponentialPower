@@ -260,7 +260,6 @@ public class EnderGeneratorTE extends TileEntity implements IEnergyProvider, ITi
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
