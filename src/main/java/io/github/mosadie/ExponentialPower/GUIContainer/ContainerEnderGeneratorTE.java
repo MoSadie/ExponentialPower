@@ -41,24 +41,24 @@ public class ContainerEnderGeneratorTE extends Container {
 
             if (fromSlot == 0) {
                 // From TE Inventory to Player Inventory
-            	if (current.getCount() == 1) return null;
+            	if (current.getCount() == 1) return ItemStack.EMPTY;
             	current.shrink(1);
-            	if (current.getCount() <= 0) return null;
+            	if (current.getCount() <= 0) return ItemStack.EMPTY;
                 if (!this.mergeItemStack(current, 1, 36, true))
-                    return null;
+                    return ItemStack.EMPTY;
             } else {
                 // From Player Inventory to TE Inventory
                 if (!this.mergeItemStack(current, 0, 1, false))
-                    return null;
+                    return ItemStack.EMPTY;
             }
 
             if (current.getCount() == 0)
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
 
             if (current.getCount() == previous.getCount())
-                return null;
+                return ItemStack.EMPTY;
             //slot.onPickupFromSlot(playerIn, current); //TODO: Do I need this?
         }
         return previous;
