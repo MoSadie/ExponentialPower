@@ -1,5 +1,5 @@
 # ExponentialPower
-[![Build Status](https://travis-ci.org/MoSadie/ExponentialPower.svg?branch=master)](https://travis-ci.org/MoSadie/ExponentialPower)
+[![Build Status](https://travis-ci.org/MoSadie/ExponentialPower.svg?branch=master)](https://travis-ci.org/MoSadie/ExponentialPower)   [![CurseForge](http://cf.way2muchnoise.eu/full_254249_downloads.svg)](https://minecraft.curseforge.com/projects/exponential-power)
 
 A Minecraft Forge mod that adds a source of constant exponential RF power.
 
