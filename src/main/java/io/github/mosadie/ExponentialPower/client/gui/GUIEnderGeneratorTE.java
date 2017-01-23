@@ -23,6 +23,7 @@ public class GUIEnderGeneratorTE extends GuiContainer {
     	this.mc.getTextureManager().bindTexture(rl);
     	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     	drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-    	this.fontRendererObj.drawString("Current Power: " + te.currentOutput + " RF/t", guiLeft+5, guiTop+60, 1, false);
+    	this.fontRendererObj.drawString("Current Power:", guiLeft+5, guiTop+60, 1, false);
+    	this.fontRendererObj.drawString(te.currentOutput + " MF/t", guiLeft+5, guiTop+70, 1, false);
     }
 }

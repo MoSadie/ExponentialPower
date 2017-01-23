@@ -41,8 +41,6 @@ public class ContainerEnderGeneratorTE extends Container {
 
             if (fromSlot == 0) {
                 // From TE Inventory to Player Inventory
-            	if (current.getCount() == 1) return ItemStack.EMPTY;
-            	current.shrink(1);
             	if (current.getCount() <= 0) return ItemStack.EMPTY;
                 if (!this.mergeItemStack(current, 1, 36, true))
                     return ItemStack.EMPTY;
@@ -59,7 +57,6 @@ public class ContainerEnderGeneratorTE extends Container {
 
             if (current.getCount() == previous.getCount())
                 return ItemStack.EMPTY;
-            //slot.onPickupFromSlot(playerIn, current); //TODO: Do I need this?
         }
         return previous;
     }

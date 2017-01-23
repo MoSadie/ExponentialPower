@@ -32,11 +32,11 @@ minecraft {
 	mappings = "snapshot_20161220"
 	// makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
-//repositories {
-//	maven {
-//       url "http://dl.bintray.com/szewek/MC"
-//    }
-//}
+repositories {
+	maven {
+       url "http://dl.bintray.com/szewek/MC"
+    }
+}
 dependencies {
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
@@ -58,7 +58,7 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-	//deobfCompile group:'szewek.mcflux', name:'mcflux', version:'1.4.0-b5'
+	deobfCompile group:'szewek.mcflux', name:'mcflux', version:'2.0.0-b6'
 }
 
 processResources
