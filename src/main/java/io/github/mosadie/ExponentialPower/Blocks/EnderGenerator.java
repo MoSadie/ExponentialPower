@@ -53,7 +53,6 @@ public class EnderGenerator extends Block implements ITileEntityProvider {
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
     	EnderGeneratorTE te = (EnderGeneratorTE) world.getTileEntity(pos);
-    	te.Inventory[0].shrink(1);
         InventoryHelper.dropInventoryItems(world, pos, te);
         super.breakBlock(world, pos, state);
     }

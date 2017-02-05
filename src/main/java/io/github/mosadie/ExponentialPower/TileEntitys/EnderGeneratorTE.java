@@ -14,6 +14,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import szewek.mcflux.api.MCFluxAPI;
 import szewek.mcflux.api.ex.*;
 
 public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, IInventory, ICapabilityProvider {
@@ -21,12 +22,11 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 
 	public long currentOutput = 0;
 	public long energy = 0;
-	public ItemStack[] Inventory;
+	public ItemStack Inventory;
 	public String customName;
 
 	public EnderGeneratorTE() {
-		this.Inventory = new ItemStack[this.getSizeInventory()];
-		this.Inventory[0] = ItemStack.EMPTY;
+		this.Inventory = ItemStack.EMPTY;
 	}
 	
 	@Override public boolean hasCapability(Capability<?> cap, @Nullable EnumFacing f) {
@@ -79,10 +79,13 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 
 	@Override
 	public void update() {
-		energy = currentOutput;
-		if (Inventory[0] == ItemStack.EMPTY) return;
-		if (Inventory[0].getItem() != ItemManager.enderCell) return;
-		currentOutput = longPow(2L,Math.round((63*Inventory[0].getCount())/((double)64)))-1L;
+		System.out.println("BANANA: " + Inventory);
+		if (Inventory != ItemStack.EMPTY) {
+			if (Inventory.getItem() == ItemManager.enderCell) {
+				energy = currentOutput;
+				currentOutput = longPow(2L,Math.round((63*Inventory.getCount())/((double)64)))-1L;
+			}
+		}
 		handleSendingEnergy();
 	}
 
@@ -105,7 +108,7 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 	public ItemStack getStackInSlot(int index) {
 		if (index < 0 || index >= this.getSizeInventory())
 			return null;
-		return this.Inventory[index];
+		return this.Inventory;
 	}
 
 	@Override
@@ -150,7 +153,7 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 		if (stack != null && stack.getCount() == 0)
 			stack = null;
 
-		this.Inventory[index] = stack;
+		this.Inventory = stack;
 		this.markDirty();
 	}
 
@@ -158,8 +161,8 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 	public ItemStack removeStackFromSlot(int index) {
 		if (index < 0 || index >= this.getSizeInventory())
 			return null;
-		ItemStack whatWasThere = this.Inventory[index];
-		this.Inventory[index] = ItemStack.EMPTY;
+		ItemStack whatWasThere = this.Inventory;
+		this.Inventory = ItemStack.EMPTY;
 		this.markDirty();
 		return whatWasThere;
 	}
@@ -225,14 +228,12 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 
 				TileEntity tile = world.getTileEntity(targetBlock);
 				if (tile != null) {
-					if (tile.getCapability(EX.CAP_ENERGY, dir.getOpposite()) != null) {
-						IEnergy receiver = (IEnergy) tile;
-
+					IEnergy receiver = MCFluxAPI.getEnergySafely(tile, dir.getOpposite());
+					if (receiver != null) {
 						if (receiver.canInputEnergy()) {
 							long tosend = outputEnergy(this.currentOutput, true);
 							long used = receiver.inputEnergy(tosend, false);
 							outputEnergy(used, false);
-							// TODO: need this? It doesn't really *need* state saved
 							if (used > 0) {
 								this.markDirty();
 							}
@@ -245,7 +246,7 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 
 	@Override
 	public boolean isEmpty() {
-		return Inventory[0].getCount() == 0;
+		return Inventory.getCount() == 0;
 	}
 
 	@Override
