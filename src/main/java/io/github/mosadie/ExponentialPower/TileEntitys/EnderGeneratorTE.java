@@ -31,12 +31,14 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 	public EnderGeneratorTE() {
 	}
 	
-	@Override public boolean hasCapability(Capability<?> cap, @Nullable EnumFacing f) {
+	@Override
+	public boolean hasCapability(Capability<?> cap, @Nullable EnumFacing f) {
 		return cap == EX.CAP_ENERGY;
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override public <T> T getCapability(Capability<T> cap, @Nullable EnumFacing f) {
+	@Override
+	public <T> T getCapability(Capability<T> cap, @Nullable EnumFacing f) {
 		return cap == EX.CAP_ENERGY ? (T) this : null;
 	}
 	
