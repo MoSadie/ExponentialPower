@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
 
-version = "1.1.1"
+version = "1.2.0"
 group= "io.github.mosadie.ExponentialPower" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ExponentialPower"
 
@@ -21,7 +21,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.11.2-13.20.0.2224"
+    version = "1.11.2-13.20.0.2228"
 	runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -58,7 +58,7 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-	deobfCompile group:'szewek.mcflux', name:'mcflux', version:'2.0.5'
+	deobfCompile group:'szewek.mcflux', name:'mcflux', version:'2.3.0'
 }
 
 processResources

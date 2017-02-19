@@ -32,9 +32,9 @@ public class ContainerEnderGeneratorTE extends Container {
     
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int fromSlot) {
-        ItemStack previous = null;
+        ItemStack previous = ItemStack.EMPTY;
         Slot slot = (Slot) this.inventorySlots.get(fromSlot);
-
+        
         if (slot != null && slot.getHasStack()) {
             ItemStack current = slot.getStack();
             previous = current.copy();

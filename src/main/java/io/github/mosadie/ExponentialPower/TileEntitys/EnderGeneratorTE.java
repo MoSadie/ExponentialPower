@@ -5,15 +5,18 @@ import javax.annotation.Nullable;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.asm.transformers.ItemStackTransformer;
 import szewek.mcflux.api.MCFluxAPI;
 import szewek.mcflux.api.ex.*;
 
@@ -22,11 +25,10 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 
 	public long currentOutput = 0;
 	public long energy = 0;
-	public ItemStack Inventory;
+	public NonNullList<ItemStack> Inventory = NonNullList.withSize(1, ItemStack.EMPTY);
 	public String customName;
 
 	public EnderGeneratorTE() {
-		this.Inventory = ItemStack.EMPTY;
 	}
 	
 	@Override public boolean hasCapability(Capability<?> cap, @Nullable EnumFacing f) {
@@ -79,11 +81,10 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 
 	@Override
 	public void update() {
-		System.out.println("BANANA: " + Inventory);
-		if (Inventory != ItemStack.EMPTY) {
-			if (Inventory.getItem() == ItemManager.enderCell) {
+		if (Inventory != null) {
+			if (Inventory.get(0).getItem() == ItemManager.enderCell) {
 				energy = currentOutput;
-				currentOutput = longPow(2L,Math.round((63*Inventory.getCount())/((double)64)))-1L;
+				currentOutput = longPow(2L,Math.round((63*Inventory.get(0).getCount())/((double)64)))-1L;
 			}
 		}
 		handleSendingEnergy();
@@ -107,8 +108,8 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 	@Override
 	public ItemStack getStackInSlot(int index) {
 		if (index < 0 || index >= this.getSizeInventory())
-			return null;
-		return this.Inventory;
+			return ItemStack.EMPTY;
+		return this.Inventory.get(0);
 	}
 
 	@Override
@@ -122,7 +123,7 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 				this.setInventorySlotContents(index, ItemStack.EMPTY);//new ItemStack(ItemManager.enderCell,1));
 				this.markDirty();
 				if (itemstack.getCount() > 0) return itemstack;
-				else return null;
+				else return ItemStack.EMPTY;
 			} else { //More in slot then asked for
 				itemstack = this.getStackInSlot(index).splitStack(count);
 
@@ -137,7 +138,7 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 				return itemstack;
 			}
 		} else {
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 
@@ -151,18 +152,18 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 			stack.setCount(this.getInventoryStackLimit());
 
 		if (stack != null && stack.getCount() == 0)
-			stack = null;
+			stack = ItemStack.EMPTY;
 
-		this.Inventory = stack;
+		this.Inventory.set(0, stack);
 		this.markDirty();
 	}
 
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		if (index < 0 || index >= this.getSizeInventory())
-			return null;
-		ItemStack whatWasThere = this.Inventory;
-		this.Inventory = ItemStack.EMPTY;
+			return ItemStack.EMPTY;
+		ItemStack whatWasThere = this.Inventory.get(0);
+		this.Inventory.set(0,ItemStack.EMPTY);
 		this.markDirty();
 		return whatWasThere;
 	}
@@ -246,7 +247,7 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 
 	@Override
 	public boolean isEmpty() {
-		return Inventory.getCount() == 0;
+		return Inventory.get(0).getCount() == 0;
 	}
 
 	@Override
