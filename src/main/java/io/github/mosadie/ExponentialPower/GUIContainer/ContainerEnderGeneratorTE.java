@@ -32,17 +32,15 @@ public class ContainerEnderGeneratorTE extends Container {
     
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int fromSlot) {
-        ItemStack previous = null;
+        ItemStack previous = ItemStack.EMPTY;
         Slot slot = (Slot) this.inventorySlots.get(fromSlot);
-
+        
         if (slot != null && slot.getHasStack()) {
             ItemStack current = slot.getStack();
             previous = current.copy();
 
             if (fromSlot == 0) {
                 // From TE Inventory to Player Inventory
-            	if (current.getCount() == 1) return ItemStack.EMPTY;
-            	current.shrink(1);
             	if (current.getCount() <= 0) return ItemStack.EMPTY;
                 if (!this.mergeItemStack(current, 1, 36, true))
                     return ItemStack.EMPTY;
@@ -59,7 +57,6 @@ public class ContainerEnderGeneratorTE extends Container {
 
             if (current.getCount() == previous.getCount())
                 return ItemStack.EMPTY;
-            //slot.onPickupFromSlot(playerIn, current); //TODO: Do I need this?
         }
         return previous;
     }
