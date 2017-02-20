@@ -21,6 +21,7 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent e) {
     	GameRegistry.addRecipe(new ItemStack(ItemManager.enderCell), new Object[] {"DED", "EIE", "DED", 'D' ,Blocks.DIAMOND_BLOCK,'E',Items.ENDER_PEARL,'I',Items.ENDER_EYE});
+    	GameRegistry.addRecipe(new ItemStack(BlockManager.enderStorage), new Object[] {"DOD", "OCO","DOD", 'D', Blocks.DIAMOND_BLOCK,'O',Blocks.OBSIDIAN,'C',ItemManager.enderCell});
     	GameRegistry.addRecipe(new ItemStack(BlockManager.enderGenerator), new Object[] {"IOI", "OCO", "IOI", 'I' ,Blocks.IRON_BLOCK,'O',Blocks.OBSIDIAN,'C',ItemManager.enderCell});
     }
 
