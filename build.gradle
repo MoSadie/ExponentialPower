@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
 
-version = "1.2.0"
+version = "1.2.1"
 group= "io.github.mosadie.ExponentialPower" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ExponentialPower"
 
@@ -58,7 +58,7 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-	deobfCompile group:'szewek.mcflux', name:'mcflux', version:'2.3.0'
+	deobfCompile group:'szewek.mcflux', name:'mcflux', version:'2.4.5'
 }
 
 processResources
