@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,9 +15,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.common.asm.transformers.ItemStackTransformer;
 import szewek.mcflux.api.MCFluxAPI;
-import szewek.mcflux.api.ex.*;
+import szewek.fl.FL;
+import szewek.fl.energy.*;
 
 public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, IInventory, ICapabilityProvider {
 
@@ -33,13 +32,13 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 	
 	@Override
 	public boolean hasCapability(Capability<?> cap, @Nullable EnumFacing f) {
-		return cap == EX.CAP_ENERGY;
+		return cap == FL.ENERGY_CAP;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getCapability(Capability<T> cap, @Nullable EnumFacing f) {
-		return cap == EX.CAP_ENERGY ? (T) this : null;
+		return cap == FL.ENERGY_CAP ? (T) this : null;
 	}
 	
 	@Override

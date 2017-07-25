@@ -10,8 +10,8 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import szewek.mcflux.api.MCFluxAPI;
-import szewek.mcflux.api.ex.EX;
-import szewek.mcflux.api.ex.IEnergy;
+import szewek.fl.*;
+import szewek.fl.energy.*;
 
 public class EnderStorageTE extends TileEntity implements IEnergy, ITickable {
 	
@@ -36,13 +36,13 @@ public class EnderStorageTE extends TileEntity implements IEnergy, ITickable {
 	
 	@Override
 	public boolean hasCapability(Capability<?> cap, @Nullable EnumFacing f) {
-		return cap == EX.CAP_ENERGY;
+		return cap == FL.ENERGY_CAP;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getCapability(Capability<T> cap, @Nullable EnumFacing f) {
-		return cap == EX.CAP_ENERGY ? (T) this : null;
+		return cap == FL.ENERGY_CAP ? (T) this : null;
 	}
 	
 	@Override
