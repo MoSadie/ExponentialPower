@@ -1,11 +1,8 @@
 package io.github.mosadie.ExponentialPower.Blocks;
 
-import javax.annotation.Nullable;
-
 import io.github.mosadie.ExponentialPower.ExponentialPower;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
 import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorTE;
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderStorageTE;
 import io.github.mosadie.ExponentialPower.network.GUIHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;

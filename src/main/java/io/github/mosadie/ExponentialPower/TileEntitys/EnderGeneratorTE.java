@@ -3,6 +3,9 @@ package io.github.mosadie.ExponentialPower.TileEntitys;
 import javax.annotation.Nullable;
 
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
+import io.github.mosadie.ExponentialPower.energy.generator.*;
+import net.darkhax.tesla.api.ITeslaConsumer;
+import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -15,11 +18,11 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import szewek.mcflux.api.MCFluxAPI;
-import szewek.fl.FL;
-import szewek.fl.energy.*;
+import net.minecraftforge.energy.*;
+import net.minecraftforge.fml.common.Loader;
 
-public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, IInventory, ICapabilityProvider {
+
+public class EnderGeneratorTE extends TileEntity implements ITickable, IInventory, ICapabilityProvider {
 
 
 	public long currentOutput = 0;
@@ -27,20 +30,28 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 	public NonNullList<ItemStack> Inventory = NonNullList.withSize(1, ItemStack.EMPTY);
 	public String customName;
 
+	private ForgeEnergyConnection fec;
+	private TeslaEnergyConnection tec;
+
 	public EnderGeneratorTE() {
+		fec = new ForgeEnergyConnection(this, true, false);
+		if (Loader.isModLoaded("tesla"))
+			tec = new TeslaEnergyConnection(this);
 	}
-	
+
 	@Override
 	public boolean hasCapability(Capability<?> cap, @Nullable EnumFacing f) {
-		return cap == FL.ENERGY_CAP;
+		return cap == CapabilityEnergy.ENERGY || cap == TeslaCapabilities.CAPABILITY_PRODUCER;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getCapability(Capability<T> cap, @Nullable EnumFacing f) {
-		return cap == FL.ENERGY_CAP ? (T) this : null;
+		if (cap == CapabilityEnergy.ENERGY) return (T) fec;
+		if (cap == TeslaCapabilities.CAPABILITY_PRODUCER) return (T) tec;
+		return null;
 	}
-	
+
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
@@ -230,14 +241,37 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 
 				TileEntity tile = world.getTileEntity(targetBlock);
 				if (tile != null) {
-					IEnergy receiver = MCFluxAPI.getEnergySafely(tile, dir.getOpposite());
-					if (receiver != null) {
-						if (receiver.canInputEnergy()) {
-							long tosend = outputEnergy(this.currentOutput, true);
-							long used = receiver.inputEnergy(tosend, false);
-							outputEnergy(used, false);
-							if (used > 0) {
-								this.markDirty();
+					if (tile instanceof EnderStorageTE) {
+						EnderStorageTE storage = (EnderStorageTE) tile;
+						if (storage.energy == Long.MAX_VALUE) continue;
+						else if (storage.energy + energy < storage.energy) {
+							energy -= Long.MAX_VALUE-storage.energy;
+							storage.energy = Long.MAX_VALUE;
+							continue;
+						}
+						else {
+							storage.energy += energy;
+							energy = 0;
+							continue;
+						}
+					}
+					if (Loader.isModLoaded("tesla")) {
+						if (tile.hasCapability(TeslaCapabilities.CAPABILITY_CONSUMER, dir.getOpposite())) {
+							ITeslaConsumer other = tile.getCapability(TeslaCapabilities.CAPABILITY_CONSUMER, dir.getOpposite());
+							energy -= other.givePower(energy, false);
+						}
+						else if (tile.hasCapability(CapabilityEnergy.ENERGY, dir.getOpposite())) {
+							IEnergyStorage other = tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite());
+							if (other.canReceive()) {
+								energy -= other.receiveEnergy((int) (energy > Integer.MAX_VALUE ? Integer.MAX_VALUE : energy), false);
+							}
+						}
+					} 
+					else {
+						if (tile.hasCapability(CapabilityEnergy.ENERGY, dir.getOpposite())) {
+							IEnergyStorage other = tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite());
+							if (other.canReceive()) {
+								energy -= other.receiveEnergy((int) (energy > Integer.MAX_VALUE ? Integer.MAX_VALUE : energy), false);
 							}
 						}
 					}
@@ -251,45 +285,6 @@ public class EnderGeneratorTE extends TileEntity implements IEnergy, ITickable, 
 		return Inventory.get(0).getCount() == 0;
 	}
 
-	@Override
-	public boolean canInputEnergy() {
-		return false;
-	}
-
-	@Override
-	public boolean canOutputEnergy() {
-		return true;
-	}
-
-	@Override
-	public long inputEnergy(long amount, boolean sim) {
-		return 0;
-	}
-
-	@Override
-	public long outputEnergy(long amount, boolean sim) {
-		if (energy <= amount) {
-			long temp = energy;
-			if (!sim) energy = 0;
-			return temp;
-		}
-		else {
-			long temp = energy - amount;
-			if (!sim) energy -= amount;
-			return temp;
-		}
-	}
-
-	@Override
-	public long getEnergy() {
-		return energy;
-	}
-
-	@Override
-	public long getEnergyCapacity() {
-		return currentOutput;
-	}
-	
 	private long longPow (long a, long b) {
 		long temp = 1;
 		if (b == 0) return 1L;
