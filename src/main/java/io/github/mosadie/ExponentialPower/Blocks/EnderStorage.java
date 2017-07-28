@@ -34,7 +34,7 @@ public class EnderStorage extends Block implements ITileEntityProvider {
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
 			EnderStorageTE te = (EnderStorageTE) worldIn.getTileEntity(pos);
-			playerIn.sendMessage(new TextComponentString("Current Energy Stored: " + te.getEnergy() + " MF / " + te.getEnergyCapacity() + " MF."));
+			playerIn.sendMessage(new TextComponentString("Current Energy Stored: " + te.energy + " RF / " + Long.MAX_VALUE + " RF."));
 		}
 		return true;
 	}
