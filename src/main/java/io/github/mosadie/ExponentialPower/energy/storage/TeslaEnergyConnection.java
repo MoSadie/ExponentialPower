@@ -17,13 +17,16 @@ public class TeslaEnergyConnection implements ITeslaHolder, ITeslaProducer, ITes
 	public long takePower(long power, boolean simulated) {
 		if (power == owner.energy) {
 			if (!simulated) owner.energy = 0;
+			owner.freezeExpend = true;
 			return power;
 		} else if (power > owner.energy) {
 			long tmp = owner.energy;
 			if (!simulated) owner.energy = 0;
+			owner.freezeExpend = true;
 			return tmp;
 		} else if (power < owner.energy) {
 			if (!simulated) owner.energy -= power;
+			owner.freezeExpend = true;
 			return power;
 		}
 		return 0;

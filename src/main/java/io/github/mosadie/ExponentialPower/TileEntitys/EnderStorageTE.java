@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.Loader;
 public class EnderStorageTE extends TileEntity implements ITickable {
 
 	public long energy = 0;
+	public boolean freezeExpend = false;
 
 	private ForgeEnergyConnection fec;
 	private TeslaEnergyConnection tec;
@@ -64,23 +65,26 @@ public class EnderStorageTE extends TileEntity implements ITickable {
 		if (!world.isRemote) {
 			if (energy <= 0) {
 				return;
+			} 
+			if (freezeExpend) {
+				freezeExpend = false;
+				return;
 			}
 			for (EnumFacing dir : EnumFacing.values()) {
 				BlockPos targetBlock = getPos().add(dir.getDirectionVec());
-
 				TileEntity tile = world.getTileEntity(targetBlock);
 				if (tile != null) {
 					if (tile instanceof EnderStorageTE) {
 						EnderStorageTE storage = (EnderStorageTE) tile;
-						if (storage.energy == Long.MAX_VALUE) continue;
-						else if (storage.energy < energy) {
+						if (storage.energy == Long.MAX_VALUE) 
+							continue;
+						else if (storage.energy + 1 < energy) {
 							long transferAmount = (energy-storage.energy)/2;
 							storage.energy += transferAmount;
 							energy -= transferAmount;
-							continue;
 						}
 					}
-					if (Loader.isModLoaded("tesla")) {
+					else if (Loader.isModLoaded("tesla")) {
 						if (tile.hasCapability(TeslaCapabilities.CAPABILITY_CONSUMER, dir.getOpposite())) {
 							ITeslaConsumer other = tile.getCapability(TeslaCapabilities.CAPABILITY_CONSUMER, dir.getOpposite());
 							energy -= other.givePower(energy, false);
@@ -88,7 +92,8 @@ public class EnderStorageTE extends TileEntity implements ITickable {
 						else if (tile.hasCapability(CapabilityEnergy.ENERGY, dir.getOpposite())) {
 							IEnergyStorage other = tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite());
 							if (other.canReceive()) {
-								energy -= other.receiveEnergy((int) (energy > Integer.MAX_VALUE ? Integer.MAX_VALUE : energy), false);
+								int change = other.receiveEnergy((int) (energy > Integer.MAX_VALUE ? Integer.MAX_VALUE : energy), false);
+								energy -= change;
 							}
 						}
 					} 

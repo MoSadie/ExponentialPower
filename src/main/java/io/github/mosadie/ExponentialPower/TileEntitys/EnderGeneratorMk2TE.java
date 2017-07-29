@@ -3,7 +3,7 @@ package io.github.mosadie.ExponentialPower.TileEntitys;
 import javax.annotation.Nullable;
 
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
-import io.github.mosadie.ExponentialPower.energy.generator.*;
+import io.github.mosadie.ExponentialPower.energy.generatormk2.*;
 import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,18 +22,18 @@ import net.minecraftforge.energy.*;
 import net.minecraftforge.fml.common.Loader;
 
 
-public class EnderGeneratorTE extends TileEntity implements ITickable, IInventory, ICapabilityProvider {
+public class EnderGeneratorMk2TE extends TileEntity implements ITickable, IInventory, ICapabilityProvider {
 
 
-	public long currentOutput = 0;
-	public long energy = 0;
+	public double currentOutput = 0;
+	public double energy = 0;
 	public NonNullList<ItemStack> Inventory = NonNullList.withSize(1, ItemStack.EMPTY);
 	public String customName;
 
 	private ForgeEnergyConnection fec;
 	private TeslaEnergyConnection tec;
 
-	public EnderGeneratorTE() {
+	public EnderGeneratorMk2TE() {
 		fec = new ForgeEnergyConnection(this, true, false);
 		if (Loader.isModLoaded("tesla"))
 			tec = new TeslaEnergyConnection(this);
@@ -96,7 +96,10 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 		if (Inventory != null) {
 			if (Inventory.get(0).getItem() == ItemManager.enderCell) {
 				energy = currentOutput;
-				currentOutput = longPow(2L,Math.round((63*Inventory.get(0).getCount())/((double)64)))-1L;
+				if (Inventory.get(0).getCount() < 64)
+					currentOutput = Math.pow(2,16*Inventory.get(0).getCount());
+				else
+					currentOutput = Double.MAX_VALUE;
 			}
 		}
 		handleSendingEnergy();
@@ -104,7 +107,7 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 
 	@Override
 	public String getName() {
-		return this.hasCustomName() ? this.customName : "container.exponentialpower_endergenerator_tile_entity";
+		return this.hasCustomName() ? this.customName : "container.exponentialpower_endergeneratormk2_tile_entity";
 	}
 
 	@Override
@@ -247,16 +250,18 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 						else if (storage.energy + energy < storage.energy) {
 							energy -= Long.MAX_VALUE-storage.energy;
 							storage.energy = Long.MAX_VALUE;
+							continue;
 						}
 						else {
 							storage.energy += energy;
 							energy = 0;
+							continue;
 						}
 					}
-					else if (Loader.isModLoaded("tesla")) {
+					if (Loader.isModLoaded("tesla")) {
 						if (tile.hasCapability(TeslaCapabilities.CAPABILITY_CONSUMER, dir.getOpposite())) {
 							ITeslaConsumer other = tile.getCapability(TeslaCapabilities.CAPABILITY_CONSUMER, dir.getOpposite());
-							energy -= other.givePower(energy, false);
+							energy -= other.givePower((long)(energy > Long.MAX_VALUE ? Long.MAX_VALUE : energy), false);
 						}
 						else if (tile.hasCapability(CapabilityEnergy.ENERGY, dir.getOpposite())) {
 							IEnergyStorage other = tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite());
@@ -281,15 +286,5 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 	@Override
 	public boolean isEmpty() {
 		return Inventory.get(0).getCount() == 0;
-	}
-
-	private long longPow (long a, long b) {
-		long temp = 1;
-		if (b == 0) return 1L;
-		if (b == 1) return a;
-		for (long i = 0; i<b ;i++) {
-			temp = temp*a;
-		}
-		return temp;
 	}
 }
