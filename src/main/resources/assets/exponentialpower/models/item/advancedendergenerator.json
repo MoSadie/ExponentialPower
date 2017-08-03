@@ -1,5 +1,5 @@
 {
-  "parent": "exponentialpower:endergeneratormk2",
+  "parent": "exponentialpower:advancedendergenerator",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

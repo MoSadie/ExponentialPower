@@ -3,7 +3,7 @@ package io.github.mosadie.ExponentialPower.TileEntitys;
 import javax.annotation.Nullable;
 
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
-import io.github.mosadie.ExponentialPower.energy.generatormk2.*;
+import io.github.mosadie.ExponentialPower.energy.advancedgenerator.*;
 import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +22,7 @@ import net.minecraftforge.energy.*;
 import net.minecraftforge.fml.common.Loader;
 
 
-public class EnderGeneratorMk2TE extends TileEntity implements ITickable, IInventory, ICapabilityProvider {
+public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, IInventory, ICapabilityProvider {
 
 
 	public double currentOutput = 0;
@@ -33,7 +33,7 @@ public class EnderGeneratorMk2TE extends TileEntity implements ITickable, IInven
 	private ForgeEnergyConnection fec;
 	private TeslaEnergyConnection tec;
 
-	public EnderGeneratorMk2TE() {
+	public AdvancedEnderGeneratorTE() {
 		fec = new ForgeEnergyConnection(this, true, false);
 		if (Loader.isModLoaded("tesla"))
 			tec = new TeslaEnergyConnection(this);

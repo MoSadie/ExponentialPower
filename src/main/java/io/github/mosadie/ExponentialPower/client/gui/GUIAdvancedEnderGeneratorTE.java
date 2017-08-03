@@ -1,17 +1,17 @@
 package io.github.mosadie.ExponentialPower.client.gui;
 
-import io.github.mosadie.ExponentialPower.GUIContainer.ContainerEnderGeneratorMk2TE;
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorMk2TE;
+import io.github.mosadie.ExponentialPower.GUIContainer.ContainerAdvancedEnderGeneratorTE;
+import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderGeneratorTE;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 
-public class GUIEnderGeneratorMk2TE extends GuiContainer {
-	private EnderGeneratorMk2TE te;
+public class GUIAdvancedEnderGeneratorTE extends GuiContainer {
+	private AdvancedEnderGeneratorTE te;
 	ResourceLocation rl = new ResourceLocation("exponentialpower:textures/gui/containerendergeneratorte.png");
-	public GUIEnderGeneratorMk2TE(IInventory playerInv, EnderGeneratorMk2TE te) {
-        super(new ContainerEnderGeneratorMk2TE(playerInv, te));
+	public GUIAdvancedEnderGeneratorTE(IInventory playerInv, AdvancedEnderGeneratorTE te) {
+        super(new ContainerAdvancedEnderGeneratorTE(playerInv, te));
         
         this.te = te;
         this.xSize = 176;

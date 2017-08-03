@@ -1,13 +1,13 @@
-package io.github.mosadie.ExponentialPower.energy.generatormk2;
+package io.github.mosadie.ExponentialPower.energy.advancedgenerator;
 
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorMk2TE;
+import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderGeneratorTE;
 import net.darkhax.tesla.api.ITeslaProducer;
 
 public class TeslaEnergyConnection implements ITeslaProducer{
 
-	EnderGeneratorMk2TE owner;
+	AdvancedEnderGeneratorTE owner;
 	
-	public TeslaEnergyConnection(EnderGeneratorMk2TE owner) {
+	public TeslaEnergyConnection(AdvancedEnderGeneratorTE owner) {
 		this.owner = owner;
 	}
 	

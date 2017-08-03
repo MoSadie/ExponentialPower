@@ -1,17 +1,17 @@
 package io.github.mosadie.ExponentialPower.GUIContainer;
 
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorMk2TE;
+import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderGeneratorTE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerEnderGeneratorMk2TE extends Container {
+public class ContainerAdvancedEnderGeneratorTE extends Container {
 	
-	private EnderGeneratorMk2TE te;
+	private AdvancedEnderGeneratorTE te;
 
-    public ContainerEnderGeneratorMk2TE(IInventory playerInv, EnderGeneratorMk2TE te) {
+    public ContainerAdvancedEnderGeneratorTE(IInventory playerInv, AdvancedEnderGeneratorTE te) {
         this.te = te;
         
         // Tile Entity, Slot 0, Slot IDs 0 

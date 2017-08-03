@@ -1,15 +1,15 @@
-package io.github.mosadie.ExponentialPower.energy.generatormk2;
+package io.github.mosadie.ExponentialPower.energy.advancedgenerator;
 
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorMk2TE;
+import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderGeneratorTE;
 import net.minecraftforge.energy.*;
 
 public class ForgeEnergyConnection implements IEnergyStorage{
 	
-	private EnderGeneratorMk2TE owner;
+	private AdvancedEnderGeneratorTE owner;
 	private final boolean canExtract;
 	private final boolean canReceive;
 	
-	public ForgeEnergyConnection(EnderGeneratorMk2TE owner, boolean canExtract, boolean canReceive) {
+	public ForgeEnergyConnection(AdvancedEnderGeneratorTE owner, boolean canExtract, boolean canReceive) {
 		this.owner = owner;
 		this.canExtract = canExtract;
 		this.canReceive = canReceive;

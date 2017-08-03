@@ -2,8 +2,7 @@ package io.github.mosadie.ExponentialPower.Blocks;
 
 import io.github.mosadie.ExponentialPower.ExponentialPower;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorMk2TE;
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorTE;
+import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderGeneratorTE;
 import io.github.mosadie.ExponentialPower.network.GUIHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -19,10 +18,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class EnderGeneratorMk2 extends Block implements ITileEntityProvider {
-	public EnderGeneratorMk2() {
+public class AdvancedEnderGenerator extends Block implements ITileEntityProvider {
+	public AdvancedEnderGenerator() {
 		super(Material.PISTON);
-		this.setUnlocalizedName("endergeneratormk2");
+		this.setUnlocalizedName("advancedendergenerator");
 		this.setCreativeTab(ItemManager.CreativeTab);
 		this.setHardness(2.5F);
 		this.setResistance(15f);
@@ -31,7 +30,7 @@ public class EnderGeneratorMk2 extends Block implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new EnderGeneratorMk2TE();
+        return new AdvancedEnderGeneratorTE();
     }
     
 	@Override
@@ -45,13 +44,13 @@ public class EnderGeneratorMk2 extends Block implements ITileEntityProvider {
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         if (stack.hasDisplayName()) {
-            ((EnderGeneratorMk2TE) worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName());
+            ((AdvancedEnderGeneratorTE) worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName());
         }
     }
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
-    	EnderGeneratorTE te = (EnderGeneratorTE) world.getTileEntity(pos);
+    	AdvancedEnderGeneratorTE te = (AdvancedEnderGeneratorTE) world.getTileEntity(pos);
         InventoryHelper.dropInventoryItems(world, pos, te);
         super.breakBlock(world, pos, state);
     }
