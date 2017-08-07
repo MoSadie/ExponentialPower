@@ -101,6 +101,10 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 				else
 					currentOutput = Double.MAX_VALUE;
 			}
+			else {
+				currentOutput = 0;
+				energy = 0;
+			}
 		}
 		handleSendingEnergy();
 	}

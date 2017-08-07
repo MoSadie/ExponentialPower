@@ -34,7 +34,6 @@ public class ExponentialPower {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
 		LOGGER = e.getModLog();
-		LOGGER.log(Level.DEBUG, "EventReceiver Registered!");
 		proxy.preInit(e);
 		//Create Blocks and Items
 	}

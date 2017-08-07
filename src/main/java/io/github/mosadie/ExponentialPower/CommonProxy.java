@@ -34,17 +34,14 @@ public class CommonProxy {
     }
     
     public void registerBlocks(RegistryEvent.Register<Block> event) {
-    	System.out.println("RegBlock");
     	BlockManager.createBlocks(event);
     }
     
     public void registerItems(RegistryEvent.Register<Item> event) {
-    	System.out.println("RegItem");
     	ItemManager.createItems(event);
     }
     
     public void registerModels(ModelRegistryEvent event) {
-    	System.out.println("RegModel");
     	ItemManager.registerModels(event);
     }
 }

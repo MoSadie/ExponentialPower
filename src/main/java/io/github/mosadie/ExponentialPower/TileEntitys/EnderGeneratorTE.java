@@ -98,6 +98,10 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 				energy = currentOutput;
 				currentOutput = longPow(2L,Math.round((63*Inventory.get(0).getCount())/((double)64)))-1L;
 			}
+			else {
+				currentOutput = 0;
+				energy = 0;
+			}
 		}
 		handleSendingEnergy();
 	}
