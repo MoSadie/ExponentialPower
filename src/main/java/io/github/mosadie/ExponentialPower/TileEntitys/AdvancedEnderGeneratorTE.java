@@ -41,14 +41,17 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 
 	@Override
 	public boolean hasCapability(Capability<?> cap, @Nullable EnumFacing f) {
-		return cap == CapabilityEnergy.ENERGY || cap == TeslaCapabilities.CAPABILITY_PRODUCER;
+		if (tec != null)
+			return cap == CapabilityEnergy.ENERGY || cap == TeslaCapabilities.CAPABILITY_PRODUCER;
+		else
+			return cap == CapabilityEnergy.ENERGY;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getCapability(Capability<T> cap, @Nullable EnumFacing f) {
 		if (cap == CapabilityEnergy.ENERGY) return (T) fec;
-		if (cap == TeslaCapabilities.CAPABILITY_PRODUCER) return (T) tec;
+		if (tec != null) if (cap == TeslaCapabilities.CAPABILITY_PRODUCER) return (T) tec;
 		return null;
 	}
 
