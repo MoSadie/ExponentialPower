@@ -3,30 +3,33 @@ package io.github.mosadie.ExponentialPower.energy.storage;
 import io.github.mosadie.ExponentialPower.TileEntitys.EnderStorageTE;
 import net.darkhax.tesla.api.ITeslaHolder;
 import net.darkhax.tesla.api.ITeslaProducer;
+import net.minecraft.util.EnumFacing;
 import net.darkhax.tesla.api.ITeslaConsumer;
 
 public class TeslaEnergyConnection implements ITeslaHolder, ITeslaProducer, ITeslaConsumer{
 
 	EnderStorageTE owner;
+	EnumFacing direction;
 	
-	public TeslaEnergyConnection(EnderStorageTE owner) {
+	public TeslaEnergyConnection(EnderStorageTE owner, EnumFacing dir) {
 		this.owner = owner;
+		direction = dir;
 	}
 	
 	@Override
 	public long takePower(long power, boolean simulated) {
 		if (power == owner.energy) {
 			if (!simulated) owner.energy = 0;
-			owner.freezeExpend = true;
+			owner.freezeExpend.put(direction, true);
 			return power;
 		} else if (power > owner.energy) {
 			long tmp = owner.energy;
 			if (!simulated) owner.energy = 0;
-			owner.freezeExpend = true;
+			owner.freezeExpend.put(direction, true);
 			return tmp;
 		} else if (power < owner.energy) {
 			if (!simulated) owner.energy -= power;
-			owner.freezeExpend = true;
+			owner.freezeExpend.put(direction, true);
 			return power;
 		}
 		return 0;

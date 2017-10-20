@@ -1,6 +1,7 @@
 package io.github.mosadie.ExponentialPower.energy.storage;
 
 import io.github.mosadie.ExponentialPower.TileEntitys.EnderStorageTE;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.*;
 
 public class ForgeEnergyConnection implements IEnergyStorage{
@@ -8,11 +9,13 @@ public class ForgeEnergyConnection implements IEnergyStorage{
 	private EnderStorageTE owner;
 	private final boolean canExtract;
 	private final boolean canReceive;
+	private final EnumFacing direction;
 	
-	public ForgeEnergyConnection(EnderStorageTE owner, boolean canExtract, boolean canReceive) {
+	public ForgeEnergyConnection(EnderStorageTE owner, boolean canExtract, boolean canReceive, EnumFacing dir) {
 		this.owner = owner;
 		this.canExtract = canExtract;
 		this.canReceive = canReceive;
+		direction = dir;
 	}
 
 	@Override
@@ -24,11 +27,11 @@ public class ForgeEnergyConnection implements IEnergyStorage{
 			int tmpGained = (int) (Long.MAX_VALUE - owner.energy);
 			owner.energy = Long.MAX_VALUE;
 			owner.markDirty();
-			owner.freezeExpend = true;
+			owner.freezeExpend.put(direction, true);
 			return tmpGained;
 		} else {
 			owner.energy += maxReceive;
-			owner.freezeExpend = true;
+			owner.freezeExpend.put(direction, true);
 			owner.markDirty();
 			return maxReceive;
 		}
