@@ -2,6 +2,8 @@ package io.github.mosadie.ExponentialPower.TileEntitys;
 
 import java.util.EnumMap;
 import javax.annotation.Nullable;
+
+import io.github.mosadie.ExponentialPower.ExponentialPower;
 import io.github.mosadie.ExponentialPower.energy.storage.ForgeEnergyConnection;
 import io.github.mosadie.ExponentialPower.energy.storage.TeslaEnergyConnection;
 import net.darkhax.tesla.api.ITeslaConsumer;
@@ -12,6 +14,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.Loader;
@@ -19,12 +22,14 @@ import net.minecraftforge.fml.common.Loader;
 public class EnderStorageTE extends TileEntity implements ITickable {
 
 	public long energy = 0;
+	public final long maxEnergy;
 	public EnumMap<EnumFacing,Boolean> freezeExpend;
 
 	private EnumMap<EnumFacing,ForgeEnergyConnection> fec;
 	private EnumMap<EnumFacing,TeslaEnergyConnection> tec;
 
 	public EnderStorageTE() {
+		this.maxEnergy = ExponentialPower.config.get(Configuration.CATEGORY_GENERAL, "EnderStorageMaximum", "9223372036854775806").getLong();
 		freezeExpend = new EnumMap<EnumFacing,Boolean>(EnumFacing.class);
 		fec = new EnumMap<EnumFacing,ForgeEnergyConnection>(EnumFacing.class);
 		tec = new EnumMap<EnumFacing,TeslaEnergyConnection>(EnumFacing.class);
@@ -95,7 +100,7 @@ public class EnderStorageTE extends TileEntity implements ITickable {
 				if (tile != null) {
 					if (tile instanceof EnderStorageTE) {
 						EnderStorageTE storage = (EnderStorageTE) tile;
-						if (storage.energy == Long.MAX_VALUE) 
+						if (storage.energy >= storage.maxEnergy) 
 							continue;
 						else if (storage.energy + 1 < energy) {
 							long transferAmount = (energy-storage.energy)/2;

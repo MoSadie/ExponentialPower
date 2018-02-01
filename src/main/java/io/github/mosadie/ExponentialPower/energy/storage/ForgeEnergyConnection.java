@@ -20,7 +20,7 @@ public class ForgeEnergyConnection implements IEnergyStorage{
 
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate) {
-		if (owner.energy == Long.MAX_VALUE) {
+		if (owner.energy >= owner.maxEnergy) {
 			return 0;
 		}
 		if ((owner.energy + maxReceive) < owner.energy ) {

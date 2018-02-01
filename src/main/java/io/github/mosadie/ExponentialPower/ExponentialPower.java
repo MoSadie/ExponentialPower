@@ -2,6 +2,7 @@ package io.github.mosadie.ExponentialPower;
 
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -14,13 +15,15 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class ExponentialPower {
 	public static final String MODID = "exponentialpower";
 	public static final String MODNAME = "Exponential Power";
-	public static final String VERSION = "1.3.2";
+	public static final String VERSION = "1.4.0";
 	public static final String UPDATEJSON = "https://raw.githubusercontent.com/MoSadie/ExponentialPower/master/update.json";
 
 	@Instance
 	public static ExponentialPower instance;
 	
 	public static Logger LOGGER;
+	
+	public static Configuration config;
 	
 	@SidedProxy(clientSide="io.github.mosadie.ExponentialPower.ClientProxy", serverSide="io.github.mosadie.ExponentialPower.ServerProxy")
 	public static CommonProxy proxy;
@@ -31,6 +34,8 @@ public class ExponentialPower {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
+		config = new Configuration(e.getSuggestedConfigurationFile());
+		config.load();
 		LOGGER = e.getModLog();
 		proxy.preInit(e);
 		//Create Blocks and Items

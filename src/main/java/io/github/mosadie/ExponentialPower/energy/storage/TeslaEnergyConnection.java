@@ -42,13 +42,12 @@ public class TeslaEnergyConnection implements ITeslaHolder, ITeslaProducer, ITes
 
 	@Override
 	public long getCapacity() {
-		// TODO Auto-generated method stub
-		return Long.MAX_VALUE;
+		return owner.maxEnergy;
 	}
 
 	@Override
 	public long givePower(long power, boolean simulated) {
-		if (owner.energy == Long.MAX_VALUE) {
+		if (owner.energy >= owner.maxEnergy) {
 			return 0;
 		}
 		if ((owner.energy + power) < owner.energy ) {

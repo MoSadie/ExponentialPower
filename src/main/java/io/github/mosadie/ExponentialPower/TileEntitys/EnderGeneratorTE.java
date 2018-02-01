@@ -2,6 +2,7 @@ package io.github.mosadie.ExponentialPower.TileEntitys;
 
 import javax.annotation.Nullable;
 
+import io.github.mosadie.ExponentialPower.ExponentialPower;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
 import io.github.mosadie.ExponentialPower.energy.generator.*;
 import net.darkhax.tesla.api.ITeslaConsumer;
@@ -18,6 +19,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.energy.*;
 import net.minecraftforge.fml.common.Loader;
 
@@ -29,11 +31,14 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 	public long energy = 0;
 	public NonNullList<ItemStack> Inventory = NonNullList.withSize(1, ItemStack.EMPTY);
 	public String customName;
+	
+	private final long base;
 
 	private ForgeEnergyConnection fec;
 	private TeslaEnergyConnection tec;
 
 	public EnderGeneratorTE() {
+		base = ExponentialPower.config.get(Configuration.CATEGORY_GENERAL, "EnderGeneratorLogBase", 2).getLong();
 		fec = new ForgeEnergyConnection(this, true, false);
 		if (Loader.isModLoaded("tesla"))
 			tec = new TeslaEnergyConnection(this);
@@ -99,7 +104,7 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 		if (Inventory != null) {
 			if (Inventory.get(0).getItem() == ItemManager.enderCell) {
 				energy = currentOutput;
-				currentOutput = longPow(2L,Math.round((63*Inventory.get(0).getCount())/((double)64)))-1L;
+				currentOutput = longPow(base,Math.round((63*Inventory.get(0).getCount())/((double)64)))-1L;
 			}
 			else {
 				currentOutput = 0;
