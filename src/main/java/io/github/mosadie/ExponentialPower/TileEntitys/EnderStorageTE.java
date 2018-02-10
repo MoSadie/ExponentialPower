@@ -66,7 +66,7 @@ public class EnderStorageTE extends TileEntity implements ITickable {
 	@Override
 	public <T> T getCapability(Capability<T> cap, @Nullable EnumFacing dir) {
 		if (cap == CapabilityEnergy.ENERGY) return (T) fec.get((dir != null) ? dir : EnumFacing.UP);
-		if (tec.containsValue(dir)) if (cap == TeslaCapabilities.CAPABILITY_PRODUCER || cap == TeslaCapabilities.CAPABILITY_CONSUMER || cap == TeslaCapabilities.CAPABILITY_HOLDER) return (T) tec.get((dir != null) ? dir : EnumFacing.UP);
+		if (tec.containsKey(dir)) if (cap == TeslaCapabilities.CAPABILITY_PRODUCER || cap == TeslaCapabilities.CAPABILITY_CONSUMER || cap == TeslaCapabilities.CAPABILITY_HOLDER) return (T) tec.get((dir != null) ? dir : EnumFacing.UP);
 		return null;
 	}
 
@@ -81,7 +81,7 @@ public class EnderStorageTE extends TileEntity implements ITickable {
 				return;
 			} 
 			for (EnumFacing dir : EnumFacing.values()) {
-				if (!freezeExpend.containsValue(dir))
+				if (!freezeExpend.containsKey(dir))
 					freezeExpend.put(dir, false);
 				
 				if (freezeExpend.get(dir)) {

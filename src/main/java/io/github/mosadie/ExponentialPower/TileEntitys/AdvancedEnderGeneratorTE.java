@@ -39,8 +39,8 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 	private TeslaEnergyConnection tec;
 
 	public AdvancedEnderGeneratorTE() {
-		this.base = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR,"AdvancedGeneratorBase", "Controls the rate of change of the power output.", Double.toString(2.0)).getDouble();
-		this.maxStack = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output.", Integer.toString(64)).getInt(); //TODO Continue from here
+		base = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR,"AdvancedGeneratorBase", "Controls the rate of change of the power output.", Double.toString(2.0)).getDouble();
+		maxStack = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output.", Integer.toString(64)).getInt(); //TODO Continue from here
 		fec = new ForgeEnergyConnection(this, true, false);
 		if (Loader.isModLoaded("tesla"))
 			tec = new TeslaEnergyConnection(this);
@@ -107,7 +107,7 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 			if (Inventory.get(0).getItem() == ItemManager.enderCell) {
 				energy = currentOutput;
 				if (Inventory.get(0).getCount() < Inventory.get(0).getMaxStackSize())
-					currentOutput = Math.pow(base,1024*(Inventory.get(0).getCount()/Inventory.get(0).getMaxStackSize()));
+					currentOutput = Math.pow(base,1024*(Inventory.get(0).getCount()/maxStack));
 				else
 					if (base == 2) currentOutput = Double.MAX_VALUE; else currentOutput = Math.pow(base, 1024);
 			}
@@ -148,8 +148,7 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 
 			if (this.getStackInSlot(index).getCount() <= count) { //Inventory has less or same as amount asked for
 				itemstack = this.getStackInSlot(index);
-				//itemstack.shrink(1);
-				this.setInventorySlotContents(index, ItemStack.EMPTY);//new ItemStack(ItemManager.enderCell,1));
+				this.setInventorySlotContents(index, ItemStack.EMPTY);
 				this.markDirty();
 				if (itemstack.getCount() > 0) return itemstack;
 				else return ItemStack.EMPTY;
@@ -157,7 +156,7 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 				itemstack = this.getStackInSlot(index).splitStack(count);
 
 				if (this.getStackInSlot(index).getCount() <= 0) {
-					this.setInventorySlotContents(index, ItemStack.EMPTY);//new ItemStack(ItemManager.enderCell,1));
+					this.setInventorySlotContents(index, ItemStack.EMPTY);
 				} else {
 					//Just to show that changes happened
 					this.setInventorySlotContents(index, this.getStackInSlot(index));
@@ -199,7 +198,7 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 
 	@Override
 	public int getInventoryStackLimit() {
-		return Inventory.get(0).getMaxStackSize();
+		return maxStack;
 	}
 
 	@Override

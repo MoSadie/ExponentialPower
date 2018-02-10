@@ -32,12 +32,14 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 	public String customName;
 	
 	private final long base;
+	private final int maxStack;
 
 	private ForgeEnergyConnection fec;
 	private TeslaEnergyConnection tec;
 
 	public EnderGeneratorTE() {
 		base = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "Base", "Controls the rate of change of the power output.", Long.toString(2)).getLong();
+		maxStack = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output.", Integer.toString(64)).getInt();
 		fec = new ForgeEnergyConnection(this, true, false);
 		if (Loader.isModLoaded("tesla"))
 			tec = new TeslaEnergyConnection(this);
@@ -103,7 +105,7 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 		if (Inventory != null) {
 			if (Inventory.get(0).getItem() == ItemManager.enderCell) {
 				energy = currentOutput;
-				currentOutput = longPow(base,Math.round((63*Inventory.get(0).getCount())/((double)64)))-1L;
+				currentOutput = longPow(base,Math.round((63*(Inventory.get(0).getCount()/maxStack))))-1L;
 			}
 			else {
 				currentOutput = 0;
@@ -193,7 +195,7 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 
 	@Override
 	public int getInventoryStackLimit() {
-		return Inventory.get(0).getMaxStackSize();
+		return maxStack;
 	}
 
 	@Override
