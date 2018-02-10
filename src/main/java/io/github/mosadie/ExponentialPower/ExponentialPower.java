@@ -3,6 +3,7 @@ package io.github.mosadie.ExponentialPower;
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -17,7 +18,11 @@ public class ExponentialPower {
 	public static final String MODNAME = "Exponential Power";
 	public static final String VERSION = "1.4.0";
 	public static final String UPDATEJSON = "https://raw.githubusercontent.com/MoSadie/ExponentialPower/master/update.json";
-
+	
+	public static final String CONFIG_ENDER_GENERATOR = "EnderGenerator";
+	public static final String CONFIG_ADVANCED_ENDER_GENERATOR = "AdvancedEnderGenerator";
+	public static final String CONFIG_ENDER_STORAGE = "EnderStorage";
+	
 	@Instance
 	public static ExponentialPower instance;
 	
@@ -51,5 +56,14 @@ public class ExponentialPower {
 	public void postInit(FMLPostInitializationEvent e) {
 		proxy.postInit(e);
 		//Don't Think I need this...
+	}
+	
+	public static Property getConfigProp(String category, String key, String comment, String defaultValue) {
+		Property prop = config.get(category, key, defaultValue, comment);
+		if (prop.isDefault()) {
+			prop.setValue(defaultValue);
+			config.save();
+		}
+		return prop;
 	}
 }

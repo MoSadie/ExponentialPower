@@ -1,5 +1,6 @@
 package io.github.mosadie.ExponentialPower.GUIContainer;
 
+import io.github.mosadie.ExponentialPower.ExponentialPower;
 import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderGeneratorTE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -15,7 +16,7 @@ public class ContainerAdvancedEnderGeneratorTE extends Container {
         this.te = te;
         
         // Tile Entity, Slot 0, Slot IDs 0 
-                this.addSlotToContainer(new Slot(te, 0, 80, 35));
+                this.addSlotToContainer(new CustomStackLimitSlot(ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output.", Integer.toString(64)).getInt(), te, 0, 80, 35));
 
         // Player Inventory, Slot 9-35, Slot IDs 1-24
         for (int y = 0; y < 3; ++y) {

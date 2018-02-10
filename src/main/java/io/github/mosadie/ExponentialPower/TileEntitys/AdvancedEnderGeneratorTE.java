@@ -33,12 +33,14 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 	public String customName;
 	
 	private final double base;
+	private final int maxStack;
 
 	private ForgeEnergyConnection fec;
 	private TeslaEnergyConnection tec;
 
 	public AdvancedEnderGeneratorTE() {
-		this.base = ExponentialPower.config.get(Configuration.CATEGORY_GENERAL,"AdvancedGeneratorBase",2.0).getDouble();
+		this.base = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR,"AdvancedGeneratorBase", "Controls the rate of change of the power output.", Double.toString(2.0)).getDouble();
+		this.maxStack = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output.", Integer.toString(64)).getInt(); //TODO Continue from here
 		fec = new ForgeEnergyConnection(this, true, false);
 		if (Loader.isModLoaded("tesla"))
 			tec = new TeslaEnergyConnection(this);
@@ -104,8 +106,8 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 		if (Inventory != null) {
 			if (Inventory.get(0).getItem() == ItemManager.enderCell) {
 				energy = currentOutput;
-				if (Inventory.get(0).getCount() < 64)
-					currentOutput = Math.pow(base,16*Inventory.get(0).getCount());
+				if (Inventory.get(0).getCount() < Inventory.get(0).getMaxStackSize())
+					currentOutput = Math.pow(base,1024*(Inventory.get(0).getCount()/Inventory.get(0).getMaxStackSize()));
 				else
 					if (base == 2) currentOutput = Double.MAX_VALUE; else currentOutput = Math.pow(base, 1024);
 			}
@@ -197,7 +199,7 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 
 	@Override
 	public int getInventoryStackLimit() {
-		return 64; //2^(63)-1 is max long
+		return Inventory.get(0).getMaxStackSize();
 	}
 
 	@Override

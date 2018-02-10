@@ -19,7 +19,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.energy.*;
 import net.minecraftforge.fml.common.Loader;
 
@@ -38,7 +37,7 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 	private TeslaEnergyConnection tec;
 
 	public EnderGeneratorTE() {
-		base = ExponentialPower.config.get(Configuration.CATEGORY_GENERAL, "EnderGeneratorLogBase", 2).getLong();
+		base = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "Base", "Controls the rate of change of the power output.", Long.toString(2)).getLong();
 		fec = new ForgeEnergyConnection(this, true, false);
 		if (Loader.isModLoaded("tesla"))
 			tec = new TeslaEnergyConnection(this);
@@ -194,7 +193,7 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 
 	@Override
 	public int getInventoryStackLimit() {
-		return 64; //2^(63)-1 is max long
+		return Inventory.get(0).getMaxStackSize();
 	}
 
 	@Override

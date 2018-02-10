@@ -29,14 +29,15 @@ public class EnderStorageTE extends TileEntity implements ITickable {
 	private EnumMap<EnumFacing,TeslaEnergyConnection> tec;
 
 	public EnderStorageTE() {
-		this.maxEnergy = ExponentialPower.config.get(Configuration.CATEGORY_GENERAL, "EnderStorageMaximum", "9223372036854775806").getLong();
+		this.maxEnergy = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_STORAGE, "EnderStorageMaximum", "The maximum amount of power that can be stored in a single Ender Storage block.", "9223372036854775806").getLong();
 		freezeExpend = new EnumMap<EnumFacing,Boolean>(EnumFacing.class);
 		fec = new EnumMap<EnumFacing,ForgeEnergyConnection>(EnumFacing.class);
 		tec = new EnumMap<EnumFacing,TeslaEnergyConnection>(EnumFacing.class);
 		for(EnumFacing dir : EnumFacing.values()) {
 			fec.put(dir, new ForgeEnergyConnection(this, true, true, dir));
-			if (Loader.isModLoaded("tesla")) 
+			if (Loader.isModLoaded("tesla")) {
 				tec.put(dir, new TeslaEnergyConnection(this, dir));
+			}
 		}
 	}
 
@@ -44,7 +45,6 @@ public class EnderStorageTE extends TileEntity implements ITickable {
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setLong("energy", energy);
-		for(EnumFacing dir : EnumFacing.values()) {nbt.setBoolean("freezeExpend."+dir.getName(), freezeExpend.get(dir));}
 		return nbt;
 	}
 
@@ -52,18 +52,11 @@ public class EnderStorageTE extends TileEntity implements ITickable {
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		energy = nbt.getLong("energy");
-		for(EnumFacing dir : EnumFacing.values()) {
-			if (nbt.hasKey("freezeExpend."+dir.getName())) {
-				freezeExpend.put(dir, nbt.getBoolean("freezeExpend."+dir.getName()));
-			} else {
-				freezeExpend.put(dir, false);
-			}
-		}
 	}
 
 	@Override
 	public boolean hasCapability(Capability<?> cap, @Nullable EnumFacing f) {
-		if (tec != null)
+		if (!tec.isEmpty())
 			return cap == CapabilityEnergy.ENERGY || cap == TeslaCapabilities.CAPABILITY_PRODUCER || cap == TeslaCapabilities.CAPABILITY_CONSUMER || cap == TeslaCapabilities.CAPABILITY_HOLDER;
 		else
 			return cap == CapabilityEnergy.ENERGY;
@@ -72,8 +65,8 @@ public class EnderStorageTE extends TileEntity implements ITickable {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getCapability(Capability<T> cap, @Nullable EnumFacing dir) {
-		if (cap == CapabilityEnergy.ENERGY) return (T) fec.get(dir);
-		if (tec.containsValue(dir)) if (cap == TeslaCapabilities.CAPABILITY_PRODUCER || cap == TeslaCapabilities.CAPABILITY_CONSUMER || cap == TeslaCapabilities.CAPABILITY_HOLDER) return (T) tec.get(dir);
+		if (cap == CapabilityEnergy.ENERGY) return (T) fec.get((dir != null) ? dir : EnumFacing.UP);
+		if (tec.containsValue(dir)) if (cap == TeslaCapabilities.CAPABILITY_PRODUCER || cap == TeslaCapabilities.CAPABILITY_CONSUMER || cap == TeslaCapabilities.CAPABILITY_HOLDER) return (T) tec.get((dir != null) ? dir : EnumFacing.UP);
 		return null;
 	}
 
