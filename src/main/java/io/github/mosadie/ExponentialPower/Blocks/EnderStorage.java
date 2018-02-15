@@ -1,6 +1,5 @@
 package io.github.mosadie.ExponentialPower.Blocks;
 
-import io.github.mosadie.ExponentialPower.ExponentialPower;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
 import io.github.mosadie.ExponentialPower.TileEntitys.EnderStorageTE;
 import net.minecraft.block.Block;
@@ -14,7 +13,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
 
 public class EnderStorage extends Block implements ITileEntityProvider {
 

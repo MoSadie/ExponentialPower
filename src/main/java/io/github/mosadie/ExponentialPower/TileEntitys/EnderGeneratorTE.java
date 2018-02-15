@@ -2,6 +2,8 @@ package io.github.mosadie.ExponentialPower.TileEntitys;
 
 import javax.annotation.Nullable;
 
+import com.google.common.math.LongMath;
+
 import io.github.mosadie.ExponentialPower.ExponentialPower;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
 import io.github.mosadie.ExponentialPower.energy.generator.*;
@@ -40,6 +42,7 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 	public EnderGeneratorTE() {
 		base = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "Base", "Controls the rate of change of the power output.", Long.toString(2)).getLong();
 		maxStack = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output.", Integer.toString(64)).getInt();
+		ExponentialPower.LOGGER.error("TACO Base: " + base + " MaxStack: " + maxStack);
 		fec = new ForgeEnergyConnection(this, true, false);
 		if (Loader.isModLoaded("tesla"))
 			tec = new TeslaEnergyConnection(this);
@@ -104,8 +107,9 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 	public void update() {
 		if (Inventory != null) {
 			if (Inventory.get(0).getItem() == ItemManager.enderCell) {
+				ExponentialPower.LOGGER.info("Calculated power as " + (longPow(base,(63*(((double)Inventory.get(0).getCount())/maxStack)))-1L));
 				energy = currentOutput;
-				currentOutput = longPow(base,Math.round((63*(Inventory.get(0).getCount()/maxStack))))-1L;
+				currentOutput = longPow(base,(63*(((double)Inventory.get(0).getCount())/maxStack)))-1L;
 			}
 			else {
 				currentOutput = 0;
@@ -296,13 +300,9 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 		return Inventory.get(0).getCount() == 0;
 	}
 
-	private long longPow (long a, long b) {
-		long temp = 1;
+	private long longPow (long a, int b) {
 		if (b == 0) return 1L;
 		if (b == 1) return a;
-		for (long i = 0; i<b ;i++) {
-			temp = temp*a;
-		}
-		return temp;
+		return LongMath.pow(a, b);
 	}
 }

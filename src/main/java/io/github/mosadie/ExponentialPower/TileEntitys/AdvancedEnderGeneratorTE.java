@@ -19,7 +19,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.energy.*;
 import net.minecraftforge.fml.common.Loader;
 
