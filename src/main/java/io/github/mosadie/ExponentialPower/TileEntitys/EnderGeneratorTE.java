@@ -2,8 +2,6 @@ package io.github.mosadie.ExponentialPower.TileEntitys;
 
 import javax.annotation.Nullable;
 
-import com.google.common.math.LongMath;
-
 import io.github.mosadie.ExponentialPower.ExponentialPower;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
 import io.github.mosadie.ExponentialPower.energy.generator.*;
@@ -34,15 +32,16 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 	public String customName;
 	
 	private final long base;
-	private final int maxStack;
+	private int maxStack;
 
 	private ForgeEnergyConnection fec;
 	private TeslaEnergyConnection tec;
 
 	public EnderGeneratorTE() {
-		base = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "Base", "Controls the rate of change of the power output.", Long.toString(2)).getLong();
-		maxStack = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output.", Integer.toString(64)).getInt();
-		ExponentialPower.LOGGER.error("TACO Base: " + base + " MaxStack: " + maxStack);
+		base = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "Base", "Controls the rate of change of the power output. Remember Base^MaxStack must be less than Long.MAX_VALUE for things to work correctly.", Long.toString(2)).getLong();
+		maxStack = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output. Min: 1 Max: 64 (inclusive)", Integer.toString(64)).getInt();
+		if (maxStack > 64) maxStack = 64;
+		else if (maxStack <= 0) maxStack = 1;
 		fec = new ForgeEnergyConnection(this, true, false);
 		if (Loader.isModLoaded("tesla"))
 			tec = new TeslaEnergyConnection(this);
@@ -107,9 +106,9 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 	public void update() {
 		if (Inventory != null) {
 			if (Inventory.get(0).getItem() == ItemManager.enderCell) {
-				ExponentialPower.LOGGER.info("Calculated power as " + (longPow(base,(63*(((double)Inventory.get(0).getCount())/maxStack)))-1L));
 				energy = currentOutput;
-				currentOutput = longPow(base,(63*(((double)Inventory.get(0).getCount())/maxStack)))-1L;
+				currentOutput = longPow(base,(63*((Inventory.get(0).getCount())/(double)maxStack)))-1L;
+				if (currentOutput == 0) currentOutput = 1;
 			}
 			else {
 				currentOutput = 0;
@@ -300,9 +299,9 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 		return Inventory.get(0).getCount() == 0;
 	}
 
-	private long longPow (long a, int b) {
+	private long longPow (long a, double b) {
 		if (b == 0) return 1L;
 		if (b == 1) return a;
-		return LongMath.pow(a, b);
+		return (long)Math.pow(a, b);
 	}
 }

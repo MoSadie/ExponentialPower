@@ -1,7 +1,7 @@
 [{
   "modid": "exponentialpower",
   "name": "Exponential Power",
-  "description": "Lets you create a system of EXPONENTIAL POWER! :)",
+  "description": "Lets you create a system of EXPONENTIAL POWER!",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "authorList": ["MoSadie"],

@@ -9,59 +9,63 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerAdvancedEnderGeneratorTE extends Container {
-	
+
 	private AdvancedEnderGeneratorTE te;
 
-    public ContainerAdvancedEnderGeneratorTE(IInventory playerInv, AdvancedEnderGeneratorTE te) {
-        this.te = te;
-        
-        // Tile Entity, Slot 0, Slot IDs 0 
-                this.addSlotToContainer(new CustomStackLimitSlot(ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output.", Integer.toString(64)).getInt(), te, 0, 80, 35));
+	public ContainerAdvancedEnderGeneratorTE(IInventory playerInv, AdvancedEnderGeneratorTE te) {
+		this.te = te;
 
-        // Player Inventory, Slot 9-35, Slot IDs 1-24
-        for (int y = 0; y < 3; ++y) {
-            for (int x = 0; x < 9; ++x) {
-                this.addSlotToContainer(new Slot(playerInv, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
-            }
-        }
+		int maxStack = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output and how many Ender Cells can be placed in the generator. Min: 1 Max: 64 (inclusive)", Integer.toString(64)).getInt();
+		if (maxStack > 64) maxStack = 64;
+		else if (maxStack <= 0) maxStack = 1;
+		
+		// Tile Entity, Slot 0, Slot IDs 0 
+		this.addSlotToContainer(new CustomStackLimitSlot(maxStack, te, 0, 80, 35));
 
-        // Player Inventory, Slot 0-8, Slot IDs 25-36
-        for (int x = 0; x < 9; ++x) {
-            this.addSlotToContainer(new Slot(playerInv, x, 8 + x * 18, 142));
-        }
-    }
-    
-    @Override
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int fromSlot) {
-        ItemStack previous = ItemStack.EMPTY;
-        Slot slot = (Slot) this.inventorySlots.get(fromSlot);
-        
-        if (slot != null && slot.getHasStack()) {
-            ItemStack current = slot.getStack();
-            previous = current.copy();
+		// Player Inventory, Slot 9-35, Slot IDs 1-24
+		for (int y = 0; y < 3; ++y) {
+			for (int x = 0; x < 9; ++x) {
+				this.addSlotToContainer(new Slot(playerInv, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
+			}
+		}
 
-            if (fromSlot == 0) {
-                // From TE Inventory to Player Inventory
-            	if (current.getCount() <= 0) return ItemStack.EMPTY;
-                if (!this.mergeItemStack(current, 1, 36, true))
-                    return ItemStack.EMPTY;
-            } else {
-                // From Player Inventory to TE Inventory
-                if (!this.mergeItemStack(current, 0, 1, false))
-                    return ItemStack.EMPTY;
-            }
+		// Player Inventory, Slot 0-8, Slot IDs 25-36
+		for (int x = 0; x < 9; ++x) {
+			this.addSlotToContainer(new Slot(playerInv, x, 8 + x * 18, 142));
+		}
+	}
 
-            if (current.getCount() == 0)
-                slot.putStack(ItemStack.EMPTY);
-            else
-                slot.onSlotChanged();
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer playerIn, int fromSlot) {
+		ItemStack previous = ItemStack.EMPTY;
+		Slot slot = (Slot) this.inventorySlots.get(fromSlot);
 
-            if (current.getCount() == previous.getCount())
-                return ItemStack.EMPTY;
-        }
-        return previous;
-    }
-	
+		if (slot != null && slot.getHasStack()) {
+			ItemStack current = slot.getStack();
+			previous = current.copy();
+
+			if (fromSlot == 0) {
+				// From TE Inventory to Player Inventory
+				if (current.getCount() <= 0) return ItemStack.EMPTY;
+				if (!this.mergeItemStack(current, 1, 36, true))
+					return ItemStack.EMPTY;
+			} else {
+				// From Player Inventory to TE Inventory
+				if (!this.mergeItemStack(current, 0, 1, false))
+					return ItemStack.EMPTY;
+			}
+
+			if (current.getCount() == 0)
+				slot.putStack(ItemStack.EMPTY);
+			else
+				slot.onSlotChanged();
+
+			if (current.getCount() == previous.getCount())
+				return ItemStack.EMPTY;
+		}
+		return previous;
+	}
+
 	@Override
 	public boolean canInteractWith(EntityPlayer playerIn) {
 		return this.te.isUsableByPlayer(playerIn);

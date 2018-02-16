@@ -21,14 +21,15 @@ import net.minecraftforge.fml.common.Loader;
 public class EnderStorageTE extends TileEntity implements ITickable {
 
 	public long energy = 0;
-	public final long maxEnergy;
+	public long maxEnergy;
 	public EnumMap<EnumFacing,Boolean> freezeExpend;
 
 	private EnumMap<EnumFacing,ForgeEnergyConnection> fec;
 	private EnumMap<EnumFacing,TeslaEnergyConnection> tec;
 
 	public EnderStorageTE() {
-		this.maxEnergy = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_STORAGE, "EnderStorageMaximum", "The maximum amount of power that can be stored in a single Ender Storage block.", "9223372036854775806").getLong();
+		maxEnergy = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_STORAGE, "EnderStorageMaximum", "The maximum amount of power that can be stored in a single Ender Storage block. Min: 1 Max: 9223372036854775806", "9223372036854775806").getLong();
+		if (maxEnergy < 1) maxEnergy = 1;
 		freezeExpend = new EnumMap<EnumFacing,Boolean>(EnumFacing.class);
 		fec = new EnumMap<EnumFacing,ForgeEnergyConnection>(EnumFacing.class);
 		tec = new EnumMap<EnumFacing,TeslaEnergyConnection>(EnumFacing.class);
