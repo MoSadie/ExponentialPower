@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = ExponentialPower.MODID, name = ExponentialPower.MODNAME, version = ExponentialPower.VERSION, updateJSON=ExponentialPower.UPDATEJSON, useMetadata=true)
+@Mod(modid = ExponentialPower.MODID, name = ExponentialPower.MODNAME, version = ExponentialPower.VERSION, updateJSON=ExponentialPower.UPDATEJSON, useMetadata=true, acceptedMinecraftVersions="[1.12,1.12.2]")
 public class ExponentialPower {
 	public static final String MODID = "exponentialpower";
 	public static final String MODNAME = "Exponential Power";
