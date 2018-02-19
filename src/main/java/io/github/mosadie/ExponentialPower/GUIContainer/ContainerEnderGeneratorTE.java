@@ -1,6 +1,6 @@
 package io.github.mosadie.ExponentialPower.GUIContainer;
 
-import io.github.mosadie.ExponentialPower.ExponentialPower;
+import io.github.mosadie.ExponentialPower.ConfigHandler;
 import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorTE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -15,7 +15,7 @@ public class ContainerEnderGeneratorTE extends Container {
 	public ContainerEnderGeneratorTE(IInventory playerInv, EnderGeneratorTE te) {
 		this.te = te;
 
-		int maxStack = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output and how many Ender Cells can be placed in the generator. Min: 1 Max: 64 (inclusive)", Integer.toString(64)).getInt();
+		int maxStack = ConfigHandler.REGULAR_MAXSTACK;
 		if (maxStack > 64) maxStack = 64;
 		else if (maxStack <= 0) maxStack = 1;
 

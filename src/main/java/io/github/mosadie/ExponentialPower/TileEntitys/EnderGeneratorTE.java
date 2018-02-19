@@ -2,7 +2,7 @@ package io.github.mosadie.ExponentialPower.TileEntitys;
 
 import javax.annotation.Nullable;
 
-import io.github.mosadie.ExponentialPower.ExponentialPower;
+import io.github.mosadie.ExponentialPower.ConfigHandler;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
 import io.github.mosadie.ExponentialPower.energy.generator.*;
 import net.darkhax.tesla.api.ITeslaConsumer;
@@ -31,15 +31,15 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 	public NonNullList<ItemStack> Inventory = NonNullList.withSize(1, ItemStack.EMPTY);
 	public String customName;
 	
-	private final long base;
+	private final double base;
 	private int maxStack;
 
 	private ForgeEnergyConnection fec;
 	private TeslaEnergyConnection tec;
 
 	public EnderGeneratorTE() {
-		base = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "Base", "Controls the rate of change of the power output. Remember Base^MaxStack must be less than Long.MAX_VALUE for things to work correctly.", Long.toString(2)).getLong();
-		maxStack = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output. Min: 1 Max: 64 (inclusive)", Integer.toString(64)).getInt();
+		base = ConfigHandler.REGULAR_BASE;
+		maxStack = ConfigHandler.REGULAR_MAXSTACK;
 		if (maxStack > 64) maxStack = 64;
 		else if (maxStack <= 0) maxStack = 1;
 		fec = new ForgeEnergyConnection(this, true, false);
@@ -299,9 +299,9 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 		return Inventory.get(0).getCount() == 0;
 	}
 
-	private long longPow (long a, double b) {
+	private long longPow (double a, double b) {
 		if (b == 0) return 1L;
-		if (b == 1) return a;
+		if (b == 1) return (long)a;
 		return (long)Math.pow(a, b);
 	}
 }

@@ -2,8 +2,7 @@ package io.github.mosadie.ExponentialPower.TileEntitys;
 
 import java.util.EnumMap;
 import javax.annotation.Nullable;
-
-import io.github.mosadie.ExponentialPower.ExponentialPower;
+import io.github.mosadie.ExponentialPower.ConfigHandler;
 import io.github.mosadie.ExponentialPower.energy.storage.ForgeEnergyConnection;
 import io.github.mosadie.ExponentialPower.energy.storage.TeslaEnergyConnection;
 import net.darkhax.tesla.api.ITeslaConsumer;
@@ -28,7 +27,7 @@ public class EnderStorageTE extends TileEntity implements ITickable {
 	private EnumMap<EnumFacing,TeslaEnergyConnection> tec;
 
 	public EnderStorageTE() {
-		maxEnergy = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ENDER_STORAGE, "EnderStorageMaximum", "The maximum amount of power that can be stored in a single Ender Storage block. Min: 1 Max: 9223372036854775806", "9223372036854775806").getLong();
+		maxEnergy = ConfigHandler.STORAGE_MAXENERGY;
 		if (maxEnergy < 1) maxEnergy = 1;
 		freezeExpend = new EnumMap<EnumFacing,Boolean>(EnumFacing.class);
 		fec = new EnumMap<EnumFacing,ForgeEnergyConnection>(EnumFacing.class);

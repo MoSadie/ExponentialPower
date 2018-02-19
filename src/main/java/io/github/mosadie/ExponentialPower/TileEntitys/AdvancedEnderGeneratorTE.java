@@ -2,7 +2,7 @@ package io.github.mosadie.ExponentialPower.TileEntitys;
 
 import javax.annotation.Nullable;
 
-import io.github.mosadie.ExponentialPower.ExponentialPower;
+import io.github.mosadie.ExponentialPower.ConfigHandler;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
 import io.github.mosadie.ExponentialPower.energy.advancedgenerator.*;
 import net.darkhax.tesla.api.ITeslaConsumer;
@@ -38,8 +38,8 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 	private TeslaEnergyConnection tec;
 
 	public AdvancedEnderGeneratorTE() {
-		base = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR,"Base", "Controls the rate of change of the power output. Remember Base^MaxStack must be less than Double.MAX_VALUE for things to work correctly.", Double.toString(2.0)).getDouble();
-		maxStack = ExponentialPower.getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output. Min: 1 Max: 64 (inclusive)", Integer.toString(64)).getInt();
+		base = ConfigHandler.ADVANCED_BASE;
+		maxStack = ConfigHandler.ADVANCED_MAXSTACK;
 		if (maxStack > 64) maxStack = 64;
 		else if (maxStack <= 0) maxStack = 1;
 		fec = new ForgeEnergyConnection(this, true, false);
