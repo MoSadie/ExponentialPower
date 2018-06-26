@@ -28,6 +28,7 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 
 	public long currentOutput = 0;
 	public long energy = 0;
+
 	public NonNullList<ItemStack> Inventory = NonNullList.withSize(1, ItemStack.EMPTY);
 	public String customName;
 	

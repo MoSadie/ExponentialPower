@@ -1,11 +1,14 @@
 package io.github.mosadie.ExponentialPower.Blocks;
 
+import io.github.mosadie.ExponentialPower.ExponentialPower;
+import io.github.mosadie.ExponentialPower.Items.EnderStorageItem;
 import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderGeneratorTE;
 import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorTE;
 import io.github.mosadie.ExponentialPower.TileEntitys.EnderStorageTE;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -24,11 +27,11 @@ public class BlockManager {
 		event.getRegistry().register(enderGenerator.setRegistryName("endergenerator"));
 		event.getRegistry().register(advancedEnderGenerator.setRegistryName("advancedendergenerator"));
 		event.getRegistry().register(enderStorage.setRegistryName("enderStorage"));
-		GameRegistry.registerTileEntity(EnderGeneratorTE.class, "exponentialpower_endergenerator_tile_entity");
-		GameRegistry.registerTileEntity(AdvancedEnderGeneratorTE.class, "exponentialpower_advancedendergenerator_tile_entity");
-		GameRegistry.registerTileEntity(EnderStorageTE.class, "exponentialpower_enderstorage_tile_entity");
+		GameRegistry.registerTileEntity(EnderGeneratorTE.class, new ResourceLocation(ExponentialPower.MODID + ":exponentialpower_endergenerator_tile_entity"));
+		GameRegistry.registerTileEntity(AdvancedEnderGeneratorTE.class, new ResourceLocation(ExponentialPower.MODID + ":exponentialpower_advancedendergenerator_tile_entity"));
+		GameRegistry.registerTileEntity(EnderStorageTE.class, new ResourceLocation(ExponentialPower.MODID + ":exponentialpower_enderstorage_tile_entity"));
 		itemEnderGenerator = new ItemBlock(enderGenerator).setRegistryName(enderGenerator.getRegistryName());
 		itemAdvancedEnderGenerator = new ItemBlock(advancedEnderGenerator).setRegistryName(advancedEnderGenerator.getRegistryName());
-		itemEnderStorage = new ItemBlock(enderStorage).setRegistryName(enderStorage.getRegistryName());
+		itemEnderStorage = new EnderStorageItem(enderStorage).setRegistryName(enderStorage.getRegistryName());
 	}
 }

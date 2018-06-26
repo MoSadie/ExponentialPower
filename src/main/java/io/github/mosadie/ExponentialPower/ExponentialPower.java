@@ -10,11 +10,11 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = ExponentialPower.MODID, name = ExponentialPower.MODNAME, version = ExponentialPower.VERSION, updateJSON=ExponentialPower.UPDATEJSON, useMetadata=true, acceptedMinecraftVersions="[1.12,1.12.2]")
+@Mod(modid = ExponentialPower.MODID, name = ExponentialPower.MODNAME, version = ExponentialPower.VERSION, updateJSON=ExponentialPower.UPDATEJSON, useMetadata=true, acceptedMinecraftVersions="[1.12.2]")
 public class ExponentialPower {
 	public static final String MODID = "exponentialpower";
 	public static final String MODNAME = "Exponential Power";
-	public static final String VERSION = "1.4.0.1";
+	public static final String VERSION = "1.4.1";
 	public static final String UPDATEJSON = "https://raw.githubusercontent.com/MoSadie/ExponentialPower/master/update.json";
 	
 	public static final String CONFIG_ENDER_GENERATOR = "EnderGenerator";
