@@ -37,8 +37,8 @@ public class AdvancedEnderStorageItem extends ItemBlock {
 		}
 		
 		tooltip.add("Current Energy Stored:");
-		tooltip.add(energy + "/" + ConfigHandler.ADVANCED_STORAGE_MAXENERGY);
-		double percent = ((int)(energy/ConfigHandler.ADVANCED_STORAGE_MAXENERGY * 10000.00)) / 100.00;
+		tooltip.add(energy + "/" + (ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT * Double.MAX_VALUE));
+		double percent = ((int)(energy/(ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT * Double.MAX_VALUE) * 10000.00)) / 100.00;
 		tooltip.add("(" + percent + "%)");
 	}
 }

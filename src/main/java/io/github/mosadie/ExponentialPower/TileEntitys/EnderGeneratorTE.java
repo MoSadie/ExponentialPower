@@ -31,18 +31,11 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 
 	public NonNullList<ItemStack> Inventory = NonNullList.withSize(1, ItemStack.EMPTY);
 	public String customName;
-	
-	private final double base;
-	private int maxStack;
 
 	private ForgeEnergyConnection fec;
 	private TeslaEnergyConnection tec;
 
 	public EnderGeneratorTE() {
-		base = ConfigHandler.REGULAR_BASE;
-		maxStack = ConfigHandler.REGULAR_MAXSTACK;
-		if (maxStack > 64) maxStack = 64;
-		else if (maxStack <= 0) maxStack = 1;
 		fec = new ForgeEnergyConnection(this, true, false);
 		if (Loader.isModLoaded("tesla"))
 			tec = new TeslaEnergyConnection(this);
@@ -108,7 +101,7 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 		if (Inventory != null) {
 			if (Inventory.get(0).getItem() == ItemManager.enderCell) {
 				energy = currentOutput;
-				currentOutput = longPow(base,(63*((Inventory.get(0).getCount())/(double)maxStack)))-1L;
+				currentOutput = longPow(ConfigHandler.ender_generator.BASE,(63*((Inventory.get(0).getCount())/(double)ConfigHandler.ender_generator.MAXSTACK)))-1L;
 				if (currentOutput == 0) currentOutput = 1;
 			}
 			else {
@@ -199,7 +192,7 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 
 	@Override
 	public int getInventoryStackLimit() {
-		return maxStack;
+		return ConfigHandler.ender_generator.MAXSTACK;
 	}
 
 	@Override
@@ -260,7 +253,19 @@ public class EnderGeneratorTE extends TileEntity implements ITickable, IInventor
 				if (tile != null) {
 					if (tile instanceof EnderStorageTE) {
 						EnderStorageTE storage = (EnderStorageTE) tile;
-						if (storage.energy == Long.MAX_VALUE) continue;
+						if (storage.energy >= (ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE)) continue;
+						else if (storage.energy + energy < storage.energy) {
+							energy -= Long.MAX_VALUE-storage.energy;
+							storage.energy = Long.MAX_VALUE;
+						}
+						else {
+							storage.energy += energy;
+							energy = 0;
+						}
+					}
+					else if (tile instanceof AdvancedEnderStorageTE) {
+						AdvancedEnderStorageTE storage = (AdvancedEnderStorageTE) tile;
+						if (storage.energy >= (ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE)) continue;
 						else if (storage.energy + energy < storage.energy) {
 							energy -= Long.MAX_VALUE-storage.energy;
 							storage.energy = Long.MAX_VALUE;

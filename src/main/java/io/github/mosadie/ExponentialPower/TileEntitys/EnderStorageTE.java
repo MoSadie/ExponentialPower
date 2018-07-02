@@ -20,15 +20,12 @@ import net.minecraftforge.fml.common.Loader;
 public class EnderStorageTE extends TileEntity implements ITickable {
 
 	public long energy = 0;
-	public long maxEnergy;
 	public EnumMap<EnumFacing,Boolean> freezeExpend;
 
 	private EnumMap<EnumFacing,ForgeEnergyConnection> fec;
 	private EnumMap<EnumFacing,TeslaEnergyConnection> tec;
 
 	public EnderStorageTE() {
-		maxEnergy = ConfigHandler.STORAGE_MAXENERGY;
-		if (maxEnergy < 1) maxEnergy = 1;
 		freezeExpend = new EnumMap<EnumFacing,Boolean>(EnumFacing.class);
 		fec = new EnumMap<EnumFacing,ForgeEnergyConnection>(EnumFacing.class);
 		tec = new EnumMap<EnumFacing,TeslaEnergyConnection>(EnumFacing.class);
@@ -92,10 +89,21 @@ public class EnderStorageTE extends TileEntity implements ITickable {
 				if (tile != null) {
 					if (tile instanceof EnderStorageTE) {
 						EnderStorageTE storage = (EnderStorageTE) tile;
-						if (storage.energy >= storage.maxEnergy) 
+						if (storage.energy >= (ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE)) 
 							continue;
 						else if (storage.energy + 1 < energy) {
 							long transferAmount = (energy-storage.energy)/2;
+							storage.energy += transferAmount;
+							energy -= transferAmount;
+							freezeExpend.put(dir, true);
+						}
+					}
+					else if (tile instanceof AdvancedEnderStorageTE) {
+						AdvancedEnderStorageTE storage = (AdvancedEnderStorageTE) tile;
+						if (storage.energy >= (ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE)) 
+							continue;
+						else if (storage.energy + 1 < energy) {
+							long transferAmount = (energy-(long)storage.energy)/2;
 							storage.energy += transferAmount;
 							energy -= transferAmount;
 							freezeExpend.put(dir, true);

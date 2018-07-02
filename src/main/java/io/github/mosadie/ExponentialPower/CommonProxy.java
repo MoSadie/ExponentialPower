@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent e) {
-		ConfigHandler.loadConfig(e.getSuggestedConfigurationFile());
 		NetworkRegistry.INSTANCE.registerGuiHandler(ExponentialPower.instance, new GUIHandler());
     }
 

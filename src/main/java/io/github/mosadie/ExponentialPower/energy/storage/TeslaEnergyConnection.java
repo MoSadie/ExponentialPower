@@ -1,5 +1,6 @@
 package io.github.mosadie.ExponentialPower.energy.storage;
 
+import io.github.mosadie.ExponentialPower.ConfigHandler;
 import io.github.mosadie.ExponentialPower.TileEntitys.EnderStorageTE;
 import net.darkhax.tesla.api.ITeslaHolder;
 import net.darkhax.tesla.api.ITeslaProducer;
@@ -42,12 +43,12 @@ public class TeslaEnergyConnection implements ITeslaHolder, ITeslaProducer, ITes
 
 	@Override
 	public long getCapacity() {
-		return owner.maxEnergy;
+		return (long)(ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE);
 	}
 
 	@Override
 	public long givePower(long power, boolean simulated) {
-		if (owner.energy >= owner.maxEnergy) {
+		if (owner.energy >= (ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE)) {
 			return 0;
 		}
 		if ((owner.energy + power) < owner.energy ) {

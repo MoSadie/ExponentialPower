@@ -21,7 +21,7 @@ public class ForgeEnergyConnection implements IEnergyStorage{
 
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate) {
-		if (owner.energy >= owner.maxEnergy) {
+		if (owner.energy >= (ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT * Double.MAX_VALUE)) {
 			return 0;
 		}
 		if ((owner.energy + maxReceive) < owner.energy ) {
@@ -62,7 +62,7 @@ public class ForgeEnergyConnection implements IEnergyStorage{
 
 	@Override
 	public int getMaxEnergyStored() {
-		return (ConfigHandler.ADVANCED_STORAGE_MAXENERGY > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int)ConfigHandler.ADVANCED_STORAGE_MAXENERGY);
+		return ((ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT * Double.MAX_VALUE) > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int)(ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT * Double.MAX_VALUE));
 	}
 
 	@Override

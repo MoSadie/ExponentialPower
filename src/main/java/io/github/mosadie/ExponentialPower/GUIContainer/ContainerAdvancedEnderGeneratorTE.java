@@ -14,13 +14,9 @@ public class ContainerAdvancedEnderGeneratorTE extends Container {
 
 	public ContainerAdvancedEnderGeneratorTE(IInventory playerInv, AdvancedEnderGeneratorTE te) {
 		this.te = te;
-
-		int maxStack = ConfigHandler.ADVANCED_MAXSTACK;
-		if (maxStack > 64) maxStack = 64;
-		else if (maxStack <= 0) maxStack = 1;
 		
 		// Tile Entity, Slot 0, Slot IDs 0 
-		this.addSlotToContainer(new CustomStackLimitSlot(maxStack, te, 0, 80, 35));
+		this.addSlotToContainer(new CustomStackLimitSlot(ConfigHandler.advanced_ender_generator.MAXSTACK, te, 0, 80, 35));
 
 		// Player Inventory, Slot 9-35, Slot IDs 1-24
 		for (int y = 0; y < 3; ++y) {

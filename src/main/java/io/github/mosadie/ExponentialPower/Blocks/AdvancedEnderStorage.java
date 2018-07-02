@@ -44,8 +44,8 @@ public class AdvancedEnderStorage extends Block implements ITileEntityProvider {
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
 			AdvancedEnderStorageTE te = (AdvancedEnderStorageTE) worldIn.getTileEntity(pos);
-			double percent = ((int)(te.energy/ConfigHandler.ADVANCED_STORAGE_MAXENERGY * 10000.00)) / 100.00;
-			playerIn.sendMessage(new TextComponentString("Current Energy Stored: " + te.energy + " RF / " + ConfigHandler.ADVANCED_STORAGE_MAXENERGY + " RF. (" + percent + "%)"));
+			double percent = ((int)(te.energy/(Double.MAX_VALUE * ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT) * 10000.00)) / 100.00;
+			playerIn.sendMessage(new TextComponentString("Current Energy Stored: " + te.energy + " RF / " + (Double.MAX_VALUE * ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT) + " RF. (" + percent + "%)"));
 		}
 		return true;
 	}

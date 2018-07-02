@@ -31,17 +31,10 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 	public NonNullList<ItemStack> Inventory = NonNullList.withSize(1, ItemStack.EMPTY);
 	public String customName;
 	
-	private final double base;
-	private int maxStack;
-
 	private ForgeEnergyConnection fec;
 	private TeslaEnergyConnection tec;
 
 	public AdvancedEnderGeneratorTE() {
-		base = ConfigHandler.ADVANCED_BASE;
-		maxStack = ConfigHandler.ADVANCED_MAXSTACK;
-		if (maxStack > 64) maxStack = 64;
-		else if (maxStack <= 0) maxStack = 1;
 		fec = new ForgeEnergyConnection(this, true, false);
 		if (Loader.isModLoaded("tesla"))
 			tec = new TeslaEnergyConnection(this);
@@ -107,10 +100,10 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 		if (Inventory != null) {
 			if (Inventory.get(0).getItem() == ItemManager.enderCell) {
 				energy = currentOutput;
-				if (Inventory.get(0).getCount() < maxStack)
-					currentOutput = Math.pow(base,1024*(Inventory.get(0).getCount()/(double)maxStack));
+				if (Inventory.get(0).getCount() < ConfigHandler.ender_generator.MAXSTACK)
+					currentOutput = Math.pow(ConfigHandler.ender_generator.BASE,1024*(Inventory.get(0).getCount()/(double)ConfigHandler.ender_generator.MAXSTACK));
 				else
-					if (base == 2) currentOutput = Double.MAX_VALUE; else currentOutput = Math.pow(base, 1023);
+					if (ConfigHandler.ender_generator.BASE == 2) currentOutput = Double.MAX_VALUE; else currentOutput = Math.pow(ConfigHandler.ender_generator.BASE, 1023);
 			}
 			else {
 				currentOutput = 0;
@@ -199,7 +192,7 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 
 	@Override
 	public int getInventoryStackLimit() {
-		return maxStack;
+		return ConfigHandler.ender_generator.MAXSTACK;
 	}
 
 	@Override
@@ -260,10 +253,10 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 				if (tile != null) {
 					if (tile instanceof EnderStorageTE) {
 						EnderStorageTE storage = (EnderStorageTE) tile;
-						if (storage.energy == ConfigHandler.STORAGE_MAXENERGY) continue;
-						else if (storage.energy + energy > ConfigHandler.STORAGE_MAXENERGY) {
-							energy -= ConfigHandler.STORAGE_MAXENERGY-storage.energy;
-							storage.energy = ConfigHandler.STORAGE_MAXENERGY;
+						if (storage.energy == (ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE)) continue;
+						else if (storage.energy + energy > (ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE)) {
+							energy -= (ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE)-storage.energy;
+							storage.energy = (long)(ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE);
 							continue;
 						}
 						else {
@@ -273,10 +266,10 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 						}
 					} else if (tile instanceof AdvancedEnderStorageTE) {
 						AdvancedEnderStorageTE storage = (AdvancedEnderStorageTE) tile;
-						if (storage.energy == ConfigHandler.ADVANCED_STORAGE_MAXENERGY) continue;
-						else if (storage.energy + energy > ConfigHandler.ADVANCED_STORAGE_MAXENERGY) {
-							energy -= ConfigHandler.ADVANCED_STORAGE_MAXENERGY-storage.energy;
-							storage.energy = ConfigHandler.ADVANCED_STORAGE_MAXENERGY;
+						if (storage.energy == (ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT * Double.MAX_VALUE)) continue;
+						else if (storage.energy + energy > (ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT * Double.MAX_VALUE)) {
+							energy -= (ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT * Double.MAX_VALUE)-storage.energy;
+							storage.energy = (ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT * Double.MAX_VALUE);
 							continue;
 						}
 						else {

@@ -1,61 +1,79 @@
 package io.github.mosadie.ExponentialPower;
 
-import java.io.File;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.Config.Comment;
+import net.minecraftforge.common.config.Config.Name;
+import net.minecraftforge.common.config.Config.RangeDouble;
+import net.minecraftforge.common.config.Config.RangeInt;
 
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
-
+@Config(modid = ExponentialPower.MODID, category = "")
 public class ConfigHandler {
 
 	//Configuration Catagories
-	public static final String 		CONFIG_ENDER_GENERATOR = "EnderGenerator";
-	public static final String 		CONFIG_ADVANCED_ENDER_GENERATOR = "AdvancedEnderGenerator";
-	public static final String 		CONFIG_ENDER_STORAGE = "EnderStorage";
-	
-	//Config
-	private static Configuration	config;
+	@Name("Ender Generator")
+	public static ConfigEnderGenerator 			ender_generator = new ConfigEnderGenerator();
+
+	@Name("Advanced Ender Generator")
+	public static ConfigAdvancedEnderGenerator 	advanced_ender_generator = new ConfigAdvancedEnderGenerator();
+
+	@Name("Ender Storage")
+	public static ConfigEnderStorage 			ender_storage = new ConfigEnderStorage();
+
+	@Name("Advanced Ender Storage")
+	public static ConfigAdvancedEnderStorage	advanced_ender_storage = new ConfigAdvancedEnderStorage();
 	
 	//Advanced Ender Generator Config Values
-	public static double			ADVANCED_BASE;
-	public static int				ADVANCED_MAXSTACK;
-	
-	//Ender Generator Config Values
-	public static double			REGULAR_BASE;
-	public static int				REGULAR_MAXSTACK;
-	
-	//Ender Storage Config Values
-	public static long				STORAGE_MAXENERGY;
+	public static class ConfigAdvancedEnderGenerator {
+		@Name("Base")
+		@Comment({"Controls the rate of change of the power output. Remember Base^MaxStack must be less than Double.MAX_VALUE for things to work correctly."})
+		public double			BASE = 2;
 
-	//Advanced Ender Storage Config Values
-	public static double			ADVANCED_STORAGE_MAXENERGY;
-	
-	public static void loadConfig(File configFile) {
-		config = new Configuration(configFile);
-		config.load();
-		
-		//Setup Config Variables
-		
-		//Advanced Ender Generator
-		ADVANCED_BASE = getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR,"Base", "Controls the rate of change of the power output. Remember Base^MaxStack must be less than Double.MAX_VALUE for things to work correctly.", Double.toString(2.0),Double.MIN_VALUE,Double.MAX_VALUE).getDouble();
-		ADVANCED_MAXSTACK = getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output. Min: 1 Max: 64 (inclusive)", Integer.toString(64), 1, 64).getInt();
-		
-		//Ender Generator
-		REGULAR_BASE = getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "Base", "Controls the rate of change of the power output. Remember Base^63 must be less than Long.MAX_VALUE for things to work correctly.", Double.toString(2.0), Long.MIN_VALUE, Long.MAX_VALUE).getDouble();
-		REGULAR_MAXSTACK = getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output. Min: 1 Max: 64 (inclusive)", Integer.toString(64), 1, 64).getInt();
-		//Ender Storage
-		STORAGE_MAXENERGY = getConfigProp(ExponentialPower.CONFIG_ENDER_STORAGE, "EnderStorageMaximum", "The maximum amount of power that can be stored in a single Ender Storage block. Min: 1 Max: 9223372036854775806 (inclusive)", "9223372036854775806", 1.0, 9223372036854775806.0).getLong();
-
-		//Advanced Ender Storage
-		ADVANCED_STORAGE_MAXENERGY = getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_STORAGE, "EnderStorageMaximum", "The maximum amount of power that can be stored in a single Advanced Ender Storage block. Min: 1 Max: " + String.format("%f", Double.MAX_VALUE) + " (inclusive)", String.format("%f", Double.MAX_VALUE), 1.0, Double.MAX_VALUE).getDouble();
+		@Name("Max Stack")
+		@Comment({"Controls the number of Ender Cells required to reach the maximum power output."})
+		@RangeInt(min = 1, max = 64)
+		public int				MAXSTACK = 64;
 	}
 	
-	private static Property getConfigProp(String category, String key, String comment, String defaultValue, double minValue, double maxValue) {
-		Property prop = config.get(category, key, defaultValue, comment);
-		if (prop.isDefault() || prop.getDouble(minValue) < minValue || prop.getDouble(maxValue) > maxValue) {
-			ExponentialPower.LOGGER.info("Setting default value of " + category + " " + key + " to " + defaultValue);
-			prop.setValue(defaultValue);
-			config.save();
-		}
-		return prop;
+	//Ender Generator Config Values
+	public static class ConfigEnderGenerator {
+		@Name("Base")
+		@Comment({"Controls the rate of change of the power output. Remember Base^MaxStack-1 must be less than Long.MAX_VALUE for things to work correctly."})
+		public double			BASE = 2;
+
+		@Name("Max Stack")
+		@Comment({"Controls the number of Ender Cells required to reach the maximum power output."})
+		@RangeInt(min = 1, max = 64)
+		public int				MAXSTACK = 64;
+	}
+	
+	//Ender Storage Config Values
+	public static class ConfigEnderStorage {
+		/*
+		//TODO Put this back when Long type is supported in @Config system
+		@Name("Max Energy")
+		@Comment({"The maximum amount of power that can be stored in a single Ender Storage block.", "Min: 1", "Max: 9223372036854775806"})
+		public long				MAXENERGY = Long.MAX_VALUE;
+		*/
+
+		@Name("Max Energy")
+		@Comment({"The percent of the maximum amount of power that can be stored in a single Ender Storage block."})
+		@RangeDouble(min = 0.01, max = 1.0)
+		public double			MAXENERGYPERCENT = 1.0;
+	}
+
+	//Advanced Ender Storage Config Values
+	public static class ConfigAdvancedEnderStorage {
+		/*
+		//TODO Put this back when Long type is supported in @Config system
+		@Name("Max Energy")
+		@Comment({"The maximum amount of power that can be stored in a single Advanced Ender Storage block."})
+		@RangeDouble(min = 0.0)
+		public double			MAXENERGY = Double.MAX_VALUE;
+		*/
+
+		@Name("Max Energy")
+		@Comment({"The percent of the maximum amount of power that can be stored in a single Advanced Ender Storage block."})
+		@RangeDouble(min = 0.01, max = 1.0)
+		public double			MAXENERGYPERCENT = 1.0;
 	}
 }
