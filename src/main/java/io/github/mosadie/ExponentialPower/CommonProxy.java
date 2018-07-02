@@ -34,6 +34,6 @@ public class CommonProxy {
     }
     
     public void registerModels(ModelRegistryEvent event) {
-    	ItemManager.registerModels(event);
+      ItemManager.registerModels(event);
     }
 }

@@ -260,10 +260,23 @@ public class AdvancedEnderGeneratorTE extends TileEntity implements ITickable, I
 				if (tile != null) {
 					if (tile instanceof EnderStorageTE) {
 						EnderStorageTE storage = (EnderStorageTE) tile;
-						if (storage.energy == Long.MAX_VALUE) continue;
-						else if (storage.energy + energy < storage.energy) {
-							energy -= Long.MAX_VALUE-storage.energy;
-							storage.energy = Long.MAX_VALUE;
+						if (storage.energy == ConfigHandler.STORAGE_MAXENERGY) continue;
+						else if (storage.energy + energy > ConfigHandler.STORAGE_MAXENERGY) {
+							energy -= ConfigHandler.STORAGE_MAXENERGY-storage.energy;
+							storage.energy = ConfigHandler.STORAGE_MAXENERGY;
+							continue;
+						}
+						else {
+							storage.energy += energy;
+							energy = 0;
+							continue;
+						}
+					} else if (tile instanceof AdvancedEnderStorageTE) {
+						AdvancedEnderStorageTE storage = (AdvancedEnderStorageTE) tile;
+						if (storage.energy == ConfigHandler.ADVANCED_STORAGE_MAXENERGY) continue;
+						else if (storage.energy + energy > ConfigHandler.ADVANCED_STORAGE_MAXENERGY) {
+							energy -= ConfigHandler.ADVANCED_STORAGE_MAXENERGY-storage.energy;
+							storage.energy = ConfigHandler.ADVANCED_STORAGE_MAXENERGY;
 							continue;
 						}
 						else {

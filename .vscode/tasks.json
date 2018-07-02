@@ -11,9 +11,9 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
-            }
+            },
+            "problemMatcher": []
         },
-
         {
             "label": "Build",
             "type": "shell",
@@ -22,9 +22,9 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
-            }
+            },
+            "problemMatcher": []
         },
-
         {
             "label": "Run Client",
             "type": "shell",
@@ -33,9 +33,9 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
-            }
+            },
+            "problemMatcher": []
         },
-
         {
             "label": "Run Server",
             "type": "shell",
@@ -44,18 +44,19 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
-            }
+            },
+            "problemMatcher": []
         },
-
         {
-            "label": "Build eclipse project",
+            "label": "Create eclipse project",
             "type": "shell",
             "command": "./gradlew.bat eclipse",
             "group": "build",
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
-            }
+            },
+            "problemMatcher": []
         }
     ]
 }

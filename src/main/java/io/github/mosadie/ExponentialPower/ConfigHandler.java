@@ -25,6 +25,9 @@ public class ConfigHandler {
 	
 	//Ender Storage Config Values
 	public static long				STORAGE_MAXENERGY;
+
+	//Advanced Ender Storage Config Values
+	public static double			ADVANCED_STORAGE_MAXENERGY;
 	
 	public static void loadConfig(File configFile) {
 		config = new Configuration(configFile);
@@ -39,9 +42,11 @@ public class ConfigHandler {
 		//Ender Generator
 		REGULAR_BASE = getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "Base", "Controls the rate of change of the power output. Remember Base^63 must be less than Long.MAX_VALUE for things to work correctly.", Double.toString(2.0), Long.MIN_VALUE, Long.MAX_VALUE).getDouble();
 		REGULAR_MAXSTACK = getConfigProp(ExponentialPower.CONFIG_ENDER_GENERATOR, "MaxStack", "Controls the number of Ender Cells required to reach the maximum power output. Min: 1 Max: 64 (inclusive)", Integer.toString(64), 1, 64).getInt();
-		
 		//Ender Storage
-		STORAGE_MAXENERGY = getConfigProp(ExponentialPower.CONFIG_ENDER_STORAGE, "EnderStorageMaximum", "The maximum amount of power that can be stored in a single Ender Storage block. Min: 1 Max: 9223372036854775806", "9223372036854775806", 1.0, 9223372036854775806.0).getLong();
+		STORAGE_MAXENERGY = getConfigProp(ExponentialPower.CONFIG_ENDER_STORAGE, "EnderStorageMaximum", "The maximum amount of power that can be stored in a single Ender Storage block. Min: 1 Max: 9223372036854775806 (inclusive)", "9223372036854775806", 1.0, 9223372036854775806.0).getLong();
+
+		//Advanced Ender Storage
+		ADVANCED_STORAGE_MAXENERGY = getConfigProp(ExponentialPower.CONFIG_ADVANCED_ENDER_STORAGE, "EnderStorageMaximum", "The maximum amount of power that can be stored in a single Advanced Ender Storage block. Min: 1 Max: " + String.format("%f", Double.MAX_VALUE) + " (inclusive)", String.format("%f", Double.MAX_VALUE), 1.0, Double.MAX_VALUE).getDouble();
 	}
 	
 	private static Property getConfigProp(String category, String key, String comment, String defaultValue, double minValue, double maxValue) {

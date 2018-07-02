@@ -1,18 +1,18 @@
-package io.github.mosadie.ExponentialPower.energy.storage;
+package io.github.mosadie.ExponentialPower.energy.advancedstorage;
 
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderStorageTE;
+import io.github.mosadie.ExponentialPower.ConfigHandler;
+import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderStorageTE;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.*;
-import io.github.mosadie.ExponentialPower.ConfigHandler;
 
 public class ForgeEnergyConnection implements IEnergyStorage{
 	
-	private EnderStorageTE owner;
+	private AdvancedEnderStorageTE owner;
 	private final boolean canExtract;
 	private final boolean canReceive;
 	private final EnumFacing direction;
 	
-	public ForgeEnergyConnection(EnderStorageTE owner, boolean canExtract, boolean canReceive, EnumFacing dir) {
+	public ForgeEnergyConnection(AdvancedEnderStorageTE owner, boolean canExtract, boolean canReceive, EnumFacing dir) {
 		this.owner = owner;
 		this.canExtract = canExtract;
 		this.canReceive = canReceive;
@@ -25,8 +25,8 @@ public class ForgeEnergyConnection implements IEnergyStorage{
 			return 0;
 		}
 		if ((owner.energy + maxReceive) < owner.energy ) {
-			int tmpGained = (int) (Long.MAX_VALUE - owner.energy);
-			owner.energy = Long.MAX_VALUE;
+			int tmpGained = (int) (Double.MAX_VALUE - owner.energy);
+			owner.energy = Double.MAX_VALUE;
 			owner.markDirty();
 			owner.freezeExpend.put(direction, true);
 			return tmpGained;
@@ -62,7 +62,7 @@ public class ForgeEnergyConnection implements IEnergyStorage{
 
 	@Override
 	public int getMaxEnergyStored() {
-		return (ConfigHandler.STORAGE_MAXENERGY > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int)ConfigHandler.STORAGE_MAXENERGY);
+		return (ConfigHandler.ADVANCED_STORAGE_MAXENERGY > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int)ConfigHandler.ADVANCED_STORAGE_MAXENERGY);
 	}
 
 	@Override

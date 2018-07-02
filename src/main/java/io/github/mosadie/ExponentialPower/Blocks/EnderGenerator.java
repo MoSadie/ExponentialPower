@@ -6,7 +6,6 @@ import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorTE;
 import io.github.mosadie.ExponentialPower.network.GUIHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +19,7 @@ import net.minecraft.world.World;
 
 public class EnderGenerator extends Block implements ITileEntityProvider {
 	public EnderGenerator() {
-		super(Material.PISTON);
+		super(BlockManager.CommonMaterial);
 		this.setUnlocalizedName("endergenerator");
 		this.setCreativeTab(ItemManager.CreativeTab);
 		this.setHardness(2.5F);
