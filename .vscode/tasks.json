@@ -18,7 +18,10 @@
             "label": "Build",
             "type": "shell",
             "command": "./gradlew.bat build",
-            "group": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
@@ -29,7 +32,10 @@
             "label": "Run Client",
             "type": "shell",
             "command": "./gradlew.bat runClient",
-            "group": "build",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
