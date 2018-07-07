@@ -2,7 +2,7 @@ package io.github.mosadie.ExponentialPower.Blocks;
 
 import io.github.mosadie.ExponentialPower.ExponentialPower;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorTE;
+import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.GeneratorTE;
 import io.github.mosadie.ExponentialPower.network.GUIHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -29,7 +29,7 @@ public class EnderGenerator extends Block implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new EnderGeneratorTE();
+        return new GeneratorTE(GeneratorTE.GeneratorTier.REGULAR);
     }
     
 	@Override
@@ -43,13 +43,13 @@ public class EnderGenerator extends Block implements ITileEntityProvider {
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         if (stack.hasDisplayName()) {
-            ((EnderGeneratorTE) worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName());
+            ((GeneratorTE) worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName());
         }
     }
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
-    	EnderGeneratorTE te = (EnderGeneratorTE) world.getTileEntity(pos);
+    	GeneratorTE te = (GeneratorTE) world.getTileEntity(pos);
         InventoryHelper.dropInventoryItems(world, pos, te);
         super.breakBlock(world, pos, state);
     }

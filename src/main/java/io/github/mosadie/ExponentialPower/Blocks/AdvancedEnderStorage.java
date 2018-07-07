@@ -2,9 +2,8 @@ package io.github.mosadie.ExponentialPower.Blocks;
 
 import java.util.HashMap;
 
-import io.github.mosadie.ExponentialPower.ConfigHandler;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
-import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderStorageTE;
+import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.StorageTE;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -37,22 +36,22 @@ public class AdvancedEnderStorage extends Block implements ITileEntityProvider {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new AdvancedEnderStorageTE();
+		return new StorageTE(StorageTE.StorageTier.ADVANCED);
 	}
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
-			AdvancedEnderStorageTE te = (AdvancedEnderStorageTE) worldIn.getTileEntity(pos);
-			double percent = ((int)(te.energy/(Double.MAX_VALUE * ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT) * 10000.00)) / 100.00;
-			playerIn.sendMessage(new TextComponentString("Current Energy Stored: " + te.energy + " RF / " + (Double.MAX_VALUE * ConfigHandler.advanced_ender_storage.MAXENERGYPERCENT) + " RF. (" + percent + "%)"));
+			StorageTE te = (StorageTE) worldIn.getTileEntity(pos);
+			double percent = ((int)(te.energy/te.getMaxEnergy() * 10000.00)) / 100.00;
+			playerIn.sendMessage(new TextComponentString("Current Energy Stored: " + te.energy + " RF / " + te.getMaxEnergy() + " RF. (" + percent + "%)"));
 		}
 		return true;
 	}
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		AdvancedEnderStorageTE te = (AdvancedEnderStorageTE) world.getTileEntity(pos);
+		StorageTE te = (StorageTE) world.getTileEntity(pos);
 		String key = "{" + pos.getX() + "}{" + pos.getY() + "}{" + pos.getZ() + "}";
 		if (tmp_energy_map.containsKey(key)) {
 			if (tmp_energy_map.get(key) < te.energy) {

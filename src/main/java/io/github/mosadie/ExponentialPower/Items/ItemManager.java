@@ -24,7 +24,7 @@ public class ItemManager {
 	
 	public static void registerModels(ModelRegistryEvent event) {
 		ModelLoader.setCustomModelResourceLocation(enderCell, 0, new ModelResourceLocation(enderCell.getRegistryName(), "inventory"));
-		ModelLoader.setCustomModelResourceLocation(BlockManager.itemEnderGenerator, 0, new ModelResourceLocation( BlockManager.enderGenerator.getRegistryName(), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(BlockManager.itemEnderGenerator, 0, new ModelResourceLocation(BlockManager.enderGenerator.getRegistryName(), "inventory"));
 		ModelLoader.setCustomModelResourceLocation(BlockManager.itemEnderStorage, 0, new ModelResourceLocation(BlockManager.enderStorage.getRegistryName(), "inventory"));
 		ModelLoader.setCustomModelResourceLocation(BlockManager.itemAdvancedEnderGenerator, 0, new ModelResourceLocation(BlockManager.advancedEnderGenerator.getRegistryName(), "inventory"));
 		ModelLoader.setCustomModelResourceLocation(BlockManager.itemAdvancedEnderStorage, 0, new ModelResourceLocation(BlockManager.advancedEnderStorage.getRegistryName(), "inventory"));

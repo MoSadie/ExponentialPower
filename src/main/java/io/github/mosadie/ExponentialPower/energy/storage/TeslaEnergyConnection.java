@@ -1,7 +1,6 @@
 package io.github.mosadie.ExponentialPower.energy.storage;
 
-import io.github.mosadie.ExponentialPower.ConfigHandler;
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderStorageTE;
+import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.StorageTE;
 import net.darkhax.tesla.api.ITeslaHolder;
 import net.darkhax.tesla.api.ITeslaProducer;
 import net.minecraft.util.EnumFacing;
@@ -9,10 +8,10 @@ import net.darkhax.tesla.api.ITeslaConsumer;
 
 public class TeslaEnergyConnection implements ITeslaHolder, ITeslaProducer, ITeslaConsumer{
 
-	EnderStorageTE owner;
+	StorageTE owner;
 	EnumFacing direction;
 	
-	public TeslaEnergyConnection(EnderStorageTE owner, EnumFacing dir) {
+	public TeslaEnergyConnection(StorageTE owner, EnumFacing dir) {
 		this.owner = owner;
 		direction = dir;
 	}
@@ -24,7 +23,7 @@ public class TeslaEnergyConnection implements ITeslaHolder, ITeslaProducer, ITes
 			owner.freezeExpend.put(direction, true);
 			return power;
 		} else if (power > owner.energy) {
-			long tmp = owner.energy;
+			long tmp = (long)owner.energy;
 			if (!simulated) owner.energy = 0;
 			owner.freezeExpend.put(direction, true);
 			return tmp;
@@ -38,22 +37,22 @@ public class TeslaEnergyConnection implements ITeslaHolder, ITeslaProducer, ITes
 
 	@Override
 	public long getStoredPower() {
-		return owner.energy;
+		return (owner.energy > Long.MAX_VALUE ? Long.MAX_VALUE : (long)owner.energy);
 	}
 
 	@Override
 	public long getCapacity() {
-		return (long)(ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE);
+		return (owner.getMaxEnergy() > Long.MAX_VALUE ? Long.MAX_VALUE : (long)owner.getMaxEnergy());
 	}
 
 	@Override
 	public long givePower(long power, boolean simulated) {
-		if (owner.energy >= (ConfigHandler.ender_storage.MAXENERGYPERCENT * Long.MAX_VALUE)) {
+		if (owner.energy >= owner.getMaxEnergy()) {
 			return 0;
 		}
 		if ((owner.energy + power) < owner.energy ) {
-			long tmpGained = Long.MAX_VALUE - owner.energy;
-			owner.energy = Long.MAX_VALUE;
+			long tmpGained = (long)(Double.MAX_VALUE - owner.energy);
+			owner.energy = Double.MAX_VALUE;
 			return tmpGained;
 		} else {
 			owner.energy += power;

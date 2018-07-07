@@ -2,7 +2,7 @@ package io.github.mosadie.ExponentialPower.Blocks;
 
 import io.github.mosadie.ExponentialPower.ExponentialPower;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
-import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderGeneratorTE;
+import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.GeneratorTE;
 import io.github.mosadie.ExponentialPower.network.GUIHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -29,13 +29,13 @@ public class AdvancedEnderGenerator extends Block implements ITileEntityProvider
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new AdvancedEnderGeneratorTE();
+        return new GeneratorTE(GeneratorTE.GeneratorTier.ADVANCED);
     }
     
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
-	        playerIn.openGui(ExponentialPower.instance, GUIHandler.MOD_TILE_ENTITY_GUI_MK2, worldIn, pos.getX(), pos.getY(), pos.getZ());
+	        playerIn.openGui(ExponentialPower.instance, GUIHandler.MOD_TILE_ENTITY_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
 	    }
 	    return true;
 	}
@@ -43,13 +43,13 @@ public class AdvancedEnderGenerator extends Block implements ITileEntityProvider
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         if (stack.hasDisplayName()) {
-            ((AdvancedEnderGeneratorTE) worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName());
+            ((GeneratorTE) worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName());
         }
     }
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
-    	AdvancedEnderGeneratorTE te = (AdvancedEnderGeneratorTE) world.getTileEntity(pos);
+    	GeneratorTE te = (GeneratorTE) world.getTileEntity(pos);
         InventoryHelper.dropInventoryItems(world, pos, te);
         super.breakBlock(world, pos, state);
     }

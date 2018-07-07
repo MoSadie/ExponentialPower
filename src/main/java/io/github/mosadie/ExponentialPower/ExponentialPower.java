@@ -17,11 +17,6 @@ public class ExponentialPower {
 	public static final String VERSION = "2.0.0";
 	public static final String UPDATEJSON = "https://raw.githubusercontent.com/MoSadie/ExponentialPower/master/update.json";
 	
-	public static final String CONFIG_ENDER_GENERATOR = "EnderGenerator";
-	public static final String CONFIG_ADVANCED_ENDER_GENERATOR = "AdvancedEnderGenerator";
-	public static final String CONFIG_ENDER_STORAGE = "EnderStorage";
-	public static final String CONFIG_ADVANCED_ENDER_STORAGE = "AdvancedEnderStorage";
-	
 	@Instance
 	public static ExponentialPower instance;
 	
@@ -38,7 +33,7 @@ public class ExponentialPower {
 	public void preInit(FMLPreInitializationEvent e) {
 		LOGGER = e.getModLog();
 		proxy.preInit(e);
-		//Create Blocks and Items
+		//Register GUI
 	}
 
 	@EventHandler

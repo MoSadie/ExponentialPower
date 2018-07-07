@@ -30,9 +30,9 @@ public class EventReceiver {
 	}
 
 	@SubscribeEvent
-		public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
-			if (event.getModID().equals(ExponentialPower.MODID)) {
-				ConfigManager.sync(ExponentialPower.MODID, Config.Type.INSTANCE);
-			}
+	public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
+		if (event.getModID().equals(ExponentialPower.MODID)) {
+			ConfigManager.sync(ExponentialPower.MODID, Config.Type.INSTANCE);
 		}
+	}
 }

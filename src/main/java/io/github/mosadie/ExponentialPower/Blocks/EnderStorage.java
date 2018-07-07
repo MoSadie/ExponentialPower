@@ -2,9 +2,8 @@ package io.github.mosadie.ExponentialPower.Blocks;
 
 import java.util.HashMap;
 
-import io.github.mosadie.ExponentialPower.ConfigHandler;
 import io.github.mosadie.ExponentialPower.Items.ItemManager;
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderStorageTE;
+import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.StorageTE;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -22,7 +21,7 @@ import net.minecraft.world.World;
 
 public class EnderStorage extends Block implements ITileEntityProvider {
 
-	public static HashMap<String, Long> tmp_energy_map; 
+	public static HashMap<String, Double> tmp_energy_map; 
 
 	public EnderStorage() {
 		super(BlockManager.CommonMaterial);
@@ -32,27 +31,27 @@ public class EnderStorage extends Block implements ITileEntityProvider {
 		this.setResistance(15f);
 		this.hasTileEntity = true;
 
-		tmp_energy_map = new HashMap<String, Long>(); //Key Syntax: {X}{Y}{Z}
+		tmp_energy_map = new HashMap<String, Double>(); //Key Syntax: {X}{Y}{Z}
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new EnderStorageTE();
+		return new StorageTE(StorageTE.StorageTier.REGULAR);
 	}
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
-			EnderStorageTE te = (EnderStorageTE) worldIn.getTileEntity(pos);
-			double percent = ((int)((double)te.energy/(double)((double)Long.MAX_VALUE * ConfigHandler.ender_storage.MAXENERGYPERCENT) * 10000.00)) / 100.00;
-			playerIn.sendMessage(new TextComponentString("Current Energy Stored: " + te.energy + " RF / " + (Long.MAX_VALUE * ConfigHandler.ender_storage.MAXENERGYPERCENT) + " RF. (" + percent + "%)"));
+			StorageTE te = (StorageTE) worldIn.getTileEntity(pos);
+			double percent = ((int)(te.energy/te.getMaxEnergy() * 10000.00)) / 100.00;
+			playerIn.sendMessage(new TextComponentString("Current Energy Stored: " + te.energy + " RF / " + te.getMaxEnergy() + " RF. (" + percent + "%)"));
 		}
 		return true;
 	}
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		EnderStorageTE te = (EnderStorageTE) world.getTileEntity(pos);
+		StorageTE te = (StorageTE) world.getTileEntity(pos);
 		String key = "{" + pos.getX() + "}{" + pos.getY() + "}{" + pos.getZ() + "}";
 		if (tmp_energy_map.containsKey(key)) {
 			if (tmp_energy_map.get(key) < te.energy) {
@@ -69,7 +68,7 @@ public class EnderStorage extends Block implements ITileEntityProvider {
 	{
 		ItemStack drop = new ItemStack(BlockManager.enderStorage);
 
-		long energy = 0;
+		double energy = 0;
 		String key = "{" + pos.getX() + "}{" + pos.getY() + "}{" + pos.getZ() + "}";
 		if (tmp_energy_map.containsKey(key)) {
 			energy = tmp_energy_map.get(key);
@@ -80,7 +79,7 @@ public class EnderStorage extends Block implements ITileEntityProvider {
 		NBTTagCompound tag = new NBTTagCompound();
 		NBTTagCompound subTag = tag.getCompoundTag("tag");
 		NBTTagCompound subSubTag = subTag.getCompoundTag("BlockEntityTag");
-		subSubTag.setLong("energy", energy);
+		subSubTag.setDouble("energy", energy);
 		subTag.setTag("BlockEntityTag", subSubTag);
 		tag.setTag("tag", subTag);
 		
