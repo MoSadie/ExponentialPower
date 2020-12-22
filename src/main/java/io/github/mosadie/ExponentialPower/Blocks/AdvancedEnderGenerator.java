@@ -1,56 +1,86 @@
-package io.github.mosadie.ExponentialPower.Blocks;
+package io.github.mosadie.ExponentialPower.blocks;
 
-import io.github.mosadie.ExponentialPower.ExponentialPower;
-import io.github.mosadie.ExponentialPower.Items.ItemManager;
+import io.github.mosadie.ExponentialPower.GUIContainer.ContainerEnderGeneratorTE;
+import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderGeneratorTE;
 import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.GeneratorTE;
-import io.github.mosadie.ExponentialPower.network.GUIHandler;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
-public class AdvancedEnderGenerator extends Block implements ITileEntityProvider {
+import javax.annotation.Nullable;
+
+public class AdvancedEnderGenerator extends Block {
+
 	public AdvancedEnderGenerator() {
-		super(BlockManager.CommonMaterial);
-		this.setUnlocalizedName("advancedendergenerator");
-		this.setCreativeTab(ItemManager.CreativeTab);
-		this.setHardness(2.5F);
-		this.setResistance(15f);
-		this.hasTileEntity = true;
+		super(BlockManager.BLOCK_PROPERTIES);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new GeneratorTE(GeneratorTE.GeneratorTier.ADVANCED);
     }
-    
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (!worldIn.isRemote) {
-	        playerIn.openGui(ExponentialPower.instance, GUIHandler.MOD_TILE_ENTITY_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
-	    }
-	    return true;
-	}
-    
+
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (!worldIn.isRemote) {
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
+            if (tileEntity instanceof AdvancedEnderGeneratorTE) {
+                INamedContainerProvider containerProvider = new INamedContainerProvider() {
+                    @Override
+                    public ITextComponent getDisplayName() {
+                        return new TranslationTextComponent("screen.exponentialpower.title.advanced");
+                    }
+
+                    @Override
+                    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                        return new ContainerEnderGeneratorTE(i, playerInventory, (GeneratorTE) tileEntity);
+                    }
+                };
+                NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());
+            } else {
+            throw new IllegalStateException("Our named container provider is missing!");
+            }
+        }
+        return ActionResultType.SUCCESS;
+	}
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         if (stack.hasDisplayName()) {
-            ((GeneratorTE) worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName());
+            TileEntity te = worldIn.getTileEntity(pos);
+            if (te != null && te instanceof GeneratorTE)
+                ((GeneratorTE) te).setCustomName(stack.getDisplayName());
         }
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-    	GeneratorTE te = (GeneratorTE) world.getTileEntity(pos);
-        InventoryHelper.dropInventoryItems(world, pos, te);
-        super.breakBlock(world, pos, state);
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te != null && te instanceof GeneratorTE)
+            InventoryHelper.dropInventoryItems(worldIn, pos, (GeneratorTE) te);
+
+	    super.onBlockHarvested(worldIn, pos, state, player);
     }
 }

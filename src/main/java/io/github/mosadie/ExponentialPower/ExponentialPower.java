@@ -1,50 +1,27 @@
 package io.github.mosadie.ExponentialPower;
 
-import org.apache.logging.log4j.Logger;
-import net.minecraftforge.common.MinecraftForge;
+import io.github.mosadie.ExponentialPower.setup.ClientSetup;
+import io.github.mosadie.ExponentialPower.setup.Registration;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@Mod(modid = ExponentialPower.MODID, name = ExponentialPower.MODNAME, version = ExponentialPower.VERSION, updateJSON=ExponentialPower.UPDATEJSON, useMetadata=true, acceptedMinecraftVersions="[1.12.2]")
+@Mod(ExponentialPower.MODID)
 public class ExponentialPower {
 	public static final String MODID = "exponentialpower";
-	public static final String MODNAME = "Exponential Power";
-	public static final String VERSION = "2.0.0";
-	public static final String UPDATEJSON = "https://raw.githubusercontent.com/MoSadie/ExponentialPower/master/update.json";
-	
-	@Instance
-	public static ExponentialPower instance;
-	
-	public static Logger LOGGER;
-	
-	@SidedProxy(clientSide="io.github.mosadie.ExponentialPower.ClientProxy", serverSide="io.github.mosadie.ExponentialPower.ServerProxy")
-	public static CommonProxy proxy;
+
+	public static Logger LOGGER = LogManager.getLogger();
+
 
 	public ExponentialPower() {
-		MinecraftForge.EVENT_BUS.register(new EventReceiver());
-	}
-	
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent e) {
-		LOGGER = e.getModLog();
-		proxy.preInit(e);
-		//Register GUI
-	}
 
-	@EventHandler
-	public void init(FMLInitializationEvent e) {
-		proxy.init(e);
-		//Crafting
-	}
+		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_CONFIG);
 
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent e) {
-		proxy.postInit(e);
-		//Don't Think I need this...
+		Registration.init();
+
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
 	}
 }

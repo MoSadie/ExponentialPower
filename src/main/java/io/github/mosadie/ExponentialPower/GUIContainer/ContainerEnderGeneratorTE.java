@@ -1,37 +1,39 @@
 package io.github.mosadie.ExponentialPower.GUIContainer;
 
 import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.GeneratorTE;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import io.github.mosadie.ExponentialPower.setup.Registration;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerEnderGeneratorTE extends Container {
 
-	private GeneratorTE te;
+	private final GeneratorTE te;
 
-	public ContainerEnderGeneratorTE(IInventory playerInv, GeneratorTE te) {
+	public ContainerEnderGeneratorTE(int windowId, IInventory playerInv, GeneratorTE te) {
+		super(Registration.ENDER_GENERATOR_CONTAINER.get(), windowId);
 		this.te = te;
 
 		// Tile Entity, Slot 0, Slot IDs 0 
-		this.addSlotToContainer(new CustomStackLimitSlot(te.getMaxStack(), te, 0, 80, 35));
+		this.addSlot(new CustomStackLimitSlot(te.getMaxStack(), te, 0, 80, 35));
 
 		// Player Inventory, Slot 9-35, Slot IDs 1-24
 		for (int y = 0; y < 3; ++y) {
 			for (int x = 0; x < 9; ++x) {
-				this.addSlotToContainer(new Slot(playerInv, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
+				this.addSlot(new Slot(playerInv, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
 			}
 		}
 
 		// Player Inventory, Slot 0-8, Slot IDs 25-36
 		for (int x = 0; x < 9; ++x) {
-			this.addSlotToContainer(new Slot(playerInv, x, 8 + x * 18, 142));
+			this.addSlot(new Slot(playerInv, x, 8 + x * 18, 142));
 		}
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer playerIn, int fromSlot) {
+	public ItemStack transferStackInSlot(PlayerEntity playerIn, int fromSlot) {
 		ItemStack previous = ItemStack.EMPTY;
 		Slot slot = (Slot) this.inventorySlots.get(fromSlot);
 
@@ -60,9 +62,12 @@ public class ContainerEnderGeneratorTE extends Container {
 		}
 		return previous;
 	}
+	public GeneratorTE getTileEntity() {
+		return te;
+	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer playerIn) {
+	public boolean canInteractWith(PlayerEntity playerIn) {
 		return this.te.isUsableByPlayer(playerIn);
 	}
 

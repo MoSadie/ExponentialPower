@@ -3,9 +3,9 @@ package io.github.mosadie.ExponentialPower.energy.generator;
 import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.GeneratorTE;
 import net.minecraftforge.energy.*;
 
-public class ForgeEnergyConnection implements IEnergyStorage{
+public class ForgeEnergyConnection implements IEnergyStorage {
 	
-	private GeneratorTE owner;
+	private final GeneratorTE owner;
 	private final boolean canExtract;
 	private final boolean canReceive;
 	

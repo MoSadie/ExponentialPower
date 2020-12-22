@@ -1,7 +1,7 @@
 package io.github.mosadie.ExponentialPower.GUIContainer;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 
 public class CustomStackLimitSlot extends Slot {
 

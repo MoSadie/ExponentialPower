@@ -1,17 +1,17 @@
 package io.github.mosadie.ExponentialPower.energy.storage;
 
 import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.StorageTE;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.energy.*;
+import net.minecraft.util.Direction;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public class ForgeEnergyConnection implements IEnergyStorage{
 	
-	private StorageTE owner;
+	private final StorageTE owner;
 	private final boolean canExtract;
 	private final boolean canReceive;
-	private final EnumFacing direction;
+	private final Direction direction;
 	
-	public ForgeEnergyConnection(StorageTE owner, boolean canExtract, boolean canReceive, EnumFacing dir) {
+	public ForgeEnergyConnection(StorageTE owner, boolean canExtract, boolean canReceive, Direction dir) {
 		this.owner = owner;
 		this.canExtract = canExtract;
 		this.canReceive = canReceive;

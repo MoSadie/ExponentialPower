@@ -1,0 +1,14 @@
+package io.github.mosadie.ExponentialPower.items;
+
+import net.minecraft.item.Item;
+
+public class EnderCell extends Item {
+
+	private final static Properties properties = new Properties()
+			.group(ItemManager.ITEM_GROUP)
+			.maxStackSize(64);
+
+	public EnderCell() {
+		super(properties);
+	}
+}

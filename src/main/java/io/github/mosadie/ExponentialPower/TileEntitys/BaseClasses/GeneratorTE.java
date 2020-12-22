@@ -1,34 +1,35 @@
 package io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses;
 
-import javax.annotation.Nullable;
-
-import io.github.mosadie.ExponentialPower.ConfigHandler;
-import io.github.mosadie.ExponentialPower.ExponentialPower;
-import io.github.mosadie.ExponentialPower.Items.ItemManager;
-import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.StorageTE;
-import io.github.mosadie.ExponentialPower.energy.generator.*;
-import net.darkhax.tesla.api.ITeslaConsumer;
-import net.darkhax.tesla.capability.TeslaCapabilities;
-import net.minecraft.entity.player.EntityPlayer;
+import io.github.mosadie.ExponentialPower.Config;
+import io.github.mosadie.ExponentialPower.energy.generator.ForgeEnergyConnection;
+import io.github.mosadie.ExponentialPower.items.EnderCell;
+import io.github.mosadie.ExponentialPower.setup.Registration;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.energy.*;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 
-public class GeneratorTE extends TileEntity implements ITickable, IInventory, ICapabilityProvider {
+public class GeneratorTE extends TileEntity implements ITickableTileEntity, IInventory, ICapabilityProvider {
 
-	public static enum GeneratorTier {
+	public enum GeneratorTier {
 		REGULAR,
 		ADVANCED,
 	}
@@ -37,118 +38,106 @@ public class GeneratorTE extends TileEntity implements ITickable, IInventory, IC
 	public double currentOutput = 0;
 	public double energy = 0;
 
-	public NonNullList<ItemStack> Inventory = NonNullList.withSize(1, ItemStack.EMPTY);
-	public String customName;
+	//public NonNullList<ItemStack> Inventory = NonNullList.withSize(1, ItemStack.EMPTY);
+	public ITextComponent customName;
 
 	private ForgeEnergyConnection fec;
-	private TeslaEnergyConnection tec;
+	private final LazyOptional<ForgeEnergyConnection> fecOptional = LazyOptional.of(() -> fec);
+
+	private final ItemStackHandler itemStackHandler = createItemStackHandler();
+	private final LazyOptional<ItemStackHandler> itemStackHandlerOptional = LazyOptional.of(() -> itemStackHandler);
 
 	public GeneratorTE(GeneratorTier tier) {
+		super(tier == GeneratorTier.ADVANCED ? Registration.ADV_ENDER_GENERATOR_TE.get() : Registration.ENDER_GENERATOR_TE.get());
 		this.tier = tier;
 		fec = new ForgeEnergyConnection(this, true, false);
-		if (Loader.isModLoaded("tesla"))
-			tec = new TeslaEnergyConnection(this);
-	}
-
-	@Override
-	public boolean hasCapability(Capability<?> cap, @Nullable EnumFacing f) {
-		if (tec != null)
-			return cap == CapabilityEnergy.ENERGY || cap == TeslaCapabilities.CAPABILITY_PRODUCER;
-		else
-			return cap == CapabilityEnergy.ENERGY;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getCapability(Capability<T> cap, @Nullable EnumFacing f) {
-		if (cap == CapabilityEnergy.ENERGY) return (T) fec;
-		if (tec != null) if (cap == TeslaCapabilities.CAPABILITY_PRODUCER) return (T) tec;
-		return null;
+	@Nonnull
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction f) {
+		if (cap == CapabilityEnergy.ENERGY) return fecOptional.cast();
+		else if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return itemStackHandlerOptional.cast();
+		return super.getCapability(cap, f);
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		
+	public CompoundNBT write(CompoundNBT nbt) {
+		super.write(nbt);
 		//super.writeToNBT recreated and modified here.
-		ResourceLocation resourcelocation = new ResourceLocation(ExponentialPower.MODID + (tier == GeneratorTier.REGULAR ? ":endergenerator_tile_entity" : ":advancedendergenerator_tile_entity"));
-		nbt.setString("id", resourcelocation.toString());
-		nbt.setInteger("x", this.pos.getX());
-		nbt.setInteger("y", this.pos.getY());
-		nbt.setInteger("z", this.pos.getZ());
-		nbt.setTag("ForgeData", this.getTileData());
+//		ResourceLocation resourcelocation = new ResourceLocation(ExponentialPower.MODID + (tier == GeneratorTier.REGULAR ? ":endergenerator_tile_entity" : ":advancedendergenerator_tile_entity"));
+//		nbt.setString("id", resourcelocation.toString());
+//		nbt.setInteger("x", this.pos.getX());
+//		nbt.setInteger("y", this.pos.getY());
+//		nbt.setInteger("z", this.pos.getZ());
+//		nbt.setTag("ForgeData", this.getTileData());
 
+//		ListNBT list = new ListNBT();
+//		for (int i = 0; i < this.getSizeInventory(); ++i) {
+//			if (this.getStackInSlot(i) != null) {
+//				CompoundNBT stackTag = new CompoundNBT();
+//				stackTag.putByte("Slot", (byte) i);
+//				this.getStackInSlot(i).write(stackTag);
+//				list.add(stackTag);
+//			}
+//		}
+//		nbt.put("Items", list);
 
-		NBTTagList list = new NBTTagList();
-		for (int i = 0; i < this.getSizeInventory(); ++i) {
-			if (this.getStackInSlot(i) != null) {
-				NBTTagCompound stackTag = new NBTTagCompound();
-				stackTag.setByte("Slot", (byte) i);
-				this.getStackInSlot(i).writeToNBT(stackTag);
-				list.appendTag(stackTag);
-			}
-		}
-		nbt.setTag("Items", list);
+		nbt.put("Items", itemStackHandler.serializeNBT());
 
 		if (this.hasCustomName()) {
-			nbt.setString("CustomName", this.getCustomName());
+			nbt.putString("CustomName", this.getCustomName().getString());
 		}
 
 		return nbt;
 	}
 
-
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-		super.readFromNBT(nbt);
+	public void read(BlockState state, CompoundNBT nbt) {
+		super.read(state, nbt);
 
-		NBTTagList list = nbt.getTagList("Items", 10);
-		for (int i = 0; i < list.tagCount(); ++i) {
-			NBTTagCompound stackTag = list.getCompoundTagAt(i);
-			int slot = stackTag.getByte("Slot") & 255;
-			this.setInventorySlotContents(slot, new ItemStack(stackTag));
-		}
+//		ListNBT list = nbt.getList("Items", 10);
+//		for (int i = 0; i < list.size(); ++i) {
+//			CompoundNBT stackTag = list.getCompound(i);
+//			int slot = stackTag.getByte("Slot") & 255;
+//			this.setInventorySlotContents(slot, ItemStack.read(stackTag));
+//		}
 
-		if (nbt.hasKey("CustomName", 8)) {
-			this.setCustomName(nbt.getString("CustomName"));
+		if (nbt.contains("Items", Constants.NBT.TAG_COMPOUND))
+			itemStackHandler.deserializeNBT(nbt.getCompound("Items"));
+
+		if (nbt.contains("CustomName", 8)) {
+			this.setCustomName(new StringTextComponent(nbt.getString("CustomName")));
 		}
 	}
 
 	@Override
-	public void update() {
-		if (Inventory != null) {
-			if (Inventory.get(0).getItem() == ItemManager.enderCell) {
-				energy = currentOutput;
-				currentOutput = calculateEnergy(Inventory.get(0).getCount());
-				if (currentOutput == 0) currentOutput = 1;
-			}
-			else {
-				currentOutput = 0;
-				energy = 0;
-			}
+	public void tick() {
+		if (itemStackHandler.getStackInSlot(0).getItem() instanceof EnderCell) { //TODO check this check
+			energy = currentOutput;
+			currentOutput = calculateEnergy(itemStackHandler.getStackInSlot(0).getCount());
+			if (currentOutput == 0) currentOutput = 1;
+		}
+		else {
+			currentOutput = 0;
+			energy = 0;
 		}
 		handleSendingEnergy();
 	}
 
-	@Override
-	public String getName() {
-		return this.hasCustomName() ? this.customName : "container.exponentialpower_endergenerator_tile_entity";
-	}
-
-	@Override
 	public boolean hasCustomName() {
 		return this.customName != null && !this.customName.equals("");
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return 1;
+		return itemStackHandler.getSlots();
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		if (index < 0 || index >= this.getSizeInventory())
-			return ItemStack.EMPTY;
-		return this.Inventory.get(0);
+		return itemStackHandler.getStackInSlot(index);
 	}
 
 	@Override
@@ -164,7 +153,7 @@ public class GeneratorTE extends TileEntity implements ITickable, IInventory, IC
 				if (itemstack.getCount() > 0) return itemstack;
 				else return ItemStack.EMPTY;
 			} else { //More in slot then asked for
-				itemstack = this.getStackInSlot(index).splitStack(count);
+				itemstack = this.getStackInSlot(index).split(count);
 
 				if (this.getStackInSlot(index).getCount() <= 0) {
 					this.setInventorySlotContents(index, ItemStack.EMPTY);
@@ -184,16 +173,7 @@ public class GeneratorTE extends TileEntity implements ITickable, IInventory, IC
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
-		if (index < 0 || index >= this.getSizeInventory())
-			return;
-
-		if (stack != null && stack.getCount() > this.getInventoryStackLimit())
-			stack.setCount(this.getInventoryStackLimit());
-
-		if (stack != null && stack.getCount() == 0)
-			stack = ItemStack.EMPTY;
-
-		this.Inventory.set(0, stack);
+		itemStackHandler.setStackInSlot(index, stack);
 		this.markDirty();
 	}
 
@@ -201,8 +181,8 @@ public class GeneratorTE extends TileEntity implements ITickable, IInventory, IC
 	public ItemStack removeStackFromSlot(int index) {
 		if (index < 0 || index >= this.getSizeInventory())
 			return ItemStack.EMPTY;
-		ItemStack whatWasThere = this.Inventory.get(0);
-		this.Inventory.set(0,ItemStack.EMPTY);
+		ItemStack whatWasThere = itemStackHandler.getStackInSlot(index);
+		itemStackHandler.setStackInSlot(index, ItemStack.EMPTY);
 		this.markDirty();
 		return whatWasThere;
 	}
@@ -213,16 +193,16 @@ public class GeneratorTE extends TileEntity implements ITickable, IInventory, IC
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
-		return this.world.getTileEntity(this.getPos()) == this && player.getDistanceSq(this.pos.add(0.5, 0.5, 0.5)) <= 64;
+	public boolean isUsableByPlayer(PlayerEntity player) {
+		return this.world.getTileEntity(getPos()) == this && getPos().add(0.5,0.5,0.5).withinDistance(player.getPosition(), 64);
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) {
+	public void openInventory(PlayerEntity player) {
 	}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {
+	public void closeInventory(PlayerEntity player) {
 	}
 
 	@Override
@@ -231,30 +211,16 @@ public class GeneratorTE extends TileEntity implements ITickable, IInventory, IC
 	}
 
 	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {		
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}
-
-	@Override
 	public void clear() {
 		for (int i = 0; i < this.getSizeInventory(); i++)
 			this.setInventorySlotContents(i, ItemStack.EMPTY);
 	}
 
-	public String getCustomName() {
+	public ITextComponent getCustomName() {
 		return customName;
 	}
 
-	public void setCustomName(String customName) {
+	public void setCustomName(ITextComponent customName) {
 		this.customName = customName;
 	}
 
@@ -263,7 +229,7 @@ public class GeneratorTE extends TileEntity implements ITickable, IInventory, IC
 			if (energy <= 0) {
 				return;
 			}
-			for (EnumFacing dir : EnumFacing.values()) {
+			for (Direction dir : Direction.values()) {
 				BlockPos targetBlock = getPos().add(dir.getDirectionVec());
 
 				TileEntity tile = world.getTileEntity(targetBlock);
@@ -272,26 +238,13 @@ public class GeneratorTE extends TileEntity implements ITickable, IInventory, IC
 						StorageTE storage = (StorageTE) tile;
 						energy -= storage.acceptEnergy(energy);
 					}
-					else if (tec != null) {
-						if (tile.hasCapability(TeslaCapabilities.CAPABILITY_CONSUMER, dir.getOpposite())) {
-							ITeslaConsumer other = tile.getCapability(TeslaCapabilities.CAPABILITY_CONSUMER, dir.getOpposite());
-							energy -= other.givePower((energy > Long.MAX_VALUE ? Long.MAX_VALUE : (long)energy), false);
-						} else {
-							if (tile.hasCapability(CapabilityEnergy.ENERGY, dir.getOpposite())) {
-								IEnergyStorage other = tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite());
-								if (other.canReceive()) {
-									energy -= other.receiveEnergy((int) (energy > Integer.MAX_VALUE ? Integer.MAX_VALUE : energy), false);
-								}
-							}
-						}
-					}
 					else {
-						if (tile.hasCapability(CapabilityEnergy.ENERGY, dir.getOpposite())) {
-							IEnergyStorage other = tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite());
-							if (other.canReceive()) {
-								energy -= other.receiveEnergy((int) (energy > Integer.MAX_VALUE ? Integer.MAX_VALUE : energy), false);
+						//if (tile.hasCapability(CapabilityEnergy.ENERGY, dir.getOpposite())) {
+						tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite()).resolve().ifPresent((cap) -> {
+							if (cap.canReceive()) {
+								energy -= cap.receiveEnergy((int) (energy > Integer.MAX_VALUE ? Integer.MAX_VALUE : energy), false);
 							}
-						}
+						});
 					}
 				}
 			}
@@ -300,16 +253,16 @@ public class GeneratorTE extends TileEntity implements ITickable, IInventory, IC
 
 	@Override
 	public boolean isEmpty() {
-		return Inventory.get(0).getCount() == 0;
+		return itemStackHandler.getStackInSlot(0).getCount() == 0;
 	}
 
 	public double getBase() {
 		switch (tier) {
 		case REGULAR:
-			return ConfigHandler.ender_generator.Regular.BASE;
+			return Config.ENDER_GENERATOR_BASE.get();
 
 		case ADVANCED:
-			return ConfigHandler.ender_generator.Advanced.BASE;
+			return Config.ADV_ENDER_GENERATOR_BASE.get();
 
 		default:
 			return 2.0;
@@ -319,10 +272,10 @@ public class GeneratorTE extends TileEntity implements ITickable, IInventory, IC
 	public int getMaxStack() {
 		switch (tier) {
 		case REGULAR:
-			return ConfigHandler.ender_generator.Regular.MAXSTACK;
+			return Config.ENDER_GENERATOR_MAX_STACK.get();
 
 		case ADVANCED:
-			return ConfigHandler.ender_generator.Advanced.MAXSTACK;
+			return Config.ADV_ENDER_GENERATOR_MAX_STACK.get();
 
 		default:
 			return 64;
@@ -346,5 +299,19 @@ public class GeneratorTE extends TileEntity implements ITickable, IInventory, IC
 		if (b == 0) return 1L;
 		if (b == 1) return (long)a;
 		return (long)Math.pow(a, b);
+	}
+
+	private ItemStackHandler createItemStackHandler() {
+		return new ItemStackHandler(1) {
+			@Override
+			protected void onContentsChanged(int slot) {
+				markDirty();
+			}
+
+			@Override
+			public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+				return stack.getItem() == Registration.ENDER_CELL.get();
+			}
+		};
 	}
 }
