@@ -52,8 +52,8 @@ public class Registration {
 
     public static final RegistryObject<Item> ENDER_CELL = ITEMS.register("ender_cell", EnderCell::new);
 
-    public static final RegistryObject<Item> ENDER_GENERATOR_ITEM = ITEMS.register("ender_generator", () -> new BlockItem(ENDER_GENERATOR.get(), new Item.Properties().group(ITEM_GROUP)));
-    public static final RegistryObject<Item> ADV_ENDER_GENERATOR_ITEM = ITEMS.register("advanced_ender_generator", () -> new BlockItem(ADV_ENDER_GENERATOR.get(), new Item.Properties().group(ITEM_GROUP)));
+    public static final RegistryObject<Item> ENDER_GENERATOR_ITEM = ITEMS.register("ender_generator", () -> new BlockItem(ENDER_GENERATOR.get(), new Item.Properties().isImmuneToFire().group(ITEM_GROUP)));
+    public static final RegistryObject<Item> ADV_ENDER_GENERATOR_ITEM = ITEMS.register("advanced_ender_generator", () -> new BlockItem(ADV_ENDER_GENERATOR.get(), new Item.Properties().isImmuneToFire().group(ITEM_GROUP)));
     public static final RegistryObject<Item> ENDER_STORAGE_ITEM = ITEMS.register("ender_storage", () -> new EnderStorageItem(ENDER_STORAGE.get(), StorageTE.StorageTier.REGULAR));
     public static final RegistryObject<Item> ADV_ENDER_STORAGE_ITEM = ITEMS.register("advanced_ender_storage", () -> new EnderStorageItem(ADV_ENDER_STORAGE.get(), StorageTE.StorageTier.ADVANCED));
 

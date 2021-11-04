@@ -21,6 +21,7 @@ public class EnderStorageItem extends BlockItem {
 
 	private final static Item.Properties properties = new Item.Properties()
 			.maxStackSize(1)
+			.isImmuneToFire()
 			.group(ItemManager.ITEM_GROUP);
 
 	public EnderStorageItem(Block block, StorageTE.StorageTier tier) {
