@@ -1,4 +1,4 @@
-package io.github.mosadie.ExponentialPower.blocks;
+package io.github.mosadie.exponentialpower.blocks;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.material.Material;

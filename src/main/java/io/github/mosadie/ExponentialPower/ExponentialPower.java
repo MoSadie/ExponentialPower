@@ -1,7 +1,7 @@
-package io.github.mosadie.ExponentialPower;
+package io.github.mosadie.exponentialpower;
 
-import io.github.mosadie.ExponentialPower.setup.ClientSetup;
-import io.github.mosadie.ExponentialPower.setup.Registration;
+import io.github.mosadie.exponentialpower.setup.ClientSetup;
+import io.github.mosadie.exponentialpower.setup.Registration;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;

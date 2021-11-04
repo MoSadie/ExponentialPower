@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "exponentialpower:block/advanced_ender_storage"
+    }
+  }
+}

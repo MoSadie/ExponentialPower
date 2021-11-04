@@ -1,7 +1,7 @@
-package io.github.mosadie.ExponentialPower.setup;
+package io.github.mosadie.exponentialpower.setup;
 
-import io.github.mosadie.ExponentialPower.ExponentialPower;
-import io.github.mosadie.ExponentialPower.client.gui.GUIEnderGeneratorTE;
+import io.github.mosadie.exponentialpower.ExponentialPower;
+import io.github.mosadie.exponentialpower.client.gui.GUIEnderGeneratorTE;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;

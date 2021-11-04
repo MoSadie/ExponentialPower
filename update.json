@@ -1,5 +1,8 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/exponential-power",
+  "1.16.4": {
+    "2.0.0": "See https://github.com/MoSadie/ExponentialPower/releases/tag/v2.0.0"
+  },
   "1.12.2": {
     "1.4.1": "See https://github.com/MoSadie/ExponentialPower/releases/tag/v1.4.1",
   	"1.4.0.1": "See https://github.com/MoSadie/ExponentialPower/releases/tag/v1.4.0.1",

@@ -1,7 +1,7 @@
-package io.github.mosadie.ExponentialPower.datagen;
+package io.github.mosadie.exponentialpower.datagen;
 
-import io.github.mosadie.ExponentialPower.ExponentialPower;
-import io.github.mosadie.ExponentialPower.setup.Registration;
+import io.github.mosadie.exponentialpower.ExponentialPower;
+import io.github.mosadie.exponentialpower.setup.Registration;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
@@ -23,21 +23,24 @@ public class DataRecipes extends RecipeProvider {
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
         ExponentialPower.LOGGER.info("Registering Recipes!");
         ShapedRecipeBuilder.shapedRecipe(Registration.ENDER_CELL.get())
-                .patternLine("DED")
-                .patternLine("EIE")
-                .patternLine("DED")
+                .patternLine("DPD")
+                .patternLine("nIn")
+                .patternLine("DPD")
                 .key('D', Blocks.DIAMOND_BLOCK)
-                .key('E', Blocks.EMERALD_BLOCK)
+                .key('n', Items.NETHERITE_INGOT)
+                .key('P', Blocks.DARK_PRISMARINE)
                 .key('I', Items.ENDER_EYE)
                 .setGroup("exponentialpower")
-                .addCriterion("enderEye", InventoryChangeTrigger.Instance.forItems(Items.ENDER_EYE));
+                .addCriterion("enderEye", InventoryChangeTrigger.Instance.forItems(Items.ENDER_EYE))
+                .build(consumer);
 
         ShapedRecipeBuilder.shapedRecipe(Registration.ENDER_GENERATOR.get())
-                .patternLine("ioi")
-                .patternLine("oco")
-                .patternLine("ioi")
-                .key('i', Blocks.IRON_BLOCK)
-                .key('o', Tags.Items.OBSIDIAN)
+                .patternLine("nOD")
+                .patternLine("OcO")
+                .patternLine("DOn")
+                .key('n', Items.NETHERITE_INGOT)
+                .key('O', Tags.Items.OBSIDIAN)
+                .key('D', Blocks.DIAMOND_BLOCK)
                 .key('c', Registration.ENDER_CELL.get())
                 .setGroup("exponentialpower")
                 .addCriterion("endercell", InventoryChangeTrigger.Instance.forItems(Registration.ENDER_CELL.get()))
@@ -54,11 +57,12 @@ public class DataRecipes extends RecipeProvider {
                 .build(consumer);
 
         ShapedRecipeBuilder.shapedRecipe(Registration.ENDER_STORAGE.get())
-                .patternLine("DoD")
-                .patternLine("oco")
-                .patternLine("DoD")
+                .patternLine("DOD")
+                .patternLine("PcP")
+                .patternLine("DOD")
                 .key('D', Blocks.DIAMOND_BLOCK)
-                .key('o', Tags.Items.OBSIDIAN)
+                .key('O', Tags.Items.OBSIDIAN)
+                .key('P', Blocks.DARK_PRISMARINE)
                 .key('c', Registration.ENDER_CELL.get())
                 .setGroup("exponentialpower")
                 .addCriterion("endercell", InventoryChangeTrigger.Instance.forItems(Registration.ENDER_CELL.get()))

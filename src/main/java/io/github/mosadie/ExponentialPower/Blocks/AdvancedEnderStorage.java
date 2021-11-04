@@ -1,6 +1,7 @@
-package io.github.mosadie.ExponentialPower.blocks;
+package io.github.mosadie.exponentialpower.blocks;
 
-import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.StorageTE;
+import io.github.mosadie.exponentialpower.tiles.AdvancedEnderStorageTE;
+import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageTE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,6 +11,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
@@ -30,7 +32,7 @@ public class AdvancedEnderStorage extends Block {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new StorageTE(StorageTE.StorageTier.ADVANCED);
+		return new AdvancedEnderStorageTE();
 	}
 
 	@Override
@@ -38,7 +40,7 @@ public class AdvancedEnderStorage extends Block {
 		if (!worldIn.isRemote) {
 			StorageTE te = (StorageTE) worldIn.getTileEntity(pos);
 			double percent = ((int)(te.energy/te.getMaxEnergy() * 10000.00)) / 100.00;
-			player.sendStatusMessage(new StringTextComponent("Current Energy Stored: " + te.energy + " / " + te.getMaxEnergy() + " RF (" + percent + "%)"), true);
+			player.sendStatusMessage(new TranslationTextComponent("screen.exponentialpower.storage_total").append(new StringTextComponent(" " + te.energy + " / " + te.getMaxEnergy() + " RF (" + percent + "%)")), true);
 		}
 		return ActionResultType.SUCCESS;
 	}

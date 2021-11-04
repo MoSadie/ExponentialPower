@@ -1,8 +1,9 @@
-package io.github.mosadie.ExponentialPower.blocks;
+package io.github.mosadie.exponentialpower.blocks;
 
-import io.github.mosadie.ExponentialPower.GUIContainer.ContainerEnderGeneratorTE;
-import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.GeneratorTE;
-import io.github.mosadie.ExponentialPower.TileEntitys.EnderGeneratorTE;
+import io.github.mosadie.exponentialpower.client.gui.GUIEnderGeneratorTE;
+import io.github.mosadie.exponentialpower.container.ContainerEnderGeneratorTE;
+import io.github.mosadie.exponentialpower.tiles.BaseClasses.GeneratorTE;
+import io.github.mosadie.exponentialpower.tiles.EnderGeneratorTE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -38,7 +39,7 @@ public class EnderGenerator extends Block {
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new GeneratorTE(GeneratorTE.GeneratorTier.REGULAR);
+        return new EnderGeneratorTE();
     }
 
     @Override
@@ -49,7 +50,7 @@ public class EnderGenerator extends Block {
                 INamedContainerProvider containerProvider = new INamedContainerProvider() {
                     @Override
                     public ITextComponent getDisplayName() {
-                        return new TranslationTextComponent("screen.exponentialpower.title.regular");
+                        return GUIEnderGeneratorTE.getTitle((GeneratorTE) tileEntity);
                     }
 
                     @Override
@@ -59,7 +60,7 @@ public class EnderGenerator extends Block {
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());
             } else {
-                throw new IllegalStateException("Our named container provider is missing!");
+                throw new IllegalStateException("Our named container provider is missing!" + tileEntity);
             }
         }
         return ActionResultType.SUCCESS;

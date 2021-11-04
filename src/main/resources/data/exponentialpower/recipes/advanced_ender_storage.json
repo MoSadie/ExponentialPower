@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "exponentialpower",
+  "pattern": [
+    "DSD",
+    "ScS",
+    "DSD"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:diamond_block"
+    },
+    "S": {
+      "item": "exponentialpower:ender_storage"
+    },
+    "c": {
+      "item": "exponentialpower:ender_cell"
+    }
+  },
+  "result": {
+    "item": "exponentialpower:advanced_ender_storage"
+  }
+}

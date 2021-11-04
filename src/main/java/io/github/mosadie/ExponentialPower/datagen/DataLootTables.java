@@ -1,9 +1,9 @@
-package io.github.mosadie.ExponentialPower.datagen;
+package io.github.mosadie.exponentialpower.datagen;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.github.mosadie.ExponentialPower.ExponentialPower;
-import io.github.mosadie.ExponentialPower.setup.Registration;
+import io.github.mosadie.exponentialpower.ExponentialPower;
+import io.github.mosadie.exponentialpower.setup.Registration;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;

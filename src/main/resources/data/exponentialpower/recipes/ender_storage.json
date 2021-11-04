@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "exponentialpower",
+  "pattern": [
+    "DOD",
+    "PcP",
+    "DOD"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:diamond_block"
+    },
+    "O": {
+      "tag": "forge:obsidian"
+    },
+    "P": {
+      "item": "minecraft:dark_prismarine"
+    },
+    "c": {
+      "item": "exponentialpower:ender_cell"
+    }
+  },
+  "result": {
+    "item": "exponentialpower:ender_storage"
+  }
+}

@@ -1,7 +1,7 @@
-package io.github.mosadie.ExponentialPower.items;
+package io.github.mosadie.exponentialpower.items;
 
-import io.github.mosadie.ExponentialPower.Config;
-import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.StorageTE;
+import io.github.mosadie.exponentialpower.Config;
+import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageTE;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItem;

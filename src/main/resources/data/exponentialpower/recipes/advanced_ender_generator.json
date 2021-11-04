@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "exponentialpower",
+  "pattern": [
+    "DGD",
+    "GcG",
+    "DGD"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:diamond_block"
+    },
+    "G": {
+      "item": "exponentialpower:ender_generator"
+    },
+    "c": {
+      "item": "exponentialpower:ender_cell"
+    }
+  },
+  "result": {
+    "item": "exponentialpower:advanced_ender_generator"
+  }
+}

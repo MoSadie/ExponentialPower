@@ -1,7 +1,7 @@
-package io.github.mosadie.ExponentialPower.datagen;
+package io.github.mosadie.exponentialpower.datagen;
 
-import io.github.mosadie.ExponentialPower.ExponentialPower;
-import io.github.mosadie.ExponentialPower.setup.Registration;
+import io.github.mosadie.exponentialpower.ExponentialPower;
+import io.github.mosadie.exponentialpower.setup.Registration;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -15,7 +15,10 @@ public class DataItems extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        singleTexture(Registration.ENDER_CELL.get().getRegistryName().getPath(), new ResourceLocation("item/handheld"), new ResourceLocation(ExponentialPower.MODID, "item/endercell"));
-        withExistingParent(Registration.ENDER_GENERATOR_ITEM.get().getRegistryName().getPath(), new ResourceLocation(ExponentialPower.MODID, "block/endergenerator"));
+        singleTexture(Registration.ENDER_CELL.get().getRegistryName().getPath(), new ResourceLocation("item/handheld"), "layer0", new ResourceLocation(ExponentialPower.MODID, "item/ender_cell"));
+        withExistingParent(Registration.ENDER_GENERATOR_ITEM.get().getRegistryName().getPath(), new ResourceLocation(ExponentialPower.MODID, "block/ender_generator"));
+        withExistingParent(Registration.ADV_ENDER_GENERATOR_ITEM.get().getRegistryName().getPath(), new ResourceLocation(ExponentialPower.MODID, "block/advanced_ender_generator"));
+        withExistingParent(Registration.ENDER_STORAGE_ITEM.get().getRegistryName().getPath(), new ResourceLocation(ExponentialPower.MODID, "block/ender_storage"));
+        withExistingParent(Registration.ADV_ENDER_STORAGE_ITEM.get().getRegistryName().getPath(), new ResourceLocation(ExponentialPower.MODID, "block/advanced_ender_storage"));
     }
 }

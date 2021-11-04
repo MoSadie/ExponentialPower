@@ -1,4 +1,4 @@
-package io.github.mosadie.ExponentialPower;
+package io.github.mosadie.exponentialpower;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 

@@ -1,7 +1,7 @@
-package io.github.mosadie.ExponentialPower.datagen;
+package io.github.mosadie.exponentialpower.datagen;
 
-import io.github.mosadie.ExponentialPower.ExponentialPower;
-import io.github.mosadie.ExponentialPower.setup.Registration;
+import io.github.mosadie.exponentialpower.ExponentialPower;
+import io.github.mosadie.exponentialpower.setup.Registration;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;

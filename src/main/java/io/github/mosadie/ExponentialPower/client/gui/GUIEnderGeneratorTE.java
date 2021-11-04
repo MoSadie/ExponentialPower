@@ -1,13 +1,17 @@
-package io.github.mosadie.ExponentialPower.client.gui;
+package io.github.mosadie.exponentialpower.client.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.mosadie.ExponentialPower.GUIContainer.ContainerEnderGeneratorTE;
-import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.GeneratorTE;
+import io.github.mosadie.exponentialpower.container.ContainerEnderGeneratorTE;
+import io.github.mosadie.exponentialpower.setup.Registration;
+import io.github.mosadie.exponentialpower.tiles.BaseClasses.GeneratorTE;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.Color;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class GUIEnderGeneratorTE extends ContainerScreen<ContainerEnderGeneratorTE> {
@@ -25,21 +29,28 @@ public class GUIEnderGeneratorTE extends ContainerScreen<ContainerEnderGenerator
     }
 
     @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        renderHoveredTooltip(matrixStack, mouseX, mouseY);
+    }
+
+    @Override
     protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GUI);
         int relX = (this.width - this.xSize) / 2;
         int relY = (this.height - this.ySize) / 2;
         this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
-        drawString(matrixStack, getMinecraft().fontRenderer, "Current Energy Stored:", guiLeft+5, guiTop+60, 1);
-        drawString(matrixStack, getMinecraft().fontRenderer, te.energy + " RF", guiLeft+5, guiTop+70, 1);
+
+        getMinecraft().fontRenderer.drawString(matrixStack, I18n.format("screen.exponentialpower.generator_rate"), guiLeft+5, guiTop+53, TextFormatting.DARK_GRAY.getColor());
+        getMinecraft().fontRenderer.drawString(matrixStack, te.energy + " RF/t", guiLeft+5, guiTop+63, TextFormatting.DARK_GRAY.getColor());
     }
 
-    private static ITextComponent getTitle(GeneratorTE te) {
+    public static ITextComponent getTitle(GeneratorTE te) {
 	    if (te.hasCustomName()) return te.getCustomName();
 	    if (te.tier == GeneratorTE.GeneratorTier.ADVANCED)
-	        return new TranslationTextComponent("screen.exponentialpower.title.advanced");
+	        return new TranslationTextComponent(Registration.ADV_ENDER_GENERATOR.get().getTranslationKey());
 	    else
-	        return new TranslationTextComponent("screen.exponentialpower.title.regular");
+	        return new TranslationTextComponent(Registration.ENDER_GENERATOR.get().getTranslationKey());
     }
 }

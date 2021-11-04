@@ -1,6 +1,6 @@
-package io.github.mosadie.ExponentialPower.datagen;
+package io.github.mosadie.exponentialpower.datagen;
 
-import io.github.mosadie.ExponentialPower.ExponentialPower;
+import io.github.mosadie.exponentialpower.ExponentialPower;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,6 +22,7 @@ public class DataGenerators {
             ExponentialPower.LOGGER.info("Registering Client Providers!");
             generator.addProvider(new DataBlockStates(generator, event.getExistingFileHelper()));
             generator.addProvider(new DataItems(generator, event.getExistingFileHelper()));
+            generator.addProvider(new DataLang(generator, "en_us"));
         }
     }
 }

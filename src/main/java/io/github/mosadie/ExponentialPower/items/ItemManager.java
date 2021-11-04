@@ -1,6 +1,6 @@
-package io.github.mosadie.ExponentialPower.items;
+package io.github.mosadie.exponentialpower.items;
 
-import io.github.mosadie.ExponentialPower.setup.Registration;
+import io.github.mosadie.exponentialpower.setup.Registration;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 

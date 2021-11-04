@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "exponentialpower:advanced_ender_storage"
+    ]
+  },
+  "criteria": {
+    "enderstorage": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "exponentialpower:ender_storage"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "exponentialpower:advanced_ender_storage"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "enderstorage",
+      "has_the_recipe"
+    ]
+  ]
+}

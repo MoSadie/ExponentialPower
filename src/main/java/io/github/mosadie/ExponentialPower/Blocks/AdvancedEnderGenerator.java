@@ -1,8 +1,9 @@
-package io.github.mosadie.ExponentialPower.blocks;
+package io.github.mosadie.exponentialpower.blocks;
 
-import io.github.mosadie.ExponentialPower.GUIContainer.ContainerEnderGeneratorTE;
-import io.github.mosadie.ExponentialPower.TileEntitys.AdvancedEnderGeneratorTE;
-import io.github.mosadie.ExponentialPower.TileEntitys.BaseClasses.GeneratorTE;
+import io.github.mosadie.exponentialpower.client.gui.GUIEnderGeneratorTE;
+import io.github.mosadie.exponentialpower.container.ContainerEnderGeneratorTE;
+import io.github.mosadie.exponentialpower.tiles.AdvancedEnderGeneratorTE;
+import io.github.mosadie.exponentialpower.tiles.BaseClasses.GeneratorTE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -39,7 +40,7 @@ public class AdvancedEnderGenerator extends Block {
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new GeneratorTE(GeneratorTE.GeneratorTier.ADVANCED);
+        return new AdvancedEnderGeneratorTE();
     }
 
     @Override
@@ -50,7 +51,7 @@ public class AdvancedEnderGenerator extends Block {
                 INamedContainerProvider containerProvider = new INamedContainerProvider() {
                     @Override
                     public ITextComponent getDisplayName() {
-                        return new TranslationTextComponent("screen.exponentialpower.title.advanced");
+                        return GUIEnderGeneratorTE.getTitle((GeneratorTE) tileEntity);
                     }
 
                     @Override
