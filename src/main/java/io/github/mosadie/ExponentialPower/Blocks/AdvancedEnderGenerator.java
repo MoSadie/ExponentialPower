@@ -51,7 +51,7 @@ public class AdvancedEnderGenerator extends Block {
                 INamedContainerProvider containerProvider = new INamedContainerProvider() {
                     @Override
                     public ITextComponent getDisplayName() {
-                        return GUIEnderGeneratorTE.getTitle((GeneratorTE) tileEntity);
+                        return ((GeneratorTE) tileEntity).getTitle();
                     }
 
                     @Override

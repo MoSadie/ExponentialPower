@@ -36,6 +36,7 @@ public class GUIEnderGeneratorTE extends ContainerScreen<ContainerEnderGenerator
 
     @Override
     protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+	    renderBackground(matrixStack);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GUI);
         int relX = (this.width - this.xSize) / 2;
@@ -44,13 +45,5 @@ public class GUIEnderGeneratorTE extends ContainerScreen<ContainerEnderGenerator
 
         getMinecraft().fontRenderer.drawString(matrixStack, I18n.format("screen.exponentialpower.generator_rate"), guiLeft+5, guiTop+53, TextFormatting.DARK_GRAY.getColor());
         getMinecraft().fontRenderer.drawString(matrixStack, te.energy + " RF/t", guiLeft+5, guiTop+63, TextFormatting.DARK_GRAY.getColor());
-    }
-
-    public static ITextComponent getTitle(GeneratorTE te) {
-	    if (te.hasCustomName()) return te.getCustomName();
-	    if (te.tier == GeneratorTE.GeneratorTier.ADVANCED)
-	        return new TranslationTextComponent(Registration.ADV_ENDER_GENERATOR.get().getTranslationKey());
-	    else
-	        return new TranslationTextComponent(Registration.ENDER_GENERATOR.get().getTranslationKey());
     }
 }

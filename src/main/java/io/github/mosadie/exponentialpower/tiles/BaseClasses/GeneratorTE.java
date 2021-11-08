@@ -15,6 +15,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
@@ -313,5 +314,13 @@ public class GeneratorTE extends TileEntity implements ITickableTileEntity, IInv
 				return stack.getItem() == Registration.ENDER_CELL.get();
 			}
 		};
+	}
+
+	public ITextComponent getTitle() {
+		if (hasCustomName()) return getCustomName();
+		if (tier == GeneratorTE.GeneratorTier.ADVANCED)
+			return new TranslationTextComponent(Registration.ADV_ENDER_GENERATOR.get().getTranslationKey());
+		else
+			return new TranslationTextComponent(Registration.ENDER_GENERATOR.get().getTranslationKey());
 	}
 }
