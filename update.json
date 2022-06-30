@@ -1,5 +1,8 @@
 {
-  "homepage": "https://minecraft.curseforge.com/projects/exponential-power",
+  "homepage": "https://github.com/MoSadie/ExponentialPower",
+  "1.18.2": {
+    "2.1.0": "See https://github.com/MoSadie/ExponentialPower/releases/tag/v2.1.0"
+  },
   "1.16.4": {
     "2.0.1": "See https://github.com/MoSadie/ExponentialPower/releases/tag/v2.0.1",
     "2.0.0": "See https://github.com/MoSadie/ExponentialPower/releases/tag/v2.0.0"
@@ -33,6 +36,7 @@
     "1.0.0": "See https://github.com/MoSadie/ExponentialPower/releases/tag/v1.0"
   },
   "promos": {
+    "1.18.2-recommended": "2.1.0",
     "1.16.5-recommended": "2.0.1",
     "1.16.4-recommended": "2.0.1",
     "1.12.2-recommended": "1.4.1",
