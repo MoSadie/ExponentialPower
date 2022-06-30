@@ -1,20 +1,19 @@
 package io.github.mosadie.exponentialpower.container;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
+import io.github.mosadie.exponentialpower.entities.BaseClasses.GeneratorBE;
+import net.minecraft.world.inventory.Slot;
 
 public class CustomStackLimitSlot extends Slot {
 
 	private final int stackLimit;
 	
-	public CustomStackLimitSlot(int stackLimit, IInventory inventoryIn, int index, int xPosition, int yPosition) {
-		super(inventoryIn, index, xPosition, yPosition);
+	public CustomStackLimitSlot(int stackLimit, GeneratorBE generator, int index, int xPosition, int yPosition) {
+		super(generator, index, xPosition, yPosition);
 		this.stackLimit = stackLimit;
 	}
 
 	@Override
-	public int getSlotStackLimit() {
+	public int getMaxStackSize() {
 		return stackLimit;
-		
 	}
 }

@@ -1,14 +1,27 @@
 modLoader="javafml"
-loaderVersion="[35,)"
+loaderVersion="[40,)"
 issueTrackerURL="https://github.com/MoSadie/ExponentialPower/issues"
-license="GNU GPL v3"
+license="GNU LGPL v3"
+logoFile="modIcon.png"
 [[mods]]
     modId="exponentialpower"
     version="${file.jarVersion}"
     displayName="Exponential Power"
     updateJSONURL="https://github.com/MoSadie/ExponentialPower/raw/master/update.json"
-    displayURL="https://www.curseforge.com/minecraft/mc-mods/exponential-power"
+    displayURL="https://github.com/MoSadie/ExponentialPowerr"
     authors="MoSadie"
     description='''
       Adds generators creating an exponential amount of RF/tick. And some storage blocks to hold that power.
       '''
+[[dependencies.exponentialpower]]
+    modId="forge"
+    mandatory=true
+    versionRange="[40,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.exponentialpower]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18.2,1.19)"
+    ordering="NONE"
+    side="BOTH"

@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "exponentialpower:ender_storage"
+            "items": [
+              "exponentialpower:ender_storage"
+            ]
           }
         ]
       }

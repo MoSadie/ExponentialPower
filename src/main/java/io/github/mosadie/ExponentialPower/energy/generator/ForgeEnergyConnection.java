@@ -1,15 +1,15 @@
 package io.github.mosadie.exponentialpower.energy.generator;
 
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.GeneratorTE;
+import io.github.mosadie.exponentialpower.entities.BaseClasses.GeneratorBE;
 import net.minecraftforge.energy.*;
 
 public class ForgeEnergyConnection implements IEnergyStorage {
 	
-	private final GeneratorTE owner;
+	private final GeneratorBE owner;
 	private final boolean canExtract;
 	private final boolean canReceive;
 	
-	public ForgeEnergyConnection(GeneratorTE owner, boolean canExtract, boolean canReceive) {
+	public ForgeEnergyConnection(GeneratorBE owner, boolean canExtract, boolean canReceive) {
 		this.owner = owner;
 		this.canExtract = canExtract;
 		this.canReceive = canReceive;
@@ -25,12 +25,12 @@ public class ForgeEnergyConnection implements IEnergyStorage {
 		if (owner.energy <= maxExtract) {
 			int temp = (int) owner.energy;
 			if (!simulate) owner.energy = 0;
-			owner.markDirty();
+			owner.setChanged();
 			return temp;
 		}
 		else {
 			if (!simulate) owner.energy -= maxExtract;
-			owner.markDirty();
+			owner.setChanged();
 			return maxExtract;
 		}
 

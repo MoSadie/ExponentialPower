@@ -1,44 +1,38 @@
 package io.github.mosadie.exponentialpower.blocks;
 
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageTE;
-import io.github.mosadie.exponentialpower.tiles.EnderStorageTE;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import io.github.mosadie.exponentialpower.entities.BaseClasses.StorageBE;
+import io.github.mosadie.exponentialpower.entities.EnderStorageBE;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
-public class EnderStorage extends Block {
+public class EnderStorage extends Block implements EntityBlock {
 
 	public EnderStorage() {
 		super(BlockManager.BLOCK_PROPERTIES);
-
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new EnderStorageBE(pos, state);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new EnderStorageTE();
-	}
-
-	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (!worldIn.isRemote) {
-			StorageTE te = (StorageTE) worldIn.getTileEntity(pos);
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+		if (!level.isClientSide) {
+			StorageBE te = (StorageBE) level.getBlockEntity(pos);
 			double percent = ((int)(te.energy/te.getMaxEnergy() * 10000.00)) / 100.00;
-			player.sendStatusMessage(new TranslationTextComponent("screen.exponentialpower.storage_total").append(new StringTextComponent(" " + te.energy + " / " + te.getMaxEnergy() + " RF (" + percent + "%)")), true);
+			player.sendMessage(new TranslatableComponent("screen.exponentialpower.storage_total").append(new TextComponent(" " + te.energy + " / " + te.getMaxEnergy() + " RF (" + percent + "%)")), player.getUUID());
 		}
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 }
