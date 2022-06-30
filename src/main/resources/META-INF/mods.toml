@@ -2,6 +2,7 @@ modLoader="javafml"
 loaderVersion="[40,)"
 issueTrackerURL="https://github.com/MoSadie/ExponentialPower/issues"
 license="GNU LGPL v3"
+logoFile="modIcon.png"
 [[mods]]
     modId="exponentialpower"
     version="${file.jarVersion}"

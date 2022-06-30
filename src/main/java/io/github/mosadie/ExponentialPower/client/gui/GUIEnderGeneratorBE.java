@@ -28,13 +28,13 @@ public class GUIEnderGeneratorBE extends AbstractContainerScreen<ContainerEnderG
 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
     protected void renderLabels(PoseStack matrixStack, int p_97809_, int p_97810_) {
+        super.renderLabels(matrixStack, p_97809_, p_97810_);
         drawString(matrixStack, Minecraft.getInstance().font, new TranslatableComponent("screen.exponentialpower.generator_rate"), 10, 53, 0xffffff);
         drawString(matrixStack, Minecraft.getInstance().font, be.energy + " RF/t", 10, 63, 0xffffff);
     }
