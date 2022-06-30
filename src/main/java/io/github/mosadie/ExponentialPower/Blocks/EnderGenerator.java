@@ -73,7 +73,7 @@ public class EnderGenerator extends Block implements EntityBlock {
         if (stack.hasCustomHoverName()) {
             BlockEntity te = worldIn.getBlockEntity(pos);
             if (te != null && te instanceof GeneratorTE)
-                ((GeneratorTE) te).setCustomName(stack.getDisplayName());
+                ((GeneratorTE) te).setCustomName(stack.getHoverName());
         }
     }
 

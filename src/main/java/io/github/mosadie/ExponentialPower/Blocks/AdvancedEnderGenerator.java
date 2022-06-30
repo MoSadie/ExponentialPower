@@ -60,7 +60,7 @@ public class AdvancedEnderGenerator extends Block implements EntityBlock {
                 };
                 NetworkHooks.openGui((ServerPlayer) player, containerProvider, tileEntity.getBlockPos());
             } else {
-            throw new IllegalStateException("Our named container provider is missing!");
+                throw new IllegalStateException("Our named container provider is missing!");
             }
         }
         return InteractionResult.SUCCESS;
@@ -73,7 +73,7 @@ public class AdvancedEnderGenerator extends Block implements EntityBlock {
         if (stack.hasCustomHoverName()) {
             BlockEntity te = worldIn.getBlockEntity(pos);
             if (te != null && te instanceof GeneratorTE)
-                ((GeneratorTE) te).setCustomName(stack.getDisplayName());
+                ((GeneratorTE) te).setCustomName(stack.getHoverName());
         }
     }
 

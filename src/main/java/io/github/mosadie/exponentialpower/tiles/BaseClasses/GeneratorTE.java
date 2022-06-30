@@ -1,6 +1,7 @@
 package io.github.mosadie.exponentialpower.tiles.BaseClasses;
 
 import io.github.mosadie.exponentialpower.Config;
+import io.github.mosadie.exponentialpower.ExponentialPower;
 import io.github.mosadie.exponentialpower.container.ContainerEnderGeneratorTE;
 import io.github.mosadie.exponentialpower.energy.generator.ForgeEnergyConnection;
 import io.github.mosadie.exponentialpower.items.EnderCell;
@@ -16,6 +17,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
@@ -43,7 +45,6 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 	public double energy = 0;
 
 	public NonNullList<ItemStack> inventory = NonNullList.withSize(1, ItemStack.EMPTY);
-	public Component customName;
 
 	private ForgeEnergyConnection fec;
 	private final LazyOptional<ForgeEnergyConnection> fecOptional = LazyOptional.of(() -> fec);
@@ -150,10 +151,6 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 		}
 	}
 
-	public boolean hasCustomName() {
-		return this.customName != null && !this.customName.equals("");
-	}
-
 //	@Override
 //	public int getSizeInventory() {
 //		return itemStackHandler.getSlots();
@@ -176,10 +173,6 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 	@Override
 	protected AbstractContainerMenu createMenu(int windowId, Inventory playerInv) {
 		return new ContainerEnderGeneratorTE(windowId, playerInv, this);
-	}
-
-	public void setCustomName(Component customName) {
-		this.customName = customName;
 	}
 
 	private void handleSendingEnergy() {
@@ -211,6 +204,7 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 
 	@Override
 	public int getContainerSize() {
+
 		return inventory.size();
 	}
 
@@ -221,12 +215,12 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 
 	@Override
 	public ItemStack getItem(int slot) {
-		return slot < getContainerSize() && slot > 0 ? inventory.get(slot) : ItemStack.EMPTY;
+		return slot <= getContainerSize() && slot >= 0 ? inventory.get(slot) : ItemStack.EMPTY;
 	}
 
 	@Override
 	public ItemStack removeItem(int slot, int count) {
-		if (slot < getContainerSize() && slot > 0) {
+		if (slot < getContainerSize() && slot >= 0) {
 			ItemStack stack = getItem(slot);
 
 			if (count > stack.getCount()) {
@@ -252,7 +246,7 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 
 	@Override
 	public void setItem(int slot, ItemStack item) {
-		if (slot < getContainerSize() && slot > 0) {
+		if (slot < getContainerSize() && slot >= 0) {
 			inventory.set(slot, item);
 		}
 	}

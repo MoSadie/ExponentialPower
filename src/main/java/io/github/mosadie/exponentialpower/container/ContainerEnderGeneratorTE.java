@@ -34,6 +34,37 @@ public class ContainerEnderGeneratorTE extends AbstractContainerMenu {
 		}
 	}
 
+	@Override
+	public ItemStack quickMoveStack(Player playerIn, int fromSlot) {
+		ItemStack previous = ItemStack.EMPTY;
+		Slot slot = (Slot) this.slots.get(fromSlot);
+
+		if (slot != null && slot.hasItem()) {
+			ItemStack current = slot.getItem();
+			previous = current.copy();
+
+			if (fromSlot == 0) {
+				// From TE Inventory to Player Inventory
+				if (current.getCount() <= 0) return ItemStack.EMPTY;
+				if (!this.moveItemStackTo(current, 1, 36, true))
+					return ItemStack.EMPTY;
+			} else {
+				// From Player Inventory to TE Inventory
+				if (!this.moveItemStackTo(current, 0, 1, false))
+					return ItemStack.EMPTY;
+			}
+
+			if (current.getCount() == 0)
+				slot.set(ItemStack.EMPTY);
+			else
+				slot.setChanged();
+
+			if (current.getCount() == previous.getCount())
+				return ItemStack.EMPTY;
+		}
+		return previous;
+	}
+
 //	@Override
 //	public ItemStack quickMoveStack(Player playerIn, int fromSlot) {
 //		ItemStack previous = ItemStack.EMPTY;
