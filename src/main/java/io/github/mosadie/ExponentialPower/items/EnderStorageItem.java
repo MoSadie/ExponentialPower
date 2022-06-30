@@ -2,15 +2,16 @@ package io.github.mosadie.exponentialpower.items;
 
 import io.github.mosadie.exponentialpower.Config;
 import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageTE;
-import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -20,9 +21,9 @@ import java.util.List;
 public class EnderStorageItem extends BlockItem {
 
 	private final static Item.Properties properties = new Item.Properties()
-			.maxStackSize(1)
-			.isImmuneToFire()
-			.group(ItemManager.ITEM_GROUP);
+			.stacksTo(1)
+			.fireResistant()
+			.tab(ItemManager.ITEM_GROUP);
 
 	public EnderStorageItem(Block block, StorageTE.StorageTier tier) {
 		super(block, properties);
@@ -33,22 +34,22 @@ public class EnderStorageItem extends BlockItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
 		double energy = 0;
 
 		if (stack.hasTag()) {
-			CompoundNBT blockEntityTag = stack.getChildTag("BlockEntityTag");
+			CompoundTag blockEntityTag = stack.getTagElement("BlockEntityTag");
 			if (blockEntityTag.contains("energy")) {
 				energy = blockEntityTag.getDouble("energy");
 			}
 		}
 		
-		tooltip.add(new StringTextComponent("Current Energy Stored:"));
-		tooltip.add(new StringTextComponent(energy + "/" + getMaxEnergy()));
+		tooltip.add(new TranslatableComponent("item.exponentialpower.storage.tooltip.stored"));
+		tooltip.add(new TextComponent(energy + "/" + getMaxEnergy()));
 		double percent = ((int)(energy/getMaxEnergy() * 10000.00)) / 100.00;
-		tooltip.add(new StringTextComponent("(" + percent + "%)"));
+		tooltip.add(new TextComponent("(" + percent + "%)"));
 	}
 
 	public double getMaxEnergy() {

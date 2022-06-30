@@ -25,12 +25,12 @@ public class ForgeEnergyConnection implements IEnergyStorage {
 		if (owner.energy <= maxExtract) {
 			int temp = (int) owner.energy;
 			if (!simulate) owner.energy = 0;
-			owner.markDirty();
+			owner.setChanged();
 			return temp;
 		}
 		else {
 			if (!simulate) owner.energy -= maxExtract;
-			owner.markDirty();
+			owner.setChanged();
 			return maxExtract;
 		}
 

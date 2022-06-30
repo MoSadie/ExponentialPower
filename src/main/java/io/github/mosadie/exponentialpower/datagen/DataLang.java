@@ -26,5 +26,6 @@ public class DataLang extends LanguageProvider {
         add("screen.exponentialpower.generator_rate", "Current Energy Generation:");
         add("screen.exponentialpower.storage_total", "Current Energy Stored:");
 
+        add("item.exponentialpower.storage.tooltip.stored", "Current Energy Stored:");
     }
 }

@@ -1,7 +1,7 @@
 package io.github.mosadie.exponentialpower.energy.storage;
 
 import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageTE;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class ForgeEnergyConnection implements IEnergyStorage{
@@ -26,13 +26,13 @@ public class ForgeEnergyConnection implements IEnergyStorage{
 		if ((owner.energy + maxReceive) < owner.energy ) {
 			int tmpGained = (int) (Double.MAX_VALUE - owner.energy);
 			owner.energy = Double.MAX_VALUE;
-			owner.markDirty();
+			owner.setChanged();
 			owner.freezeExpend.put(direction, true);
 			return tmpGained;
 		} else {
 			owner.energy += maxReceive;
 			owner.freezeExpend.put(direction, true);
-			owner.markDirty();
+			owner.setChanged();
 			return maxReceive;
 		}
 	}
@@ -43,12 +43,12 @@ public class ForgeEnergyConnection implements IEnergyStorage{
 		if (owner.energy <= maxExtract) {
 			int temp = (int) owner.energy;
 			if (!simulate) owner.energy = 0;
-			owner.markDirty();
+			owner.setChanged();
 			return temp;
 		}
 		else {
 			if (!simulate) owner.energy -= maxExtract;
-			owner.markDirty();
+			owner.setChanged();
 			return maxExtract;
 		}
 

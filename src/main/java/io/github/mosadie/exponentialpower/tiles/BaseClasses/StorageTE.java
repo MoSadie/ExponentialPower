@@ -3,20 +3,23 @@ package io.github.mosadie.exponentialpower.tiles.BaseClasses;
 import io.github.mosadie.exponentialpower.Config;
 import io.github.mosadie.exponentialpower.energy.storage.ForgeEnergyConnection;
 import io.github.mosadie.exponentialpower.setup.Registration;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 
-public class StorageTE extends TileEntity implements ITickableTileEntity {
+public class StorageTE extends BlockEntity implements BlockEntityTicker<StorageTE> {
 
 	public enum StorageTier {
 		REGULAR,
@@ -30,8 +33,8 @@ public class StorageTE extends TileEntity implements ITickableTileEntity {
 	private final EnumMap<Direction, ForgeEnergyConnection> fec;
 	private final EnumMap<Direction, LazyOptional<ForgeEnergyConnection>> fecOptional;
 
-	public StorageTE(StorageTier tier) {
-		super(tier == StorageTier.ADVANCED ? Registration.ADV_ENDER_STORAGE_TE.get() : Registration.ENDER_STORAGE_TE.get());
+	public StorageTE(StorageTier tier, BlockPos pos, BlockState state) {
+		super(tier == StorageTier.ADVANCED ? Registration.ADV_ENDER_STORAGE_TE.get() : Registration.ENDER_STORAGE_TE.get(), pos, state);
 		this.tier = tier;
 		freezeExpend = new EnumMap<>(Direction.class);
 		fec = new EnumMap<>(Direction.class);
@@ -46,34 +49,34 @@ public class StorageTE extends TileEntity implements ITickableTileEntity {
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public void saveAdditional(CompoundTag nbt) {
+		super.saveAdditional(nbt);
 
 		nbt.putDouble("energy", energy);
-		return nbt;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
-		energy = nbt.getDouble("energy");
+	public void load(CompoundTag tag) {
+		super.load(tag);
+		energy = tag.getDouble("energy");
 	}
 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction dir) {
+	@Nonnull
+	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction dir) {
 		if (cap == CapabilityEnergy.ENERGY) return fecOptional.get((dir != null) ? dir : Direction.UP).cast();
 		return super.getCapability(cap, dir);
 	}
 
 	@Override
-	public void tick() {
+	public void tick(Level p_155253_, BlockPos p_155254_, BlockState p_155255_, StorageTE p_155256_) {
 		if (energy > 0) handleSendingEnergy();
 	}
 
 	private void handleSendingEnergy() {
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			if (energy <= 0) {
 				return;
 			} 
@@ -85,11 +88,11 @@ public class StorageTE extends TileEntity implements ITickableTileEntity {
 					freezeExpend.put(dir, false);
 					continue;
 				}
-				BlockPos targetBlock = getPos().add(dir.getDirectionVec());
-				TileEntity tile = world.getTileEntity(targetBlock);
-				if (tile != null) {
-					if (tile instanceof StorageTE) {
-						StorageTE storage = (StorageTE) tile;
+				BlockPos targetBlock = getBlockPos().relative(dir);
+				BlockEntity entity = level.getBlockEntity(targetBlock);
+				if (entity != null) {
+					if (entity instanceof StorageTE) {
+						StorageTE storage = (StorageTE) entity;
 						double difference = storage.acceptEnergy(energy);
 						energy -= difference;
 						if (difference > 0) {
@@ -97,7 +100,7 @@ public class StorageTE extends TileEntity implements ITickableTileEntity {
 						}
 					}
 					else {
-						tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite()).ifPresent((cap) -> {
+						entity.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite()).ifPresent((cap) -> {
 							if (cap.canReceive()) {
 								int change = cap.receiveEnergy((int) (energy > Integer.MAX_VALUE ? Integer.MAX_VALUE : energy), false);
 								if (change > 0) {

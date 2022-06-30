@@ -1,9 +1,11 @@
 package io.github.mosadie.exponentialpower.tiles;
 
 import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageTE;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class AdvancedEnderStorageTE extends StorageTE {
-    public AdvancedEnderStorageTE() {
-        super(StorageTE.StorageTier.ADVANCED);
+    public AdvancedEnderStorageTE(BlockPos pos, BlockState state) {
+        super(StorageTE.StorageTier.ADVANCED, pos, state);
     }
 }
