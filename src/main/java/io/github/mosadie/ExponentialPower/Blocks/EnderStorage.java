@@ -1,7 +1,7 @@
 package io.github.mosadie.exponentialpower.blocks;
 
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageTE;
-import io.github.mosadie.exponentialpower.tiles.EnderStorageTE;
+import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageBE;
+import io.github.mosadie.exponentialpower.tiles.EnderStorageBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -23,13 +23,13 @@ public class EnderStorage extends Block implements EntityBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new EnderStorageTE(pos, state);
+		return new EnderStorageBE(pos, state);
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-		if (!worldIn.isClientSide) {
-			StorageTE te = (StorageTE) worldIn.getBlockEntity(pos);
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+		if (!level.isClientSide) {
+			StorageBE te = (StorageBE) level.getBlockEntity(pos);
 			double percent = ((int)(te.energy/te.getMaxEnergy() * 10000.00)) / 100.00;
 			player.sendMessage(new TranslatableComponent("screen.exponentialpower.storage_total").append(new TextComponent(" " + te.energy + " / " + te.getMaxEnergy() + " RF (" + percent + "%)")), player.getUUID());
 		}

@@ -1,7 +1,7 @@
 package io.github.mosadie.exponentialpower.items;
 
 import io.github.mosadie.exponentialpower.Config;
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageTE;
+import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageBE;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -25,12 +25,12 @@ public class EnderStorageItem extends BlockItem {
 			.fireResistant()
 			.tab(ItemManager.ITEM_GROUP);
 
-	public EnderStorageItem(Block block, StorageTE.StorageTier tier) {
+	public EnderStorageItem(Block block, StorageBE.StorageTier tier) {
 		super(block, properties);
 		this.tier = tier;
 	}
 
-	private final StorageTE.StorageTier tier;
+	private final StorageBE.StorageTier tier;
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
@@ -41,7 +41,7 @@ public class EnderStorageItem extends BlockItem {
 
 		if (stack.hasTag()) {
 			CompoundTag blockEntityTag = stack.getTagElement("BlockEntityTag");
-			if (blockEntityTag.contains("energy")) {
+			if (blockEntityTag != null && blockEntityTag.contains("energy")) {
 				energy = blockEntityTag.getDouble("energy");
 			}
 		}

@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 
-public class StorageTE extends BlockEntity implements BlockEntityTicker<StorageTE> {
+public class StorageBE extends BlockEntity implements BlockEntityTicker<StorageBE> {
 
 	public enum StorageTier {
 		REGULAR,
@@ -33,8 +33,8 @@ public class StorageTE extends BlockEntity implements BlockEntityTicker<StorageT
 	private final EnumMap<Direction, ForgeEnergyConnection> fec;
 	private final EnumMap<Direction, LazyOptional<ForgeEnergyConnection>> fecOptional;
 
-	public StorageTE(StorageTier tier, BlockPos pos, BlockState state) {
-		super(tier == StorageTier.ADVANCED ? Registration.ADV_ENDER_STORAGE_TE.get() : Registration.ENDER_STORAGE_TE.get(), pos, state);
+	public StorageBE(StorageTier tier, BlockPos pos, BlockState state) {
+		super(tier == StorageTier.ADVANCED ? Registration.ADV_ENDER_STORAGE_BE.get() : Registration.ENDER_STORAGE_BE.get(), pos, state);
 		this.tier = tier;
 		freezeExpend = new EnumMap<>(Direction.class);
 		fec = new EnumMap<>(Direction.class);
@@ -71,7 +71,7 @@ public class StorageTE extends BlockEntity implements BlockEntityTicker<StorageT
 	}
 
 	@Override
-	public void tick(Level p_155253_, BlockPos p_155254_, BlockState p_155255_, StorageTE p_155256_) {
+	public void tick(Level level, BlockPos pos, BlockState state, StorageBE storage) {
 		if (energy > 0) handleSendingEnergy();
 	}
 
@@ -91,8 +91,8 @@ public class StorageTE extends BlockEntity implements BlockEntityTicker<StorageT
 				BlockPos targetBlock = getBlockPos().relative(dir);
 				BlockEntity entity = level.getBlockEntity(targetBlock);
 				if (entity != null) {
-					if (entity instanceof StorageTE) {
-						StorageTE storage = (StorageTE) entity;
+					if (entity instanceof StorageBE) {
+						StorageBE storage = (StorageBE) entity;
 						double difference = storage.acceptEnergy(energy);
 						energy -= difference;
 						if (difference > 0) {

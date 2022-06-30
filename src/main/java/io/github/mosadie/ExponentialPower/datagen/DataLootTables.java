@@ -45,8 +45,8 @@ public class DataLootTables extends LootTableProvider {
 
     protected void addTables() {
         ExponentialPower.LOGGER.info("Generating Loot Tables!");
-        lootTables.put(Registration.ENDER_GENERATOR.get(), createEnderGeneratorTable("endergenerator", Registration.ENDER_GENERATOR.get(), Registration.ENDER_GENERATOR_TE.get()));
-        lootTables.put(Registration.ADV_ENDER_GENERATOR.get(), createEnderGeneratorTable("advancedendergenerator", Registration.ADV_ENDER_GENERATOR.get(), Registration.ADV_ENDER_GENERATOR_TE.get()));
+        lootTables.put(Registration.ENDER_GENERATOR.get(), createEnderGeneratorTable("endergenerator", Registration.ENDER_GENERATOR.get(), Registration.ENDER_GENERATOR_BE.get()));
+        lootTables.put(Registration.ADV_ENDER_GENERATOR.get(), createEnderGeneratorTable("advancedendergenerator", Registration.ADV_ENDER_GENERATOR.get(), Registration.ADV_ENDER_GENERATOR_BE.get()));
 
         lootTables.put(Registration.ENDER_STORAGE.get(), createEnderStorageTable("enderstorage", Registration.ENDER_STORAGE.get()));
         lootTables.put(Registration.ADV_ENDER_STORAGE.get(), createEnderStorageTable("advancedenderstorage", Registration.ADV_ENDER_STORAGE.get()));
@@ -104,6 +104,6 @@ public class DataLootTables extends LootTableProvider {
 
     @Override
     public String getName() {
-        return "ExponentialPower LootTables";
+        return "ExponentialPower Loot Tables";
     }
 }

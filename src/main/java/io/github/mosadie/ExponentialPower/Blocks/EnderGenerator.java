@@ -1,9 +1,9 @@
 package io.github.mosadie.exponentialpower.blocks;
 
-import io.github.mosadie.exponentialpower.container.ContainerEnderGeneratorTE;
+import io.github.mosadie.exponentialpower.container.ContainerEnderGeneratorBE;
 import io.github.mosadie.exponentialpower.setup.Registration;
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.GeneratorTE;
-import io.github.mosadie.exponentialpower.tiles.EnderGeneratorTE;
+import io.github.mosadie.exponentialpower.tiles.BaseClasses.GeneratorBE;
+import io.github.mosadie.exponentialpower.tiles.EnderGeneratorBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,29 +33,29 @@ public class EnderGenerator extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new EnderGeneratorTE(pos, state);
+        return new EnderGeneratorBE(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return type == Registration.ENDER_GENERATOR_TE.get() ? GeneratorTE::tick : null;
+        return type == Registration.ENDER_GENERATOR_BE.get() ? GeneratorBE::tick : null;
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if (!worldIn.isClientSide) {
-            BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-            if (tileEntity instanceof EnderGeneratorTE) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if (!level.isClientSide) {
+            BlockEntity tileEntity = level.getBlockEntity(pos);
+            if (tileEntity instanceof EnderGeneratorBE) {
                 MenuProvider containerProvider = new MenuProvider() {
                     @Override
                     public Component getDisplayName() {
-                        return ((GeneratorTE) tileEntity).getTitle();
+                        return ((GeneratorBE) tileEntity).getTitle();
                     }
 
                     @Override
                     public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
-                        return new ContainerEnderGeneratorTE(i, playerInventory, (GeneratorTE) tileEntity);
+                        return new ContainerEnderGeneratorBE(i, playerInventory, (GeneratorBE) tileEntity);
                     }
                 };
                 NetworkHooks.openGui((ServerPlayer) player, containerProvider, tileEntity.getBlockPos());
@@ -69,11 +69,11 @@ public class EnderGenerator extends Block implements EntityBlock {
 
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         if (stack.hasCustomHoverName()) {
-            BlockEntity te = worldIn.getBlockEntity(pos);
-            if (te != null && te instanceof GeneratorTE)
-                ((GeneratorTE) te).setCustomName(stack.getHoverName());
+            BlockEntity te = level.getBlockEntity(pos);
+            if (te instanceof GeneratorBE)
+                ((GeneratorBE) te).setCustomName(stack.getHoverName());
         }
     }
 

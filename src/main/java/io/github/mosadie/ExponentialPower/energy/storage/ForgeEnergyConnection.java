@@ -1,17 +1,17 @@
 package io.github.mosadie.exponentialpower.energy.storage;
 
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageTE;
+import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageBE;
 import net.minecraft.core.Direction;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class ForgeEnergyConnection implements IEnergyStorage{
 	
-	private final StorageTE owner;
+	private final StorageBE owner;
 	private final boolean canExtract;
 	private final boolean canReceive;
 	private final Direction direction;
 	
-	public ForgeEnergyConnection(StorageTE owner, boolean canExtract, boolean canReceive, Direction dir) {
+	public ForgeEnergyConnection(StorageBE owner, boolean canExtract, boolean canReceive, Direction dir) {
 		this.owner = owner;
 		this.canExtract = canExtract;
 		this.canReceive = canReceive;

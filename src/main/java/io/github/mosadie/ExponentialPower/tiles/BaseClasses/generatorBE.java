@@ -1,8 +1,7 @@
 package io.github.mosadie.exponentialpower.tiles.BaseClasses;
 
 import io.github.mosadie.exponentialpower.Config;
-import io.github.mosadie.exponentialpower.ExponentialPower;
-import io.github.mosadie.exponentialpower.container.ContainerEnderGeneratorTE;
+import io.github.mosadie.exponentialpower.container.ContainerEnderGeneratorBE;
 import io.github.mosadie.exponentialpower.energy.generator.ForgeEnergyConnection;
 import io.github.mosadie.exponentialpower.items.EnderCell;
 import io.github.mosadie.exponentialpower.setup.Registration;
@@ -17,7 +16,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
@@ -32,7 +30,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 
-public class GeneratorTE extends BaseContainerBlockEntity implements ICapabilityProvider {
+public class GeneratorBE extends BaseContainerBlockEntity implements ICapabilityProvider {
 
 
 	public enum GeneratorTier {
@@ -50,8 +48,8 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 	private final LazyOptional<ForgeEnergyConnection> fecOptional = LazyOptional.of(() -> fec);
 
 
-	public GeneratorTE(GeneratorTier tier, BlockPos pos, BlockState state) {
-		super(tier == GeneratorTier.ADVANCED ? Registration.ADV_ENDER_GENERATOR_TE.get() : Registration.ENDER_GENERATOR_TE.get(), pos, state);
+	public GeneratorBE(GeneratorTier tier, BlockPos pos, BlockState state) {
+		super(tier == GeneratorTier.ADVANCED ? Registration.ADV_ENDER_GENERATOR_BE.get() : Registration.ENDER_GENERATOR_BE.get(), pos, state);
 		this.tier = tier;
 		fec = new ForgeEnergyConnection(this, true, false);
 	}
@@ -67,24 +65,6 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 	@Override
 	public void saveAdditional(CompoundTag nbt) {
 		super.saveAdditional(nbt);
-		//super.writeToNBT recreated and modified here.
-//		ResourceLocation resourcelocation = new ResourceLocation(ExponentialPower.MODID + (tier == GeneratorTier.REGULAR ? ":endergenerator_tile_entity" : ":advancedendergenerator_tile_entity"));
-//		nbt.setString("id", resourcelocation.toString());
-//		nbt.setInteger("x", this.pos.getX());
-//		nbt.setInteger("y", this.pos.getY());
-//		nbt.setInteger("z", this.pos.getZ());
-//		nbt.setTag("ForgeData", this.getTileData());
-
-//		ListNBT list = new ListNBT();
-//		for (int i = 0; i < this.getSizeInventory(); ++i) {
-//			if (this.getStackInSlot(i) != null) {
-//				CompoundNBT stackTag = new CompoundNBT();
-//				stackTag.putByte("Slot", (byte) i);
-//				this.getStackInSlot(i).write(stackTag);
-//				list.add(stackTag);
-//			}
-//		}
-//		nbt.put("Items", list);
 
 		ListTag nbtTagList = new ListTag();
 		int slotsSize = getContainerSize();
@@ -99,25 +79,11 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 		CompoundTag invNbt = new CompoundTag();
 		invNbt.put("Items", nbtTagList);
 		nbt.put("Items", invNbt);
-
-
-//		nbt.put("Items", .serializeNBT());
-
-//		if (this.hasCustomName()) {
-//			nbt.putString("CustomName", this.getCustomName().getString());
-//		}
 	}
 
 	@Override
 	public void load(CompoundTag nbt) {
 		super.load(nbt);
-
-//		ListNBT list = nbt.getList("Items", 10);
-//		for (int i = 0; i < list.size(); ++i) {
-//			CompoundNBT stackTag = list.getCompound(i);
-//			int slot = stackTag.getByte("Slot") & 255;
-//			this.setInventorySlotContents(slot, ItemStack.read(stackTag));
-//		}
 
 		if (nbt.contains("Items", Tag.TAG_COMPOUND)) {
 			ListTag tagList = nbt.getList("Items", Tag.TAG_COMPOUND);
@@ -130,16 +96,12 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 				}
 			}
 		}
-
-//		if (nbt.contains("CustomName", 8)) {
-//			this.setCustomName(new TextComponent(nbt.getString("CustomName")));
-//		}
 	}
 
 
 	public static <T extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState blockState, T t) {
-		if (t instanceof GeneratorTE generator) {
-			if (generator.getItem(0).getItem() instanceof EnderCell) { //TODO check this check
+		if (t instanceof GeneratorBE generator) {
+			if (generator.getItem(0).getItem() instanceof EnderCell) {
 				generator.energy = generator.currentOutput;
 				generator.currentOutput = generator.calculateEnergy(generator.getItem(0).getCount());
 				if (generator.currentOutput == 0) generator.currentOutput = 1;
@@ -151,11 +113,6 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 		}
 	}
 
-//	@Override
-//	public int getSizeInventory() {
-//		return itemStackHandler.getSlots();
-//	}
-
 	@Override
 	public void clearContent() {
 		for (int i = 0; i < this.getContainerSize(); i++)
@@ -164,7 +121,7 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 
 	@Override
 	protected Component getDefaultName() {
-		if (tier == GeneratorTE.GeneratorTier.ADVANCED)
+		if (tier == GeneratorBE.GeneratorTier.ADVANCED)
 			return new TranslatableComponent(Registration.ADV_ENDER_GENERATOR.get().getDescriptionId());
 		else
 			return new TranslatableComponent(Registration.ENDER_GENERATOR.get().getDescriptionId());
@@ -172,7 +129,7 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 
 	@Override
 	protected AbstractContainerMenu createMenu(int windowId, Inventory playerInv) {
-		return new ContainerEnderGeneratorTE(windowId, playerInv, this);
+		return new ContainerEnderGeneratorBE(windowId, playerInv, this);
 	}
 
 	private void handleSendingEnergy() {
@@ -183,15 +140,14 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 			for (Direction dir : Direction.values()) {
 				BlockPos targetBlock = getBlockPos().relative(dir);
 
-				BlockEntity tile = level.getBlockEntity(targetBlock);
-				if (tile != null) {
-					if (tile instanceof StorageTE) {
-						StorageTE storage = (StorageTE) tile;
+				BlockEntity blockEntity = level.getBlockEntity(targetBlock);
+				if (blockEntity != null) {
+					if (blockEntity instanceof StorageBE) {
+						StorageBE storage = (StorageBE) blockEntity;
 						energy -= storage.acceptEnergy(energy);
 					}
 					else {
-						//if (tile.hasCapability(CapabilityEnergy.ENERGY, dir.getOpposite())) {
-						tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite()).resolve().ifPresent((cap) -> {
+						blockEntity.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite()).resolve().ifPresent((cap) -> {
 							if (cap.canReceive()) {
 								energy -= cap.receiveEnergy((int) (energy > Integer.MAX_VALUE ? Integer.MAX_VALUE : energy), false);
 							}
@@ -204,7 +160,6 @@ public class GeneratorTE extends BaseContainerBlockEntity implements ICapability
 
 	@Override
 	public int getContainerSize() {
-
 		return inventory.size();
 	}
 
