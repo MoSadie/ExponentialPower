@@ -2,8 +2,8 @@ package io.github.mosadie.exponentialpower.blocks;
 
 import io.github.mosadie.exponentialpower.container.ContainerEnderGeneratorBE;
 import io.github.mosadie.exponentialpower.setup.Registration;
-import io.github.mosadie.exponentialpower.tiles.AdvancedEnderGeneratorBE;
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.GeneratorBE;
+import io.github.mosadie.exponentialpower.entities.AdvancedEnderGeneratorBE;
+import io.github.mosadie.exponentialpower.entities.BaseClasses.GeneratorBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

@@ -1,4 +1,4 @@
-package io.github.mosadie.exponentialpower.tiles.BaseClasses;
+package io.github.mosadie.exponentialpower.entities.BaseClasses;
 
 import io.github.mosadie.exponentialpower.Config;
 import io.github.mosadie.exponentialpower.energy.storage.ForgeEnergyConnection;

@@ -1,6 +1,6 @@
 package io.github.mosadie.exponentialpower.energy.storage;
 
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageBE;
+import io.github.mosadie.exponentialpower.entities.BaseClasses.StorageBE;
 import net.minecraft.core.Direction;
 import net.minecraftforge.energy.IEnergyStorage;
 

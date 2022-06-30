@@ -1,7 +1,7 @@
 package io.github.mosadie.exponentialpower.items;
 
 import io.github.mosadie.exponentialpower.Config;
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageBE;
+import io.github.mosadie.exponentialpower.entities.BaseClasses.StorageBE;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;

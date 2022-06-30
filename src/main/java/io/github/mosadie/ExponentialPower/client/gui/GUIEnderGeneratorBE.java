@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.mosadie.exponentialpower.ExponentialPower;
 import io.github.mosadie.exponentialpower.container.ContainerEnderGeneratorBE;
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.GeneratorBE;
+import io.github.mosadie.exponentialpower.entities.BaseClasses.GeneratorBE;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;

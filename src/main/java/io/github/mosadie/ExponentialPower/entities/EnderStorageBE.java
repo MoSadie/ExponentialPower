@@ -1,6 +1,6 @@
-package io.github.mosadie.exponentialpower.tiles;
+package io.github.mosadie.exponentialpower.entities;
 
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageBE;
+import io.github.mosadie.exponentialpower.entities.BaseClasses.StorageBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 

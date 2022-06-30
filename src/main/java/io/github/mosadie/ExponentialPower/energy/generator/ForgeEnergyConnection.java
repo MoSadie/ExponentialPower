@@ -1,6 +1,6 @@
 package io.github.mosadie.exponentialpower.energy.generator;
 
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.GeneratorBE;
+import io.github.mosadie.exponentialpower.entities.BaseClasses.GeneratorBE;
 import net.minecraftforge.energy.*;
 
 public class ForgeEnergyConnection implements IEnergyStorage {

@@ -1,7 +1,7 @@
 package io.github.mosadie.exponentialpower.blocks;
 
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.StorageBE;
-import io.github.mosadie.exponentialpower.tiles.EnderStorageBE;
+import io.github.mosadie.exponentialpower.entities.BaseClasses.StorageBE;
+import io.github.mosadie.exponentialpower.entities.EnderStorageBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;

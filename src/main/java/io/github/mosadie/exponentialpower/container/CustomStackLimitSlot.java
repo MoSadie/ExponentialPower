@@ -1,6 +1,6 @@
 package io.github.mosadie.exponentialpower.container;
 
-import io.github.mosadie.exponentialpower.tiles.BaseClasses.GeneratorBE;
+import io.github.mosadie.exponentialpower.entities.BaseClasses.GeneratorBE;
 import net.minecraft.world.inventory.Slot;
 
 public class CustomStackLimitSlot extends Slot {
