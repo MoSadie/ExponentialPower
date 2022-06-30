@@ -32,6 +32,6 @@ Yes, as long as you follow the [license](https://github.com/MoSadie/ExponentialP
 (Optional) Tell me all about it as well! I love seeing what people do with my mods.
 
 
-### Usage
+## Gallery
 
 ![A looping gif of a player placing Ender Cells into an Ender Generator](https://github.com/MoSadie/ExponentialPower/raw/master/docs/generator_loop.gif)
