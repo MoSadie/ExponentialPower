@@ -19,7 +19,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build -Pversion="${{ github.ref_name }}"
     - name: Publish
-      uses: Kier-Antipov/mc-publish@v3.0
+      uses: Kir-Antipov/mc-publish@v3.0
       with:
         version-type: release
 
