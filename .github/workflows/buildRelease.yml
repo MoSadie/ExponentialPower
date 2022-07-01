@@ -20,10 +20,12 @@ jobs:
     - name: Publish
       uses: Kier-Antipov/mc-publish@v3.0
       with:
+        version-type: release
+
         github-token: ${{ secrets.GITHUB_TOKEN }}
 
         curseforge-id: 254249
-        #curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
-        #modrinth-id:
-        #modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        modrinth-id: p8EuQNR0
+        modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
