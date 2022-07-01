@@ -1,5 +1,7 @@
 # ExponentialPower
-[![Build Status](https://github.com/MoSadie/ExponentialPower/workflows/Gradle%20Build%20CI/badge.svg)](https://github.com/MoSadie/ExponentialPower/actions)   [![CurseForge](https://cf.way2muchnoise.eu/full_254249_downloads.svg)](https://minecraft.curseforge.com/projects/exponential-power)
+[![Build Status](https://github.com/MoSadie/ExponentialPower/workflows/Gradle%20Build%20CI/badge.svg)](https://github.com/MoSadie/ExponentialPower/actions)
+[![CurseForge](https://cf.way2muchnoise.eu/full_254249_downloads.svg)](https://minecraft.curseforge.com/projects/exponential-power)
+[![Modrinth](https://img.shields.io/modrinth/dt/p8EuQNR0?color=greem&label=Modrinth%20Downloads)](https://modrinth.com/mod/p8EuQNR0)
 
 Exponential Power adds a few overpowered late-game power generation and storage options.
 
