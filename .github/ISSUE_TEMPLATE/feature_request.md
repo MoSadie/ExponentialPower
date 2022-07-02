@@ -1,19 +1,19 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
+about: Suggest an idea!
 title: ''
 labels: feature request
 assignees: ''
 
 ---
 
-**What inspired you to come up with this feature?**
+**Describe your idea:**
+A clear and concise description of your idea
+
+**What's the inspiration?**
 (Ex. I'm always frustrated when [...])
 
-**What do you want me to do?**
-A clear and concise description of what you want to happen.
-
-**Describe alternatives you've considered**
+**Alternate solutions:**
 A clear and concise description of any alternative solutions or features you've considered.
 
 **Additional context**

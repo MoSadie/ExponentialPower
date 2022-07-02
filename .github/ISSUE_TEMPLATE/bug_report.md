@@ -16,9 +16,9 @@ assignees: ''
 3. Bug
 
 ## Version information:
-* Minecraft: 1.12.2
+* Minecraft:
 * Minecraft Forge:
-* Exponential Power: v1.4.2
+* Exponential Power:
 
 ## Optional, but helpful extra information
 ### Other mods installed
