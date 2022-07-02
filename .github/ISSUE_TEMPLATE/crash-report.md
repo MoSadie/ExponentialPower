@@ -3,7 +3,8 @@ name: Crash report
 about: Crashed? Let me know here!
 title: ''
 labels: crash
-assignees: ''
+assignees:
+    - MoSadie
 
 ---
 
@@ -19,9 +20,9 @@ assignees: ''
 (Please attach or link to the crash log using a service like [Gist](https://gist.github.com) or [Pastebin](https://pastebin.com))
 
 ## Version information:
-* Minecraft: 1.12.2
+* Minecraft:
 * Minecraft Forge:
-* Exponential Power: v1.4.2
+* Exponential Power:
 
 ## Optional, but helpful extra information
 ### Other mods installed
