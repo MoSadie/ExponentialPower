@@ -19,7 +19,7 @@ jobs:
         java-version: 17
         cache: 'gradle'
     - name: Build with Gradle
-      run: ./gradlew build -Pversion="${{ github.ref_name }} --no-daemon"
+      run: ./gradlew build -Pversion="${{ github.ref_name }}" --no-daemon
     - name: Publish
       uses: Kir-Antipov/mc-publish@v3.0
       with:
