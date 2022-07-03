@@ -32,4 +32,3 @@ jobs:
 
         modrinth-id: p8EuQNR0
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-        modrinth-featured: false
