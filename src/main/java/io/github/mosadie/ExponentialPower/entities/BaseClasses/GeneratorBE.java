@@ -1,6 +1,7 @@
 package io.github.mosadie.exponentialpower.entities.BaseClasses;
 
 import io.github.mosadie.exponentialpower.Config;
+import io.github.mosadie.exponentialpower.ExponentialPower;
 import io.github.mosadie.exponentialpower.container.ContainerEnderGeneratorBE;
 import io.github.mosadie.exponentialpower.energy.generator.ForgeEnergyConnection;
 import io.github.mosadie.exponentialpower.items.EnderCell;
@@ -76,24 +77,31 @@ public class GeneratorBE extends BaseContainerBlockEntity implements ICapability
 				nbtTagList.add(itemTag);
 			}
 		}
-		CompoundTag invNbt = new CompoundTag();
-		invNbt.put("Items", nbtTagList);
-		nbt.put("Items", invNbt);
+
+		nbt.put("Items", nbtTagList);
 	}
 
 	@Override
 	public void load(CompoundTag nbt) {
 		super.load(nbt);
 
-		if (nbt.contains("Items", Tag.TAG_COMPOUND)) {
-			ListTag tagList = nbt.getList("Items", Tag.TAG_COMPOUND);
-			for (int i = 0; i < tagList.size(); i++) {
-				CompoundTag itemTags = tagList.getCompound(i);
-				int slot = itemTags.getInt("Slot");
+		ListTag tagList;
 
-				if (slot >= 0 && slot < getContainerSize()) {
-					setItem(slot, ItemStack.of(itemTags));
-				}
+		if (nbt.contains("Items", Tag.TAG_COMPOUND)) { // Load older NBT item structure.
+			ExponentialPower.LOGGER.warn("Upgrading old NBT item tag on save!");
+			tagList = nbt.getCompound("Items").getList("Items", Tag.TAG_COMPOUND);
+		} else 	if (nbt.contains("Items", Tag.TAG_LIST)) {
+			tagList = nbt.getList("Items", Tag.TAG_COMPOUND);
+		} else {
+			return;
+		}
+
+		for (int i = 0; i < tagList.size(); i++) {
+			CompoundTag itemTags = tagList.getCompound(i);
+			int slot = itemTags.getInt("Slot");
+
+			if (slot >= 0 && slot < getContainerSize()) {
+				setItem(slot, ItemStack.of(itemTags));
 			}
 		}
 	}
