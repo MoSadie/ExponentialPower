@@ -8,7 +8,7 @@ import io.github.mosadie.exponentialpower.entities.BaseClasses.GeneratorBE;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -35,7 +35,7 @@ public class GUIEnderGeneratorBE extends AbstractContainerScreen<ContainerEnderG
     @Override
     protected void renderLabels(PoseStack matrixStack, int p_97809_, int p_97810_) {
         super.renderLabels(matrixStack, p_97809_, p_97810_);
-        drawString(matrixStack, Minecraft.getInstance().font, new TranslatableComponent("screen.exponentialpower.generator_rate"), 10, 53, 0xffffff);
+        drawString(matrixStack, Minecraft.getInstance().font, Component.translatable("screen.exponentialpower.generator_rate"), 10, 53, 0xffffff);
         drawString(matrixStack, Minecraft.getInstance().font, be.energy + " RF/t", 10, 63, 0xffffff);
     }
 

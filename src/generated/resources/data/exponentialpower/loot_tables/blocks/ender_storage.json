@@ -2,8 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "enderstorage",
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -15,19 +13,21 @@
             },
             {
               "function": "minecraft:copy_nbt",
-              "source": "block_entity",
               "ops": [
                 {
+                  "op": "replace",
                   "source": "energy",
-                  "target": "BlockEntityTag.energy",
-                  "op": "replace"
+                  "target": "BlockEntityTag.energy"
                 }
-              ]
+              ],
+              "source": "block_entity"
             }
           ],
           "name": "exponentialpower:ender_storage"
         }
-      ]
+      ],
+      "name": "enderstorage",
+      "rolls": 1.0
     }
   ]
 }

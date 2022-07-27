@@ -1,25 +1,25 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "exponentialpower",
+  "key": {
+    "D": {
+      "item": "minecraft:diamond_block"
+    },
+    "O": {
+      "tag": "forge:obsidian"
+    },
+    "c": {
+      "item": "exponentialpower:ender_cell"
+    },
+    "n": {
+      "item": "minecraft:netherite_ingot"
+    }
+  },
   "pattern": [
     "nOD",
     "OcO",
     "DOn"
   ],
-  "key": {
-    "n": {
-      "item": "minecraft:netherite_ingot"
-    },
-    "O": {
-      "tag": "forge:obsidian"
-    },
-    "D": {
-      "item": "minecraft:diamond_block"
-    },
-    "c": {
-      "item": "exponentialpower:ender_cell"
-    }
-  },
   "result": {
     "item": "exponentialpower:ender_generator"
   }

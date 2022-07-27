@@ -58,7 +58,7 @@ public class AdvancedEnderGenerator extends Block implements EntityBlock {
                         return new ContainerEnderGeneratorBE(i, playerInventory, (GeneratorBE) tileEntity);
                     }
                 };
-                NetworkHooks.openGui((ServerPlayer) player, containerProvider, tileEntity.getBlockPos());
+                NetworkHooks.openScreen((ServerPlayer) player, containerProvider, tileEntity.getBlockPos());
             } else {
                 throw new IllegalStateException("Our named container provider is missing!");
             }
