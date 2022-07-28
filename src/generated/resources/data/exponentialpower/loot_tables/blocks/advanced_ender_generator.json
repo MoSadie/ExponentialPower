@@ -2,8 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "advancedendergenerator",
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -15,34 +13,36 @@
             },
             {
               "function": "minecraft:copy_nbt",
-              "source": "block_entity",
               "ops": [
                 {
+                  "op": "replace",
                   "source": "inv",
-                  "target": "BlockEntityTag.inv",
-                  "op": "replace"
+                  "target": "BlockEntityTag.inv"
                 },
                 {
+                  "op": "replace",
                   "source": "energy",
-                  "target": "BlockEntityTag.energy",
-                  "op": "replace"
+                  "target": "BlockEntityTag.energy"
                 }
-              ]
+              ],
+              "source": "block_entity"
             },
             {
-              "function": "minecraft:set_contents",
               "type": "exponentialpower:advanced_ender_generator",
               "entries": [
                 {
                   "type": "minecraft:dynamic",
                   "name": "minecraft:contents"
                 }
-              ]
+              ],
+              "function": "minecraft:set_contents"
             }
           ],
           "name": "exponentialpower:advanced_ender_generator"
         }
-      ]
+      ],
+      "name": "advancedendergenerator",
+      "rolls": 1.0
     }
   ]
 }

@@ -4,8 +4,6 @@ import io.github.mosadie.exponentialpower.Config;
 import io.github.mosadie.exponentialpower.entities.BaseClasses.StorageBE;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -46,10 +44,10 @@ public class EnderStorageItem extends BlockItem {
 			}
 		}
 		
-		tooltip.add(new TranslatableComponent("item.exponentialpower.storage.tooltip.stored"));
-		tooltip.add(new TextComponent(energy + "/" + getMaxEnergy()));
+		tooltip.add(Component.translatable("item.exponentialpower.storage.tooltip.stored"));
+		tooltip.add(Component.literal(energy + "/" + getMaxEnergy()));
 		double percent = ((int)(energy/getMaxEnergy() * 10000.00)) / 100.00;
-		tooltip.add(new TextComponent("(" + percent + "%)"));
+		tooltip.add(Component.literal("(" + percent + "%)"));
 	}
 
 	public double getMaxEnergy() {

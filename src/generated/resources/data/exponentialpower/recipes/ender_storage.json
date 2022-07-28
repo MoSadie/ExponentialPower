@@ -1,11 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "exponentialpower",
-  "pattern": [
-    "DOD",
-    "PcP",
-    "DOD"
-  ],
   "key": {
     "D": {
       "item": "minecraft:diamond_block"
@@ -20,6 +15,11 @@
       "item": "exponentialpower:ender_cell"
     }
   },
+  "pattern": [
+    "DOD",
+    "PcP",
+    "DOD"
+  ],
   "result": {
     "item": "exponentialpower:ender_storage"
   }

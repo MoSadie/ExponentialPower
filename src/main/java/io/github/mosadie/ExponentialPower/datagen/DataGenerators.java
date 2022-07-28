@@ -4,7 +4,7 @@ import io.github.mosadie.exponentialpower.ExponentialPower;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.data.event.GatherDataEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
@@ -15,14 +15,14 @@ public class DataGenerators {
         DataGenerator generator = event.getGenerator();
         if (event.includeServer()) {
             ExponentialPower.LOGGER.info("Registering Server Providers!");
-            generator.addProvider(new DataRecipes(generator));
-            generator.addProvider(new DataLootTables(generator));
+            generator.addProvider(true, new DataRecipes(generator));
+            generator.addProvider(true, new DataLootTables(generator));
         }
         if (event.includeClient()) {
             ExponentialPower.LOGGER.info("Registering Client Providers!");
-            generator.addProvider(new DataBlockStates(generator, event.getExistingFileHelper()));
-            generator.addProvider(new DataItems(generator, event.getExistingFileHelper()));
-            generator.addProvider(new DataLang(generator, "en_us"));
+            generator.addProvider(true, new DataBlockStates(generator, event.getExistingFileHelper()));
+            generator.addProvider(true, new DataItems(generator, event.getExistingFileHelper()));
+            generator.addProvider(true, new DataLang(generator, "en_us"));
         }
     }
 }

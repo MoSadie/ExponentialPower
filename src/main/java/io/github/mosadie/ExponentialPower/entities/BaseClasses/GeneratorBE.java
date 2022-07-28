@@ -13,7 +13,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -130,9 +129,9 @@ public class GeneratorBE extends BaseContainerBlockEntity implements ICapability
 	@Override
 	protected Component getDefaultName() {
 		if (tier == GeneratorBE.GeneratorTier.ADVANCED)
-			return new TranslatableComponent(Registration.ADV_ENDER_GENERATOR.get().getDescriptionId());
+			return Component.translatable(Registration.ADV_ENDER_GENERATOR.get().getDescriptionId());
 		else
-			return new TranslatableComponent(Registration.ENDER_GENERATOR.get().getDescriptionId());
+			return Component.translatable(Registration.ENDER_GENERATOR.get().getDescriptionId());
 	}
 
 	@Override

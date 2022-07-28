@@ -7,5 +7,5 @@
   "item.exponentialpower.storage.tooltip.stored": "Current Energy Stored:",
   "itemGroup.exponentialpower": "Exponential Power",
   "screen.exponentialpower.generator_rate": "Current Energy Generation:",
-  "screen.exponentialpower.storage_total": "Current Energy Stored:"
+  "screen.exponentialpower.storage_total": "Current Energy Stored: %s/%s RF (%s%%)"
 }

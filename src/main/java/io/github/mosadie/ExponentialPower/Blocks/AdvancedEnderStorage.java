@@ -1,10 +1,12 @@
 package io.github.mosadie.exponentialpower.blocks;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import io.github.mosadie.exponentialpower.ExponentialPower;
 import io.github.mosadie.exponentialpower.entities.AdvancedEnderStorageBE;
 import io.github.mosadie.exponentialpower.entities.BaseClasses.StorageBE;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +32,7 @@ public class AdvancedEnderStorage extends Block implements EntityBlock {
 		if (!level.isClientSide) {
 			StorageBE te = (StorageBE) level.getBlockEntity(pos);
 			double percent = ((int)(te.energy/te.getMaxEnergy() * 10000.00)) / 100.00;
-			player.sendMessage(new TranslatableComponent("screen.exponentialpower.storage_total").append(new TextComponent(" " + te.energy + " / " + te.getMaxEnergy() + " RF (" + percent + "%)")), player.getUUID());
+			player.sendSystemMessage(Component.translatable("screen.exponentialpower.storage_total", te.energy, te.getMaxEnergy(), percent));
 		}
 		return InteractionResult.SUCCESS;
 	}
